@@ -1,0 +1,940 @@
+
+CodeLab
+Show Output
+1
+
+<!DOCTYPE html>
+
+2
+
+<html lang="en">
+
+3
+
+<head>
+
+4
+
+<meta charset="utf-8">
+
+5
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+6
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+7
+
+<title>Bootstrap Table with Search Column Feature</title>
+
+8
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+
+9
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+10
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+11
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+12
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+13
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+14
+
+<style type="text/css">
+
+15
+
+    body {
+
+16
+
+        color: #566787;
+
+17
+
+        background: #f7f5f2;
+
+18
+
+        font-family: 'Roboto', sans-serif;
+
+19
+
+    }
+
+20
+
+    .table-wrapper {
+
+21
+
+        background: #fff;
+
+22
+
+        padding: 20px 25px;
+
+23
+
+        margin: 30px auto;
+
+24
+
+        border-radius: 3px;
+
+25
+
+        box-shadow: 0 1px 1px rgba(0,0,0,.05);
+
+26
+
+    }
+
+27
+
+    .table-title {
+
+28
+
+        color: #fff;
+
+29
+
+        background: #40b2cd;        
+
+30
+
+        padding: 16px 25px;
+
+31
+
+        margin: -20px -25px 10px;
+
+32
+
+        border-radius: 3px 3px 0 0;
+
+33
+
+    }
+
+34
+
+    .table-title h2 {
+
+35
+
+        margin: 5px 0 0;
+
+36
+
+        font-size: 24px;
+
+37
+
+    }
+
+38
+
+    .search-box {
+
+39
+
+        position: relative;
+
+40
+
+        float: right;
+
+41
+
+    }
+
+42
+
+    .search-box .input-group {
+
+43
+
+        min-width: 300px;
+
+44
+
+        position: absolute;
+
+45
+
+        right: 0;
+
+46
+
+    }
+
+47
+
+    .search-box .input-group-addon, .search-box input {
+
+48
+
+        border-color: #ddd;
+
+49
+
+        border-radius: 0;
+
+50
+
+    }   
+
+51
+
+    .search-box input {
+
+52
+
+        height: 34px;
+
+53
+
+        padding-right: 35px;
+
+54
+
+        background: #f4fcfd;
+
+55
+
+        border: none;
+
+56
+
+        border-radius: 2px !important;
+
+57
+
+    }
+
+58
+
+    .search-box input:focus {
+
+59
+
+        background: #fff;
+
+60
+
+    }
+
+61
+
+    .search-box input::placeholder {
+
+62
+
+        font-style: italic;
+
+63
+
+    }
+
+64
+
+    .search-box .input-group-addon {
+
+65
+
+        min-width: 35px;
+
+66
+
+        border: none;
+
+67
+
+        background: transparent;
+
+68
+
+        position: absolute;
+
+69
+
+        right: 0;
+
+70
+
+        z-index: 9;
+
+71
+
+        padding: 6px 0;
+
+72
+
+    }
+
+73
+
+    .search-box i {
+
+74
+
+        color: #a0a5b1;
+
+75
+
+        font-size: 19px;
+
+76
+
+        position: relative;
+
+77
+
+        top: 2px;
+
+78
+
+    }
+
+79
+
+    table.table {
+
+80
+
+        table-layout: fixed;
+
+81
+
+        margin-top: 15px;
+
+82
+
+    }
+
+83
+
+    table.table tr th, table.table tr td {
+
+84
+
+        border-color: #e9e9e9;
+
+85
+
+    }
+
+86
+
+    table.table th i {
+
+87
+
+        font-size: 13px;
+
+88
+
+        margin: 0 5px;
+
+89
+
+        cursor: pointer;
+
+90
+
+    }
+
+91
+
+    table.table th:first-child {
+
+92
+
+        width: 60px;
+
+93
+
+    }
+
+94
+
+    table.table th:last-child {
+
+95
+
+        width: 120px;
+
+96
+
+    }
+
+97
+
+    table.table td a {
+
+98
+
+        color: #a0a5b1;
+
+99
+
+        display: inline-block;
+
+100
+
+        margin: 0 5px;
+
+101
+
+    }
+
+102
+
+    table.table td a.view {
+
+103
+
+        color: #03A9F4;
+
+104
+
+    }
+
+105
+
+    table.table td a.edit {
+
+106
+
+        color: #FFC107;
+
+107
+
+    }
+
+108
+
+    table.table td a.delete {
+
+109
+
+        color: #E34724;
+
+110
+
+    }
+
+111
+
+    table.table td i {
+
+112
+
+        font-size: 19px;
+
+113
+
+    }    
+
+114
+
+</style>
+
+115
+
+<script type="text/javascript">
+
+116
+
+$(document).ready(function(){
+
+117
+
+    // Activate tooltips
+
+118
+
+    $('[data-toggle="tooltip"]').tooltip();
+
+119
+
+    
+
+120
+
+    // Filter table rows based on searched term
+
+121
+
+    $("#search").on("keyup", function() {
+
+122
+
+        var term = $(this).val().toLowerCase();
+
+123
+
+        $("table tbody tr").each(function(){
+
+124
+
+            $row = $(this);
+
+125
+
+            var name = $row.find("td:nth-child(2)").text().toLowerCase();
+
+126
+
+            console.log(name);
+
+127
+
+            if(name.search(term) < 0){                
+
+128
+
+                $row.hide();
+
+129
+
+            } else{
+
+130
+
+                $row.show();
+
+131
+
+            }
+
+132
+
+        });
+
+133
+
+    });
+
+134
+
+});
+
+135
+
+</script>
+
+136
+
+</head>
+
+137
+
+<body>
+
+138
+
+    <div class="container">
+
+139
+
+        <div class="table-wrapper">         
+
+140
+
+            <div class="table-title">
+
+141
+
+                <div class="row">
+
+142
+
+                    <div class="col-sm-6">
+
+143
+
+                        <h2>Customer <b>Details</b></h2>
+
+144
+
+                    </div>
+
+145
+
+                    <div class="col-sm-6">
+
+146
+
+                        <div class="search-box">
+
+147
+
+                            <div class="input-group">                               
+
+148
+
+                                <input type="text" id="search" class="form-control" placeholder="Search by Name">
+
+149
+
+                                <span class="input-group-addon"><i class="material-icons">&#xE8B6;</i></span>
+
+150
+
+                            </div>
+
+151
+
+                        </div>
+
+152
+
+                    </div>
+
+153
+
+                </div>
+
+154
+
+            </div>
+
+155
+
+            <table class="table table-striped">
+
+156
+
+                <thead>
+
+157
+
+                    <tr>
+
+158
+
+                        <th>#</th>
+
+159
+
+                        <th style="width: 22%;">Name</th>
+
+160
+
+                        <th style="width: 22%;">Address</th>
+
+161
+
+                        <th>City</th>
+
+162
+
+                        <th>Pin Code</th>
+
+163
+
+                        <th>Country</th>
+
+164
+
+                        <th>Actions</th>
+
+165
+
+                    </tr>
+
+166
+
+                </thead>
+
+167
+
+                <tbody>
+
+168
+
+                    <tr>
+
+169
+
+                        <td>1</td>
+
+170
+
+                        <td>Thomas Hardy</td>
+
+171
+
+                        <td>89 Chiaroscuro Rd.</td>
+
+172
+
+                        <td>Portland</td>
+
+173
+
+                        <td>97219</td>
+
+174
+
+                        <td>USA</td>
+
+175
+
+                        <td>
+
+176
+
+                            <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+
+177
+
+                            <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+
+178
+
+                        </td>
+
+179
+
+                    </tr>
+
+180
+
+                    <tr>
+
+181
+
+                        <td>2</td>
+
+182
+
+                        <td>Maria Anders</td>
+
+183
+
+                        <td>Obere Str. 57</td>
+
+184
+
+                        <td>Berlin</td>
+
+185
+
+                        <td>12209</td>
+
+186
+
+                        <td>Germany</td>
+
+187
+
+                        <td>
+
+188
+
+                            <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+
+189
+
+                            <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+
+190
+
+                        </td>
+
+191
+
+                    </tr>
+
+192
+
+                    <tr>
+
+193
+
+                        <td>3</td>
+
+194
+
+                        <td>Fran Wilson</td>
+
+195
+
+                        <td>C/ Araquil, 67</td>
+
+196
+
+                        <td>Madrid</td>
+
+197
+
+                        <td>28023</td>
+
+198
+
+                        <td>Spain</td>
+
+199
+
+                        <td>
+
+200
+
+                            <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+
+201
+
+                            <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+
+202
+
+                        </td>
+
+203
+
+                    </tr>
+
+204
+
+                    <tr>
+
+205
+
+                        <td>4</td>
+
+206
+
+                        <td>Dominique Perrier</td>
+
+207
+
+                        <td>25, rue Lauriston</td>
+
+208
+
+                        <td>Paris</td>
+
+209
+
+                        <td>75016</td>
+
+210
+
+                        <td>France</td>
+
+211
+
+                        <td>
+
+212
+
+                            <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+
+213
+
+                            <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+
+214
+
+                        </td>
+
+215
+
+                    </tr>
+
+216
+
+                    <tr>
+
+217
+
+                        <td>5</td>
+
+218
+
+                        <td>Martin Blank</td>
+
+219
+
+                        <td>Via Monte Bianco 34</td>
+
+220
+
+                        <td>Turin</td>
+
+221
+
+                        <td>10100</td>
+
+222
+
+                        <td>Italy</td>
+
+223
+
+                        <td>
+
+224
+
+                            <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+
+225
+
+                            <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+
+226
+
+                        </td>
+
+227
+
+                    </tr>        
+
+228
+
+                </tbody>
+
+229
+
+            </table>
+
+230
+
+        </div>
+
+231
+
+    </div>     
+
+232
+
+</body>
+
+233
+
+</html>                                                                                             
+
+ 
+Switch to SQL Mode
+Auto update
+
+Share this example with Facebook, Twitter, Google +. Please give us a Like, if you find it helpful.

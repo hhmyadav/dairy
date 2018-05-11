@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+     <div th:replace="fragments/header :: header-css"/> 
+</head>
+<body>
+
+<!-- <div th:replace="fragments/header :: header"/> -->
+
+<div class="container">
+     
+         <!--   <span sec:authorize="isAuthenticated()">
+                   <script type="text/javascript">
+					location.assign("/AIRMET_BOG/index.html");				
+                   </script>
+           </span> -->
+     
+    <div class="starter-template">
+        <h2>404 - Page Not Found</h2>
+      
+        <div th:inline="text">Error: 'Unable to find page.Check URL or Please contact your Administrator.</div>
+    </div>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>
