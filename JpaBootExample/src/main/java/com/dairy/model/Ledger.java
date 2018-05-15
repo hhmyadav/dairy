@@ -27,9 +27,9 @@ public class Ledger {
 	private long updatedUserId; 
 	private String businessArea;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
-	private User userId ;
+	@ManyToOne
+    @JoinColumn(name = "UserId")
+	private User user ;
 	
 	
 	
@@ -89,12 +89,13 @@ public class Ledger {
 	public void setBusinessArea(String businessArea) {
 		this.businessArea = businessArea;
 	}
-	public User getUserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
-	public void setUserId(User userId) {
-		this.userId = userId;
+	public void setUser(User user) {
+		this.user = user;
 	}
+	
 	
 	
 

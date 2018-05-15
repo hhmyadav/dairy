@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class DefaultController {
@@ -23,16 +25,11 @@ public class DefaultController {
 	      	model.addAttribute("dairyName",dairyName);
 			model.addAttribute("ownerName",ownerName);
 	    }
-    
-    @GetMapping({ "/","/index","/result"})
-    public String indexGet(Model model) {
-          return "index";
+   
+   @RequestMapping(value={"/","/index","/result"}, method={RequestMethod.POST,RequestMethod.GET})
+   public String indexGet(Model model) {
+          return "homePage";
     }
 
-    @PostMapping({"/","/index",})
-    public String homePost(Model model) {
-    	return "index";
-    }
     
-   
 }

@@ -22,20 +22,18 @@ public class DailyTransaction {
 	private Date updatedDate ;
 	private char dayType ;  // evening or morning 
 	private double milkQuantity ;
+	private String milkType ;
 	private double perLiterPrice ;
 	private double dayTotalAmount ;    
 	private double fat ;
 	private double snf ;
-	private long createdUser ; 
-	private long updatedUserId; 
-	private String businessArea;
 	
     
-	@ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
-	private User userId ;
+	@ManyToOne
+    @JoinColumn(name = "userId")
+	private User user ;
 	
-	
+	 
 	public long getId() {
 		return id;
 	}
@@ -43,17 +41,11 @@ public class DailyTransaction {
 		this.id = id;
 	}
 	
-	public String getBusinessArea() {
-		return businessArea;
+	public User getUser() {
+		return user;
 	}
-	public void setBusinessArea(String businessArea) {
-		this.businessArea = businessArea;
-	}
-	public User getUserId() {
-		return userId;
-	}
-	public void setUserId(User userId) {
-		this.userId = userId;
+	public void setUser(User user) {
+		this.user = user;
 	}
 	public Date getCreatedDate() {
 		return createdDate;
@@ -103,18 +95,13 @@ public class DailyTransaction {
 	public void setSnf(double snf) {
 		this.snf = snf;
 	}
-	public long getCreatedUser() {
-		return createdUser;
+	public String getMilkType() {
+		return milkType;
 	}
-	public void setCreatedUser(long createdUser) {
-		this.createdUser = createdUser;
+	public void setMilkType(String milkType) {
+		this.milkType = milkType;
 	}
-	public long getUpdatedUserId() {
-		return updatedUserId;
-	}
-	public void setUpdatedUserId(long updatedUserId) {
-		this.updatedUserId = updatedUserId;
-	}
+	
 	
 	
 	

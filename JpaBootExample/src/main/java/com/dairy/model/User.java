@@ -1,8 +1,8 @@
 package com.dairy.model;
 
-import javax.persistence.CascadeType;
+import java.util.List;
+
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,62 +15,34 @@ public class User {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
-    private String firstName;
-    private String lastName;
+    private Long userId;
+    private String name;
+    private String email ;
+    private String address ;
     private long mobileNumber;
     private char userType ;
-    private String businessArea;
+
 
     
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private DailyTransaction dailyTransaction;
+    @OneToMany(mappedBy = "user")
+    private List<DailyTransaction> dailyTransaction;
+   
+    
+    @OneToMany(mappedBy = "user")
+    private List<Ledger> ledger;
    
     
     
-    
-    
-    public Long getId() {
-		return id;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
-	public DailyTransaction getDailyTransaction() {
-		return dailyTransaction;
-	}
 
-	public void setDailyTransaction(DailyTransaction dailyTransaction) {
-		this.dailyTransaction = dailyTransaction;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getBusinessArea() {
-		return businessArea;
-	}
-
-	public void setBusinessArea(String businessArea) {
-		this.businessArea = businessArea;
-	}
-
-	public long getMobileNumber() {
+    public long getMobileNumber() {
 		return mobileNumber;
 	}
 
@@ -85,5 +57,47 @@ public class User {
 	public void setUserType(char userType) {
 		this.userType = userType;
 	}
+
+	public List<DailyTransaction> getDailyTransaction() {
+		return dailyTransaction;
+	}
+
+	public void setDailyTransaction(List<DailyTransaction> dailyTransaction) {
+		this.dailyTransaction = dailyTransaction;
+	}
+
+	public List<Ledger> getLedger() {
+		return ledger;
+	}
+
+	public void setLedger(List<Ledger> ledger) {
+		this.ledger = ledger;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	
 
 }
