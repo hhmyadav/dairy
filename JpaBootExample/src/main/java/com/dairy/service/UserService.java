@@ -24,10 +24,19 @@ public class UserService {
 	 {
 		 userRepository.save(user);
 	 }
-     
-	 public User getOne(long userId)
+	 
+	 public boolean existsById(long userId)
 	 {
-		return userRepository.getOne(userId);
+		return userRepository.existsById(userId);
 	 }
-
+	 
+	 public User getOne(Long userId)
+	 {
+		 return userRepository.getOne(userId);
+	 }
+     
+	 public void deleteUser(Long userId)
+	 {
+		 userRepository.deleteById(userId);
+	 }
 }

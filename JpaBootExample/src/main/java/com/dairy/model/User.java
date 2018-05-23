@@ -21,7 +21,8 @@ public class User {
     private String address ;
     private long mobileNumber;
     private char userType ;
-
+    private double amountBalance ;
+    
 
     
     @OneToMany(mappedBy = "user")
@@ -41,7 +42,7 @@ public class User {
 		this.userId = userId;
 	}
 
-
+    
     public long getMobileNumber() {
 		return mobileNumber;
 	}
@@ -97,6 +98,18 @@ public class User {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
+	public double getAmountBalance() {
+		return amountBalance;
+	}
+
+	public void setAmountBalance(double amountBalance) {
+		this.amountBalance = amountBalance;
+	}
+
+	
+
+
 	
 	
 

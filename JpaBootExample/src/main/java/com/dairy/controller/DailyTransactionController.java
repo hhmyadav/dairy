@@ -1,5 +1,7 @@
 package com.dairy.controller;
 
+
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.validation.Valid;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dairy.model.DailyTransaction;
+import com.dairy.model.User;
 import com.dairy.service.DailyTransactionService;
 import com.dairy.service.UserService;
 
@@ -27,6 +30,24 @@ public class DailyTransactionController {
 	     
 	@Autowired
 	UserService userService ;
+	     
+	
+	    @RequestMapping(value="/user/", method={RequestMethod.POST,RequestMethod.GET})	    
+        public String setUserTransaction(User user ,DailyTransaction dailyTransaction,Model model) {
+     	  
+	    	dailyTransaction.setUser(user);
+     	   dailyTransaction.setCreatedDateTime(LocalDateTime.now());
+     	   
+     	   dailyTransaction.setDayType('m');
+     	   
+     	   if(LocalDateTime.now().getHour() >= 14)
+     	   dailyTransaction.setDayType('e');
+     	   
+            
+     	   dailyTransaction.setMilkType("buffelow");
+              
+          return "transaction";
+	    }
 	
 	
         @RequestMapping(value="/all", method={RequestMethod.POST,RequestMethod.GET})	
@@ -36,23 +57,61 @@ public class DailyTransactionController {
 	    }
         
         @RequestMapping(value="/user/{userId}", method={RequestMethod.POST,RequestMethod.GET})	    
-        public String getTransactionsByUserId(@PathVariable("userId") int userId,Model model) {
+        public String setUserTransactionByUserId(@PathVariable("userId") Long userId,User user,DailyTransaction dailyTransaction,Model model) {
         	
-        	model.addAttribute("user", userService.getOne(userId));
+        	
+        	   if(!userService.existsById(userId)) 
+        	   { 
+        		 model.addAttribute("result","Cannot find userId #" + userId);
+        	     return "transaction";
+        	   }
+        	   
+        	   user = userService.getOne(userId);
+        	   
+        	   dailyTransaction.setUser(user);
+        	   dailyTransaction.setCreatedDateTime(LocalDateTime.now());
+        	   
+        	   dailyTransaction.setDayType('m');
+        	   
+        	   if(LocalDateTime.now().getHour() >= 14)
+        	   dailyTransaction.setDayType('e');
+        	   
+               
+        	   dailyTransaction.setMilkType("buffelow");
+        	   
         	
     	   return "transaction";
 	    }
         
-        @RequestMapping(value="/user/save", method={RequestMethod.POST,RequestMethod.GET})	    
-        public String saveTransactionsByUserId(@Valid DailyTransaction dailyTransaction,  BindingResult bindingResult ,Model model) {
+       
+        
+        @RequestMapping(value="/user/save", method={RequestMethod.POST})	    
+        public String saveUserTransaction(User user ,@Valid DailyTransaction dailyTransaction,  BindingResult bindingResult ,Model model) {
              
-        	if (bindingResult.hasErrors()) {
+            if (bindingResult.hasErrors()) {
+        		
+        		System.out.println(bindingResult.getFieldErrorCount());
+        		System.out.println(bindingResult.getAllErrors());
+        		model.addAttribute("result",bindingResult.getAllErrors());
 				return "transaction";
 			}
+            
+            Long userId = dailyTransaction.getUser().getUserId();
+            
+           if(!userService.existsById(userId)) 
+     	   { model.addAttribute("result","Cannot find userId #" + userId);
+     	     return "transaction";
+     	   }
+     	  
+        	if (dailyTransaction.getCreatedDateTime() == null) {
+        		dailyTransaction.setCreatedDateTime(LocalDateTime.now());
+            }
         	
         	dailyTransactionService.saveDailyTransaction(dailyTransaction);
         	
-    	   return "transaction";
+        	model.addAttribute("result","success!");
+    	   		
+        	return "transaction";
 	    }
        
         @RequestMapping(value="/byDate", method={RequestMethod.POST,RequestMethod.GET})

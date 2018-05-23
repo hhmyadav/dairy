@@ -18,20 +18,17 @@ public class Ledger {
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private long id ; 
-	private Date createdDate ;
-	private Date updatedDate ;
+	private Date transactionDate ;
 	private char daytype; 
-	private double amount ;
+	private double amountDebit ;
+	private double amountCredit ;
 	private String paymentSummary ;
-	private long createdUser ; 
-	private long updatedUserId; 
-	private String businessArea;
+
+	
 	
 	@ManyToOne
     @JoinColumn(name = "UserId")
 	private User user ;
-	
-	
 	
 	
 	
@@ -41,17 +38,13 @@ public class Ledger {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public Date getCreatedDate() {
-		return createdDate;
+	
+	
+	public Date getTransactionDate() {
+		return transactionDate;
 	}
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-	public Date getUpdatedDate() {
-		return updatedDate;
-	}
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
+	public void setTransactionDate(Date transactionDate) {
+		this.transactionDate = transactionDate;
 	}
 	public char getDaytype() {
 		return daytype;
@@ -59,11 +52,18 @@ public class Ledger {
 	public void setDaytype(char daytype) {
 		this.daytype = daytype;
 	}
-	public double getAmount() {
-		return amount;
+	
+	public double getAmountDebit() {
+		return amountDebit;
 	}
-	public void setAmount(double amount) {
-		this.amount = amount;
+	public void setAmountDebit(double amountDebit) {
+		this.amountDebit = amountDebit;
+	}
+	public double getAmountCredit() {
+		return amountCredit;
+	}
+	public void setAmountCredit(double amountCredit) {
+		this.amountCredit = amountCredit;
 	}
 	public String getPaymentSummary() {
 		return paymentSummary;
@@ -71,24 +71,7 @@ public class Ledger {
 	public void setPaymentSummary(String paymentSummary) {
 		this.paymentSummary = paymentSummary;
 	}
-	public long getCreatedUser() {
-		return createdUser;
-	}
-	public void setCreatedUser(long createdUser) {
-		this.createdUser = createdUser;
-	}
-	public long getUpdatedUserId() {
-		return updatedUserId;
-	}
-	public void setUpdatedUserId(long updatedUserId) {
-		this.updatedUserId = updatedUserId;
-	}
-	public String getBusinessArea() {
-		return businessArea;
-	}
-	public void setBusinessArea(String businessArea) {
-		this.businessArea = businessArea;
-	}
+	
 	public User getUser() {
 		return user;
 	}

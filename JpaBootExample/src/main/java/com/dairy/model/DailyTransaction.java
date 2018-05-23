@@ -1,7 +1,8 @@
 package com.dairy.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,35 +10,43 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
+@Table(name="dailyTransaction")
 public class DailyTransaction {
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-	private long id ;
+	private Long id ;
 	
 	
-    private Date createdDate ;
-	private Date updatedDate ;
-	private char dayType ;  // evening or morning 
+	@Column(nullable = false)
+	@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
+	private LocalDateTime createdDateTime;
+	
+	
+	private char dayType ; 
 	private double milkQuantity ;
 	private String milkType ;
 	private double perLiterPrice ;
-	private double dayTotalAmount ;    
+	private double totalAmount ;    
 	private double fat ;
 	private double snf ;
 	
     
-	@ManyToOne
-    @JoinColumn(name = "userId")
+	@ManyToOne()
+    @JoinColumn(name = "userId",nullable=false)
 	private User user ;
 	
-	 
-	public long getId() {
+	
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
@@ -47,18 +56,8 @@ public class DailyTransaction {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-	public Date getUpdatedDate() {
-		return updatedDate;
-	}
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
-	}
+	
+	
 	public char getDayType() {
 		return dayType;
 	}
@@ -77,12 +76,15 @@ public class DailyTransaction {
 	public void setPerLiterPrice(double perLiterPrice) {
 		this.perLiterPrice = perLiterPrice;
 	}
-	public double getDayTotalAmount() {
-		return dayTotalAmount;
+	
+	public double getTotalAmount() {
+		return totalAmount;
 	}
-	public void setDayTotalAmount(double dayTotalAmount) {
-		this.dayTotalAmount = dayTotalAmount;
+
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
 	}
+
 	public double getFat() {
 		return fat;
 	}
@@ -101,10 +103,15 @@ public class DailyTransaction {
 	public void setMilkType(String milkType) {
 		this.milkType = milkType;
 	}
-	
-	
-	
-	
-	
+
+	public LocalDateTime getCreatedDateTime() {
+		return createdDateTime;
+	}
+
+	public void setCreatedDateTime(LocalDateTime createdDateTime) {
+		this.createdDateTime = createdDateTime;
+	}
+
+
 
 }
