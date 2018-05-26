@@ -1,5 +1,8 @@
 package com.dairy.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.dairy.model.User;
 import com.dairy.service.UserService;
+import com.mysql.fabric.FabricCommunicationException;
+import com.mysql.fabric.Response;
 
 @Controller
 @RequestMapping("/userOperation")
@@ -33,6 +39,16 @@ public class UserController {
 	    }
 	   
 	       
+	    @RequestMapping(value="/test", method={RequestMethod.POST,RequestMethod.GET})
+	    public Response test() throws FabricCommunicationException {
+	    System.out.println("test call");
+	    List<User> user = new ArrayList<User>();
+	    
+	    Response response = new Response(user );
+		return response;
+	   
+	    }
+	    
 	   
 	    @PostMapping("/getUser")
 	    public String getUser(@RequestParam(value="userId", required=false) String userId,

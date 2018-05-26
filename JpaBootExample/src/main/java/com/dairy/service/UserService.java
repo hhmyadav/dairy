@@ -30,7 +30,7 @@ public class UserService {
 		return userRepository.existsById(userId);
 	 }
 	 
-	 public User getOne(Long userId)
+	 public User getOne(long userId)
 	 {
 		 return userRepository.getOne(userId);
 	 }

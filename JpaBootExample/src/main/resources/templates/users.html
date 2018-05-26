@@ -363,6 +363,7 @@ function rowClicked(value) {
 						<th>UserId</th>
                         <th>Name</th>
                         <th>Mobile No.</th>
+                        <th>Amount Balance</th>
                         <th>Address</th>
                         <th>Email</th>
                         <th>UserType</th>
@@ -382,6 +383,7 @@ function rowClicked(value) {
 					    <td th:text="${user.userId}" th:onclick="'javascript:rowClicked(\'' + ${user.userId} + '\');'"></td>
                         <td th:text="${user.name}" th:onclick="'javascript:rowClicked(\'' + ${user.userId} + '\');'"></td>
 						<td th:text="${user.mobileNumber}" th:onclick="'javascript:rowClicked(\'' + ${user.userId} + '\');'"></td>
+                        <td th:text="${user.amountBalance}" th:onclick="'javascript:rowClicked(\'' + ${user.userId} + '\');'"></td>
                         <td th:text="${user.address}" th:onclick="'javascript:rowClicked(\'' + ${user.userId} + '\');'"></td>
                         <td th:text="${user.email}" th:onclick="'javascript:rowClicked(\'' + ${user.userId} + '\');'"></td>
                         <td th:text="${user.userType}" th:onclick="'javascript:rowClicked(\'' + ${user.userId} + '\');'"></td>
@@ -389,7 +391,6 @@ function rowClicked(value) {
                         <td>
                             <a th:href="@{'#editUserModal' + ${user.userId}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                             <a th:href="@{'#deleteUserModal' + ${user.userId}}"  class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                         
                         </td>
                         
                         <td>
@@ -429,29 +430,29 @@ function rowClicked(value) {
 					     
 														<div class="form-group">
 															<label>Name</label>
-															<input type="text"  th:field="*{name}"  class="form-control" required>
+															<input id="editId"  type="text"  th:field="*{name}"  class="form-control" required>
 														</div>
 														<div class="form-group">
 															<label>Mobile-No.</label>
-															<input type="number"  th:field="*{mobileNumber}"class="form-control">
+															<input id="editMobileNumber" type="number"  th:field="*{mobileNumber}"class="form-control">
 														</div>
 														
 														<div class="form-group">
 						                                	<label>Old Balance</label>
-							                                <input type="number" th:field="*{amountBalance}" class="form-control">
+							                                <input id="editAmountBalance" type="number" th:field="*{amountBalance}" class="form-control">
 						                                </div>
 														<div class="form-group">
 															<label>Email</label>
-															<input type="email" th:field="*{email}" class="form-control">
+															<input id="editEmail"  type="email" th:field="*{email}" class="form-control">
 														</div>
 														<div class="form-group">
 															<label>Address</label>
-															<textarea th:field="*{address}" class="form-control"  ></textarea>
+															<textarea id="editAddress"  th:field="*{address}" class="form-control"  ></textarea>
 														</div>
 														<div class="form-group">
 															<label>UserType</label>
 															
-															 <select name="userType" class="form-control" th:field="*{userType}" >
+															 <select id="editUserType"  name="userType" class="form-control" th:field="*{userType}" >
 								                                <option value="s">Seller</option>
 								                                <option value="b">Buyer</option>
 								                                <option value="o">Seller/Buyer</option>
@@ -466,7 +467,6 @@ function rowClicked(value) {
 										</div>
 									</div>
 								</div>
-                       
                          </td>
                 </tbody>
             </table>
