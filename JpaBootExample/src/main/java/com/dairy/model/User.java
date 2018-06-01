@@ -1,8 +1,11 @@
 package com.dairy.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,15 +25,18 @@ public class User {
     private long mobileNumber;
     private char userType ;
     private double amountBalance ;
-    
 
     
-    @OneToMany(mappedBy = "user")
-    private List<DailyTransaction> dailyTransaction;
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "user")
+    private List<EntryForm> dailyTransactions = new ArrayList<EntryForm>();
    
     
-    @OneToMany(mappedBy = "user")
-    private List<Ledger> ledger;
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "user")
+    private List<Ledger> ledgers = new ArrayList<Ledger>();
    
     
     
@@ -59,21 +65,6 @@ public class User {
 		this.userType = userType;
 	}
 
-	public List<DailyTransaction> getDailyTransaction() {
-		return dailyTransaction;
-	}
-
-	public void setDailyTransaction(List<DailyTransaction> dailyTransaction) {
-		this.dailyTransaction = dailyTransaction;
-	}
-
-	public List<Ledger> getLedger() {
-		return ledger;
-	}
-
-	public void setLedger(List<Ledger> ledger) {
-		this.ledger = ledger;
-	}
 
 	public String getEmail() {
 		return email;
@@ -99,6 +90,22 @@ public class User {
 		this.address = address;
 	}
 
+	public List<EntryForm> getDailyTransactions() {
+		return dailyTransactions;
+	}
+
+	public void setDailyTransactions(List<EntryForm> dailyTransactions) {
+		this.dailyTransactions = dailyTransactions;
+	}
+
+	public List<Ledger> getLedgers() {
+		return ledgers;
+	}
+
+	public void setLedgers(List<Ledger> ledgers) {
+		this.ledgers = ledgers;
+	}
+
 	public double getAmountBalance() {
 		return amountBalance;
 	}
@@ -106,6 +113,8 @@ public class User {
 	public void setAmountBalance(double amountBalance) {
 		this.amountBalance = amountBalance;
 	}
+
+	
 
 	
 

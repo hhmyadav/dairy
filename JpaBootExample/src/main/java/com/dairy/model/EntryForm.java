@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,8 +14,8 @@ import javax.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name="dailyTransaction")
-public class DailyTransaction {
+@Table(name="entryForm")
+public class EntryForm {
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -27,17 +26,21 @@ public class DailyTransaction {
 	@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
 	private LocalDateTime createdDateTime;
 	
-	
-	private char dayType ; 
+	@Column(nullable = false)
+	private String dayType ; 
+	@Column(nullable = false)
 	private double milkQuantity ;
+	@Column(nullable = false)
 	private String milkType ;
+	@Column(nullable = false)
 	private double perLiterPrice ;
+	@Column(nullable = false)
 	private double totalAmount ;    
 	private double fat ;
 	private double snf ;
 	
     
-	@ManyToOne()
+	@ManyToOne
     @JoinColumn(name = "userId",nullable=false)
 	private User user ;
 	
@@ -58,10 +61,10 @@ public class DailyTransaction {
 	}
 	
 	
-	public char getDayType() {
+	public String getDayType() {
 		return dayType;
 	}
-	public void setDayType(char dayType) {
+	public void setDayType(String dayType) {
 		this.dayType = dayType;
 	}
 	public double getMilkQuantity() {

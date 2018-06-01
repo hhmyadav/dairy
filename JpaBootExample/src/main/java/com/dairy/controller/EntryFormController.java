@@ -2,7 +2,6 @@ package com.dairy.controller;
 
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -14,28 +13,29 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.dairy.model.DailyTransaction;
+import com.dairy.model.EntryForm;
+import com.dairy.model.Ledger;
 import com.dairy.model.User;
-import com.dairy.service.DailyTransactionService;
+import com.dairy.service.EntryFormService;
 import com.dairy.service.UserService;
 
 @Controller
-@RequestMapping("transaction")
+@RequestMapping("entryForm")
 public class EntryFormController {
 	
 	 
 	@Autowired
-	DailyTransactionService dailyTransactionService ;
+	EntryFormService entryFormService ;
 	     
 	@Autowired
 	UserService userService ;
-	     
-	
+	  
+
 	
 	    @RequestMapping(value={"","user","user/{id}"} , method={RequestMethod.POST,RequestMethod.GET})	    
-        public String setUserTransactionByUserId(@PathVariable Optional<Integer> id ,User user,DailyTransaction dailyTransaction,Model model) {
+        public String setEntryFormByUserId(@PathVariable Optional<Integer> id , User user , EntryForm entryForm,Model model) {
         	
         	   if(id.isPresent())
         	   { 
@@ -43,82 +43,53 @@ public class EntryFormController {
         		if(!userService.existsById(userId)) 
         	     { 
         		  model.addAttribute("result","Cannot find userId #" + userId);
-        	      return "transaction";
+        	      return "entryForm";
         	     }
-        	    user = userService.getOne(userId);
+        		user = userService.getOne(userId);
+        		entryForm.setUser(user);
         	   }
-        	   dailyTransaction.setUser(user);
-        	   dailyTransaction.setCreatedDateTime(LocalDateTime.now());
         	   
-        	   dailyTransaction.setDayType('m');
+        	   entryForm.setCreatedDateTime(LocalDateTime.now());
         	   
+        	   entryForm.setDayType("m");
         	   if(LocalDateTime.now().getHour() >= 14)
-        	   dailyTransaction.setDayType('e');
+        	   entryForm.setDayType("e");
         	   
-               
-        	   dailyTransaction.setMilkType("buffelow");
-        	   
-        	
-    	   return "transaction";
+        	   entryForm.setMilkType("buffelow");
+        	   return "entryForm";
 	    }
         
-       
         
         @RequestMapping(value="user/save", method={RequestMethod.POST})	    
-        public String saveUserTransaction(User user , @Valid DailyTransaction dailyTransaction,  BindingResult bindingResult ,Model model) {
+        public String saveEntryForm(Ledger ledger , @Valid EntryForm entryForm,RedirectAttributes redirectAttribute , BindingResult bindingResult ,Model model) {
              
             if (bindingResult.hasErrors()) {
         		
         		System.out.println(bindingResult.getFieldErrorCount());
         		System.out.println(bindingResult.getAllErrors());
         		model.addAttribute("result",bindingResult.getAllErrors());
-				return "transaction";
+				return "entryForm";
 			}
             
-            Long userId = dailyTransaction.getUser().getUserId();
-            
-           if(!userService.existsById(userId)) 
-     	   { model.addAttribute("result","Cannot find userId #" + userId);
-     	     return "transaction";
+           if(!userService.existsById(entryForm.getUser().getUserId())) 
+     	   { model.addAttribute("result","Cannot find userId #" + entryForm.getUser().getUserId());
+     	     return "entryForm";
      	   }
-     	  
-        	if (dailyTransaction.getCreatedDateTime() == null) {
-        		dailyTransaction.setCreatedDateTime(LocalDateTime.now());
-            }
-        	
-        	
+     	    
             
+        	entryForm = entryFormService.saveEntryForm(ledger,entryForm);
         	
-        	dailyTransactionService.saveDailyTransaction(dailyTransaction);
-        	
-        	
-        	user = userService.getOne(userId);
- 	   
- 	        dailyTransaction.setUser(user);
- 	        dailyTransaction.setCreatedDateTime(LocalDateTime.now());
- 	   
- 	        dailyTransaction.setDayType('m');
- 	   
- 	        if(LocalDateTime.now().getHour() >= 14)
- 	        dailyTransaction.setDayType('e');
- 	        
-        
- 	        dailyTransaction.setMilkType("buffelow");
-        	
-        	
-        	model.addAttribute("result","Successfully Saved "+user.getName()+ " Transaction.");
-    	   		
-        	return "transaction";
+        	redirectAttribute.addFlashAttribute("result", "Successfully Saved "+entryForm.getUser().getName()+ " Form.");
+        	return "redirect:/entryForm/user/" + entryForm.getUser().getUserId();
 	    }
        
-        
         
        /* @RequestMapping(value="byDate", method={RequestMethod.POST,RequestMethod.GET})
         public String getTransactionsByDate(
 	    		  @RequestParam(value="fromDate", required=true) String fromDate,
 	              @RequestParam(value="toDate", required=false) Date todate,Model model) {
 	    	
-    	   return "transaction";
+    	   return "entryForm";
 	    }
         
         @RequestMapping(value="byUserIdandDate", method={RequestMethod.POST,RequestMethod.GET})
@@ -127,7 +98,7 @@ public class EntryFormController {
 	              @RequestParam(value="fromDate", required=true) Date fromdate,
 	              @RequestParam(value="toDate", required=false) String toDate,Model model){
 	    	
-    	   return "transaction";
+    	   return "entryForm";
 	    }*/
         
 }

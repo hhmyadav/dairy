@@ -441,19 +441,20 @@ table.table .avatar {
 
 		$('#totalAmount').val(price * milkQuantity);
 	}
-
+   
+	
 	function updateName() {
 
 		var userId = $("#userId").val();
 
-		location.href = "/transaction/user/" + userId;
+		location.href = "/entryForm/user/" + userId;
 
 	}
 	function updateNameSearch() {
 
 		var userId = $("#userIdSearch").val();
 
-		location.href = "/transaction/user/" + userId;
+		location.href = "/entryForm/user/" + userId;
 
 	}
 	/* 
@@ -552,6 +553,8 @@ table.table .avatar {
 
 </head>
 <body>
+
+     
 	<div class="container">
 		<div class="table-wrapper">
 			<div class="table-title">
@@ -583,13 +586,13 @@ table.table .avatar {
 	</div>
 
 	<div class="container">
-
+         
 		<div class="text-center">
 			<h2 style="color: #FF0000" th:text="${result}"></h2>
 			<h1 class="nice">Entry Form</h1>
 		</div>
 		<form id="userForm" th:action="@{save}"
-			th:object="${dailyTransaction}" class="form-horizontal" method="post">
+			th:object="${entryForm}" class="form-horizontal" method="post">
 
 			<!-- UserId input-->
 			<div class="form-group">
@@ -599,7 +602,7 @@ table.table .avatar {
 
 					<input id="userId" oninput="updateName()" type="number"
 						th:field="*{user.userId}" class="form-control input-md" /> <span
-						class="help-block">UserId cannot be changed</span>
+						class="help-block">Please enter UserId</span>
 				</div>
 			</div>
 
@@ -607,12 +610,24 @@ table.table .avatar {
 				<label class="col-md-4 control-label" for="name">Name :</label>
 
 				<div class="col-md-4">
-					<input id="name" th:field="*{user.name}"
-						class="form-control input-md" disabled="disabled" /> <span
+				    <input id="name"  th:field="*{user.name}" 
+						class="form-control input-md" disabled="disabled"/> <span
 						class="help-block">User name cannot be changed</span>
+					<input type="hidden" id="name"  th:field="*{user.name}" 
+						class="form-control input-md" />
 				</div>
 			</div>
+            
+            <div class="form-group">
+				<label class="col-md-4 control-label" for="name">Balance :</label>
 
+				<div class="col-md-4">
+					<input id="name" th:field="*{user.amountBalance}"
+						class="form-control input-md" disabled="disabled" /> <span
+						class="help-block">Total Account Balance</span>
+				</div>
+			</div>
+            
 
 			<!-- Created date -->
 			<div class="form-group">
@@ -739,7 +754,7 @@ table.table .avatar {
 
 				<div class="col-md-8">
 					<button type="submit" class="btn btn-success">Save</button>
-					<a id="cancel" name="cancel" class="btn btn-danger" href="/">
+					<a id="cancel" class="btn btn-danger" href="/">
 						Cancel</a>
 				</div>
 			</div>

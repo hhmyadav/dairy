@@ -1,9 +1,8 @@
 package com.dairy.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,23 +14,29 @@ public class Ledger {
 	
 	
 	
+	
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private long id ; 
-	private Date transactionDate ;
-	private char daytype; 
-	private double amountDebit ;
-	private double amountCredit ;
+	private LocalDateTime transactionDate ;
+	private String dayType; 
+	private double amount ;
+	private String paymentType ;
 	private String paymentSummary ;
-
+    private String paymentBy ;
 	
 	
 	@ManyToOne
-    @JoinColumn(name = "UserId")
+	@JoinColumn(name = "userId",nullable=false)
 	private User user ;
 	
 	
-	
+	public String getPaymentType() {
+		return paymentType;
+	}
+	public void setPaymentType(String paymentType) {
+		this.paymentType = paymentType;
+	}
 	public long getId() {
 		return id;
 	}
@@ -40,30 +45,25 @@ public class Ledger {
 	}
 	
 	
-	public Date getTransactionDate() {
+	public LocalDateTime getTransactionDate() {
 		return transactionDate;
 	}
-	public void setTransactionDate(Date transactionDate) {
+	public void setTransactionDate(LocalDateTime transactionDate) {
 		this.transactionDate = transactionDate;
 	}
-	public char getDaytype() {
-		return daytype;
-	}
-	public void setDaytype(char daytype) {
-		this.daytype = daytype;
-	}
 	
-	public double getAmountDebit() {
-		return amountDebit;
+	
+	public String getDayType() {
+		return dayType;
 	}
-	public void setAmountDebit(double amountDebit) {
-		this.amountDebit = amountDebit;
+	public void setDayType(String dayType) {
+		this.dayType = dayType;
 	}
-	public double getAmountCredit() {
-		return amountCredit;
+	public double getAmount() {
+		return amount;
 	}
-	public void setAmountCredit(double amountCredit) {
-		this.amountCredit = amountCredit;
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 	public String getPaymentSummary() {
 		return paymentSummary;
@@ -71,13 +71,19 @@ public class Ledger {
 	public void setPaymentSummary(String paymentSummary) {
 		this.paymentSummary = paymentSummary;
 	}
-	
 	public User getUser() {
 		return user;
 	}
 	public void setUser(User user) {
 		this.user = user;
 	}
+	public String getPaymentBy() {
+		return paymentBy;
+	}
+	public void setPaymentBy(String paymentBy) {
+		this.paymentBy = paymentBy;
+	}
+	
 	
 	
 	

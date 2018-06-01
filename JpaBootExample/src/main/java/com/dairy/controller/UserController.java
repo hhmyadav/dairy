@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.dairy.model.Ledger;
 import com.dairy.model.User;
 import com.dairy.service.UserService;
 import com.mysql.fabric.FabricCommunicationException;
@@ -32,9 +32,7 @@ public class UserController {
 	
 	    @RequestMapping(value="/users", method={RequestMethod.POST,RequestMethod.GET})
 	    public String manageUsersPost(User user ,Model model) {
-	    	
-	    model.addAttribute("users",userService.getAllUsers());
-	    	
+	     model.addAttribute("users",userService.getAllUsers());
 	     return "users";
 	    }
 	   
@@ -64,12 +62,14 @@ public class UserController {
 	    
 	   
 	    @RequestMapping(value="/addUser", method={RequestMethod.POST,RequestMethod.GET})	
-	    public String addUser(@Valid User user,  BindingResult bindingResult ,Model model) {
+	    public String addUser(Ledger ledger , @Valid User user ,  BindingResult bindingResult ,Model model) {
 	    	
 			if (bindingResult.hasErrors()) {
 				return "manageUsers";
-			}
-	    	  userService.addUser(user);
+			}  
+			 
+			 user.getLedgers().add(ledger);	
+			 userService.addUser(user);
 		     
   	     return "forward:/userOperation/users";
 	    }
