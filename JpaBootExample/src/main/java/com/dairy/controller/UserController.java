@@ -36,17 +36,6 @@ public class UserController {
 	     return "users";
 	    }
 	   
-	       
-	    @RequestMapping(value="/test", method={RequestMethod.POST,RequestMethod.GET})
-	    public Response test() throws FabricCommunicationException {
-	    System.out.println("test call");
-	    List<User> user = new ArrayList<User>();
-	    
-	    Response response = new Response(user );
-		return response;
-	   
-	    }
-	    
 	   
 	    @PostMapping("/getUser")
 	    public String getUser(@RequestParam(value="userId", required=false) String userId,

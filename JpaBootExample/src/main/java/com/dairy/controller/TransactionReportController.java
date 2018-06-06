@@ -27,10 +27,21 @@ public class TransactionReportController {
 	    }
 	    
 	    
-	    @RequestMapping(value={"/bydate"}, method={RequestMethod.POST,RequestMethod.GET})	
-	    public String getTransactionBetweenDates(Model model) {
+	    @RequestMapping(value={"/fromDate"}, method={RequestMethod.POST,RequestMethod.GET})	
+	    public String transactionBetweenDates(Model model) {
 	    	
+	    	LocalDateTime startDate =  LocalDateTime.of(2018, 05, 28, 15, 56); 
+	    	LocalDateTime endDate =  LocalDateTime.of(2018, 05, 28, 15, 56); 
 	    	
+	    	List<Ledger> legders = transactionReportService.getTransationByDate(startDate, endDate);
+	    	
+	    	model.addAttribute("ledgers",legders);
+	    	
+  	      return "transactionReport";
+	    }
+	    
+	    @RequestMapping(value={"/fromDateToNow"}, method={RequestMethod.POST,RequestMethod.GET})	
+	    public String transactionFromDateToNow(Model model) {
 	    	
 	    	LocalDateTime startDate =  LocalDateTime.of(2018, 05, 28, 15, 56); 
 	    	
@@ -40,6 +51,8 @@ public class TransactionReportController {
 	    	
   	      return "transactionReport";
 	    }
+	    
+	  
 	    
       
 }
