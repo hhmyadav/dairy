@@ -7,5 +7,5 @@ import com.dairy.model.EntryForm;
 
 @Repository
 public interface EntryFormRepository extends JpaRepository<EntryForm, Long> {
-
+    
 }
