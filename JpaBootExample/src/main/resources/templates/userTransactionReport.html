@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th=“http://www.thymeleaf.org”>
+
+<head>
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<title>Transactions</title>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row"> 
+        <div class="col-xs-10">
+            <div class="panel panel-primary">
+                <!-- Default panel contents -->
+                <div class="panel-heading">
+                    <h2 class="panel-title">
+                        Transactions report
+                    </h2>
+                </div>
+                <div class="panel-body">
+                    <h3>
+                      <span th:text="${user.name}"></span>
+                    </h3>
+                </div>
+              <ul class="list-group">
+                    
+                 <li class="list-group-item">
+                    <h4><span th:text="'Account #  ' + ${user.userId}"></span> <span th:text="'   Current balance:: Rs/- ' + ${user.amountBalance}"></span> <span th:text="'   Last pay date:: Rs/- ' + ${lastPaidDate}"></span> <span th:text="'   Last Paid amount:: Rs/- ' + ${lastPaidAmount}"></span> </h4>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Milk Quantity</th>
+                                <th>DayType</th>
+                                <th>PaymentBy</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                             <tr th:each="report: ${reports}">
+                                <td th:text="${report.transactionDate}"></td>
+                                <td th:text="${report.milkQuantity}"></td>
+                                <td th:text="${report.dayType}"></td>
+                                <td th:text="${report.milyType}"></td>
+                                <td th:text="${report.amount}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </li>
+               </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
+
