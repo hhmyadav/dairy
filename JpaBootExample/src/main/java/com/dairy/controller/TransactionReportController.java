@@ -10,9 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.dairy.model.EntryForm;
 import com.dairy.model.Ledger;
 import com.dairy.model.User;
+import com.dairy.repository.LedgerRepository;
+import com.dairy.service.LedgerService;
 import com.dairy.service.TransactionReportService;
 import com.dairy.service.UserService;
 
@@ -26,6 +30,12 @@ public class TransactionReportController {
 	
 	@Autowired
 	UserService userService ;
+	
+	@Autowired
+	LedgerService ledgerService ;
+	
+	@Autowired
+	LedgerRepository ledgerRepository ;
 	
 	    @RequestMapping(value={""}, method={RequestMethod.POST,RequestMethod.GET})	
 	    public String getAllTransactions(Model model) {
@@ -60,7 +70,7 @@ public class TransactionReportController {
 	    }
 	    
 	    
-	    @RequestMapping(value={"/user/{id}"}, method={RequestMethod.POST,RequestMethod.GET})	
+	    @RequestMapping(value={"milkRecords/user/{id}"}, method={RequestMethod.POST,RequestMethod.GET})	
 	    public String userTransactionReport(User user ,@PathVariable Optional<Integer> id ,Model model) {
 	    	
 	    	if(id.isPresent())
@@ -69,22 +79,64 @@ public class TransactionReportController {
      		if(!userService.existsById(userId)) 
      	     { 
      		  model.addAttribute("result","Cannot find userId #" + userId);
-     	      return "userTransactionReport";
+     	      return "userMilkPurchaseHistory";
+     	     }
+     	   }
+	    	user = userService.getOne(id.get());
+	    	 
+	    	model.addAttribute("user",user);
+	    	
+  	      return "userMilkPurchaseHistory";
+	    }
+	    
+	    
+	    @RequestMapping(value={"paymentHistory/user/{id}"}, method={RequestMethod.POST,RequestMethod.GET})	
+	    public String userLedgerHistory(@RequestParam(value = "paymentType", required = false) String paymentType,
+	    		                        @RequestParam(value = "transactionStartDate", required = false) String transactionStartDate,
+	    		                        @RequestParam(value = "transactionEndDate", required = false) String transactionEndDate,
+	    		                        @RequestParam(value = "dayType", required = false) String dayType,
+	    		                        @PathVariable Optional<Integer> id ,Ledger ledger ,User user ,Model model) {
+	    	     
+	       if(id.isPresent())
+     	   { 
+     		  Integer userId = id.get();
+     		if(!userService.existsById(userId)) 
+     	     { 
+     		  model.addAttribute("result","Cannot find userId #" + userId);
+     	      return "userLedgerHistory";
      	     }
      	   }
 	    	
-	    	LocalDateTime startDate =  LocalDateTime.of(2018, 05, 28, 15, 56); 
+	    	user = userService.getOne(id.get());
 	    	
-	    	/*List<Ledger> reports = transactionReportService.getTransationByDate(startDate, LocalDateTime.now());
-	    	*/
-	    	
-	        user = userService.getOne(id.get());
-	    	
+	       if(paymentType !=null && !paymentType.isEmpty())	
+	       {   
+	    	  List<Ledger> ledgers = ledgerService.getLedgersByUserAndPaymentType(user,paymentType);
+	          user.setLedgers(ledgers);
+	       }
 	    	model.addAttribute("user",user);
 	    	
-  	      return "userTransactionReport";
+  	      return "userLedgerHistory";
 	    }
-	  
+	    
+	    @RequestMapping(value={"paymentHistory"}, method={RequestMethod.POST,RequestMethod.GET})	
+	    public String ledgerHistory(@RequestParam(value = "paymentType", required = false) String paymentType,
+	    		                    @RequestParam(value = "transactionStartDate", required = false) String transactionStartDate,
+	    		                    @RequestParam(value = "transactionEndDate", required = false) String transactionEndDate,
+	    		                    @RequestParam(value = "dayType", required = false) String dayType,
+	    		                    @RequestParam(value = "paymentBy", required = false) String paymentBy,
+	    		                    
+	    		                    Ledger ledger ,Model model) {
+	    	 List<Ledger> ledgers = ledgerService.getLedgersByDayTypeAndPaymentTypeAndPaymentByAndTransactionDateBetween(dayType, paymentType, paymentBy, transactionStartDate, transactionEndDate);
+		    	  model.addAttribute("user",ledgers);
+		    	
+	       return "ledgerHistory";
+	    
+	    }
+	    
+	    
+	    
+	   
 	    
       
 }

@@ -8,7 +8,7 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 
-<title>Transactions</title>
+<title>Paid History</title>
 </head>
 
 <body>
@@ -20,7 +20,7 @@
                 <!-- Default panel contents -->
                 <div class="panel-heading">
                     <h2 class="panel-title">
-                        Transactions report
+                        Paid History
                     </h2>
                 </div>
                 <div class="panel-body">
@@ -31,28 +31,31 @@
               <ul class="list-group">
                     
                  <li class="list-group-item">
-                    <h4><span th:text="'Account #  ' + ${user.userId}"></span> <span th:text="'   Current balance:: Rs/- ' + ${user.amountBalance}"></span> <span th:text="'   Last pay date:: Rs/- ' + ${lastPaidDate}"></span> <span th:text="'   Last Paid amount:: Rs/- ' + ${lastPaidAmount}"></span> </h4>
+                    <h4><span th:text="'Account #  ' + ${user.userId}"></span> , <span th:text="'Current balance:: Rs/- ' + ${user.amountBalance}"></span> , <span th:text="'Last pay date:: Rs/- ' + ${lastPaidDate}"></span> , <span th:text="'Last Paid amount:: Rs/- ' + ${lastPaidAmount}"></span> </h4>
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Milk Quantity</th>
+                                <th>Transaction Date</th>
                                 <th>DayType</th>
-                                <th>PaymentBy</th>
+                                <th>Payment By</th>
+                                <th>Payment Type</th>
+                                <th>Payment Summary</th>
                                 <th>Amount</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
-                             <tr th:each="report: ${reports}">
-                                <td th:text="${report.transactionDate}"></td>
-                                <td th:text="${report.milkQuantity}"></td>
-                                <td th:text="${report.dayType}"></td>
-                                <td th:text="${report.milyType}"></td>
-                                <td th:text="${report.amount}"></td>
-                            </tr>
+                            <tr th:each="transaction: ${user.ledgers}">
+                                <td th:text="${#temporals.day(transaction.transactionDate)} +' '+ ${#temporals.monthNameShort(transaction.transactionDate)} +' '+ ${#temporals.year(transaction.transactionDate)} +' ('+${#temporals.dayOfWeekNameShort(transaction.transactionDate)}+')'"></td>
+                                <td th:text="${transaction.dayType}"></td>
+                                <td th:text="${transaction.paymentBy}"></td>
+                                <td th:text="${transaction.paymentType}"></td>
+                                <td th:text="${transaction.paymentSummary}"></td> 
+                                <td th:text="${transaction.amount}"></td>
+                             </tr> 
                         </tbody>
                     </table>
-                    </li>
+                     </li>
                </ul>
             </div>
         </div>

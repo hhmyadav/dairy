@@ -1,6 +1,7 @@
 package com.dairy.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,7 +58,6 @@ public class LedgerService {
 	      ledger.setPaymentBy(PAYMENT_BY_CASH);
 	    
 	   
-	      
 		ledger.setPaymentSummary(PAYMENT_SUMMARY_PAYMENT_FORM + ledger.getUser().getName());
 		
 		ledgerRepository.save(ledger);
@@ -77,7 +77,66 @@ public class LedgerService {
 		return user ;
 	}
 	
+	public List<Ledger> getLedgersByUserAndPaymentType(User user , String paymentType)
+	{
+		return ledgerRepository.findByUserAndPaymentType(user, paymentType);
+	}
 	
+	public List<Ledger> getAllLedger()
+	{
+		return ledgerRepository.findAll();
+	}
+	
+	public List<Ledger>getLedgersByAny(String dayType ,String paymentType,String paymentBy, String transactionStartDate , String transactionEndDate)
+	{     
+		
+		if(isNullOrEmpty(paymentType) && isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate) && isNullOrEmpty(dayType))	
+	    {   
+			return  ledgerRepository.findAll();
+	    }else if(!isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate))
+	    {   
+			return  ledgerRepository.findByPaymentType(paymentType);
+	    }
+	    else if(isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate))	
+	    {   
+			return  ledgerRepository.findByDayType(dayType);
+	    }
+	    else if(isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && !isNullOrEmpty(paymentBy) && isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate))	
+	    {   
+			return  ledgerRepository.findByPaymentBy(paymentBy);
+	    }
+	    else if(isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && !isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate))	
+	    {   
+			return  ledgerRepository. findByTransactionDateBetween(LocalDateTime.parse(transactionStartDate), LocalDateTime.now());
+	    }
+	    else if(isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && !isNullOrEmpty(transactionStartDate) && !isNullOrEmpty(transactionEndDate))	
+	    {   
+			return  ledgerRepository.findByTransactionDateBetween(LocalDateTime.parse(transactionStartDate), LocalDateTime.parse(transactionEndDate));
+	    }
+	    else if(!isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate))	
+	    {   
+			return  ledgerRepository.findByPaymentTypeAndDayType(paymentType, dayType);
+	    }
+	    else if(isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && !isNullOrEmpty(paymentBy) && isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate))	
+	    {   
+			return  ledgerRepository.findByPaymentTypeAndDayType(paymentType, dayType);
+	    }
+		else if(!isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && !isNullOrEmpty(paymentBy) && !isNullOrEmpty(transactionStartDate) && !isNullOrEmpty(transactionEndDate))	
+	    {   
+			 return ledgerRepository.findByDayTypeAndPaymentTypeAndPaymentByAndTransactionDateBetween(dayType , paymentType ,paymentBy, LocalDateTime.parse(transactionStartDate), LocalDateTime.parse(transactionEndDate));
+		}
+		
+		return ledgerRepository.findAll();
+		
+		
+		
+	}
+	
+	public static boolean isNullOrEmpty(String str) {
+        if(str != null && !str.trim().isEmpty())
+            return false;
+        return true;
+    }
 	
 
 }
