@@ -30,6 +30,20 @@ public interface LedgerRepository extends JpaRepository<Ledger, Long>{
 	public List<Ledger> findByUser(User user);
 	  
 	
+	public List<Ledger> findByUserUserId(Long userId);
+	public List<Ledger> findByPaymentTypeAndUserUserId(String paymentType ,Long userId);
+	public List<Ledger> findByDayTypeAndUserUserId(String dayType ,Long userId );
+	public List<Ledger> findByPaymentByAndUserUserId(String paymentBy , Long userId );
+	public List<Ledger> findByPaymentTypeAndDayTypeAndUserUserId(String paymentType ,String dayType ,Long userId );
+	public List<Ledger> findByPaymentTypeAndDayTypeAndPaymentByAndUserUserId(String paymentType ,String dayType ,String paymentBy ,Long userId );
+	public List<Ledger> findByPaymentTypeAndDayTypeAndPaymentByAndTransactionDateBetweenAndUserUserId(String paymentType , String dayType , String paymentBy ,LocalDateTime transactionStartDate ,LocalDateTime transactionEndDate,Long userId );
+	public List<Ledger> findByPaymentTypeAndDayTypeAndTransactionDateBetweenAndUserUserId(String paymentType ,String dayType ,LocalDateTime transactionStartDate ,LocalDateTime transactionEndDate,Long userId );
+	public List<Ledger> findByPaymentTypeAndTransactionDateBetweenAndUserUserId(String paymentType , LocalDateTime transactionStartDate ,LocalDateTime transactionEndDate,Long userId );
+	public List<Ledger> findByDayTypeAndTransactionDateBetweenAndUserUserId(String dayType , LocalDateTime transactionStartDate ,LocalDateTime transactionEndDate,Long userId );
+	public List<Ledger> findByTransactionDateBetweenAndUserUserId(LocalDateTime transactionStartDate ,LocalDateTime transactionEndDate,Long userId );
+
+	
+	
 	public List<Ledger> findByDayTypeAndPaymentTypeAndPaymentByAndTransactionDateBetween(String dayType ,String paymentType , String paymentBy , LocalDateTime startdateTime , LocalDateTime endDateTime );
 	public List<Ledger> findByPaymentTypeAndPaymentByAndTransactionDateBetween(String paymentType , String paymentBy , LocalDateTime startdateTime , LocalDateTime endDateTime );
 	public List<Ledger> findByPaymentTypeAndTransactionDateBetween(String paymentType, LocalDateTime startdateTime , LocalDateTime endDateTime );

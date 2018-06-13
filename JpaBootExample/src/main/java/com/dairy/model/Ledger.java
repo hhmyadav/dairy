@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 public class Ledger {
 	
@@ -19,6 +21,7 @@ public class Ledger {
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private long id ; 
+	@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
 	private LocalDateTime transactionDate ;
 	private String dayType; 
 	private double amount ;

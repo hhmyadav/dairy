@@ -1,10 +1,12 @@
 package com.dairy.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -120,15 +122,28 @@ public class TransactionReportController {
 	    }
 	    
 	    @RequestMapping(value={"paymentHistory"}, method={RequestMethod.POST,RequestMethod.GET})	
-	    public String ledgerHistory(@RequestParam(value = "paymentType", required = false) String paymentType,
-	    		                    @RequestParam(value = "transactionStartDate", required = false) String transactionStartDate,
-	    		                    @RequestParam(value = "transactionEndDate", required = false) String transactionEndDate,
+	    public String ledgerHistory(@RequestParam(value = "userId", required = false) Long userId,
+	    		                    @RequestParam(value = "paymentType", required = false) String paymentType,
+	    		                    @RequestParam(value = "transactionStartDate", required = false)
+	    		                    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm") LocalDateTime transactionStartDate ,
+	    		                    @RequestParam(value = "transactionEndDate", required = false)
+	                                @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")  LocalDateTime transactionEndDate,
 	    		                    @RequestParam(value = "dayType", required = false) String dayType,
 	    		                    @RequestParam(value = "paymentBy", required = false) String paymentBy,
 	    		                    
 	    		                    Model model) {
 	    	
-	    	List<Ledger> ledgers = ledgerService.getLedgersByAny(dayType, paymentType, paymentBy, transactionStartDate, transactionEndDate);
+	    	if(userId != null && userId > 0)
+	    	{
+	    		if(!userService.existsById(userId)) 
+	     	     { 
+	     		  model.addAttribute("result","Cannot find userId #" + userId);
+	     	      return "ledgerHistory2";
+	     	     }
+	    	}
+	    	
+	    	
+	    	List<Ledger> ledgers = ledgerService.getLedgersByAny(userId,dayType, paymentType, paymentBy, transactionStartDate ,transactionEndDate);
 		    	 
 	    	
 	    	double totalCredit = 0 ;

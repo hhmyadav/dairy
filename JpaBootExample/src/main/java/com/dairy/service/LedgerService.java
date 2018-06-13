@@ -87,41 +87,104 @@ public class LedgerService {
 		return ledgerRepository.findAll();
 	}
 	
-	public List<Ledger>getLedgersByAny(String dayType ,String paymentType,String paymentBy, String transactionStartDate , String transactionEndDate)
+	public List<Ledger>getLedgersByAny(Long userId , String dayType ,String paymentType,String paymentBy, LocalDateTime transactionStartDate , LocalDateTime transactionEndDate)
 	{     
+		if( (userId != null && userId > 0) && isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate == null && transactionEndDate == null)
+	    {   
+			return  ledgerRepository.findByUserUserId(userId);
+	    }
+		else if((userId != null && userId > 0) && isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate != null && transactionEndDate != null)
+		{
+			return  ledgerRepository.findByTransactionDateBetweenAndUserUserId(transactionStartDate ,transactionEndDate,userId );
+		}
+		else if((userId != null && userId > 0) && isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate != null && transactionEndDate == null)
+		{
+			return  ledgerRepository.findByTransactionDateBetweenAndUserUserId(transactionStartDate ,LocalDateTime.now(),userId );
+		}
+		else if((userId != null && userId > 0) && !isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate == null && transactionEndDate == null)
+		{
+			return  ledgerRepository.findByPaymentTypeAndUserUserId(paymentType , userId);
+		}
+		else if((userId != null && userId > 0) && isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate == null && transactionEndDate == null)
+		{
+			return  ledgerRepository.findByDayTypeAndUserUserId(dayType , userId );
+		}
+		else if((userId != null && userId > 0) && isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && !isNullOrEmpty(paymentBy) && transactionStartDate == null && transactionEndDate == null)
+		{
+			return  ledgerRepository.findByPaymentByAndUserUserId(paymentBy , userId );
+		}
+		else if((userId != null && userId > 0) && !isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate == null && transactionEndDate == null)
+		{
+			return  ledgerRepository.findByPaymentTypeAndDayTypeAndUserUserId(paymentType , dayType , userId );
+		}
+		else if((userId != null && userId > 0) && !isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && !isNullOrEmpty(paymentBy) && transactionStartDate == null && transactionEndDate == null)
+		{
+			return  ledgerRepository.findByPaymentTypeAndDayTypeAndPaymentByAndUserUserId(paymentType , dayType , paymentBy , userId );
+		}
+		else if((userId != null && userId > 0) && !isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && !isNullOrEmpty(paymentBy) && transactionStartDate != null && transactionEndDate == null)
+		{
+			return  ledgerRepository.findByPaymentTypeAndDayTypeAndPaymentByAndTransactionDateBetweenAndUserUserId(paymentType , dayType , paymentBy ,transactionStartDate ,LocalDateTime.now(),userId );
+		}
+		else if((userId != null && userId > 0) && !isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && !isNullOrEmpty(paymentBy) && transactionStartDate != null && transactionEndDate != null)
+		{
+			return  ledgerRepository.findByPaymentTypeAndDayTypeAndPaymentByAndTransactionDateBetweenAndUserUserId(paymentType , dayType , paymentBy ,transactionStartDate ,transactionEndDate,userId );
+		}
+		else if((userId != null && userId > 0) && !isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate != null && transactionEndDate == null)
+		{
+			return  ledgerRepository.findByPaymentTypeAndDayTypeAndTransactionDateBetweenAndUserUserId(paymentType , dayType , transactionStartDate ,LocalDateTime.now(),userId );
+		}
+		else if((userId != null && userId > 0) && !isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate != null && transactionEndDate != null)
+		{
+			return  ledgerRepository.findByPaymentTypeAndDayTypeAndTransactionDateBetweenAndUserUserId(paymentType , dayType , transactionStartDate ,transactionEndDate,userId );
+		}
+		else if((userId != null && userId > 0) && !isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate != null && transactionEndDate != null)
+		{
+			return  ledgerRepository.findByPaymentTypeAndTransactionDateBetweenAndUserUserId(paymentType , transactionStartDate ,transactionEndDate,userId );
+		}
+		else if((userId != null && userId > 0) && !isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate != null && transactionEndDate == null)
+		{
+			return  ledgerRepository.findByPaymentTypeAndTransactionDateBetweenAndUserUserId(paymentType , transactionStartDate ,LocalDateTime.now(),userId );
+		}
+		else if((userId != null && userId > 0) && isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate != null && transactionEndDate == null)
+		{
+			return  ledgerRepository.findByDayTypeAndTransactionDateBetweenAndUserUserId(dayType , transactionStartDate ,LocalDateTime.now(),userId );
+		}
+		else if((userId != null && userId > 0) && isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate != null && transactionEndDate != null)
+		{
+			return  ledgerRepository.findByDayTypeAndTransactionDateBetweenAndUserUserId(dayType , transactionStartDate ,transactionEndDate,userId );
+		}
 		
-		   
-	    if(!isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate))
+		else if(!isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate == null && transactionEndDate== null)
 	    {   
 			return  ledgerRepository.findByPaymentType(paymentType);
 	    }
-	    else if(isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate))	
+	    else if(isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate == null && transactionEndDate== null)	
 	    {   
 			return  ledgerRepository.findByDayType(dayType);
 	    }
-	    else if(isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && !isNullOrEmpty(paymentBy) && isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate))	
+	    else if(isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && !isNullOrEmpty(paymentBy) && transactionStartDate == null && transactionEndDate== null)	
 	    {   
 			return  ledgerRepository.findByPaymentBy(paymentBy);
 	    }
-	    else if(isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && !isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate))	
+	    else if(isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate != null && transactionEndDate== null)	
 	    {   
-			return  ledgerRepository. findByTransactionDateBetween(LocalDateTime.parse(transactionStartDate), LocalDateTime.now());
+			return  ledgerRepository. findByTransactionDateBetween(transactionStartDate, LocalDateTime.now());
 	    }
-	    else if(isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && !isNullOrEmpty(transactionStartDate) && !isNullOrEmpty(transactionEndDate))	
+	    else if(isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate != null && transactionEndDate != null)	
 	    {   
-			return  ledgerRepository.findByTransactionDateBetween(LocalDateTime.parse(transactionStartDate), LocalDateTime.parse(transactionEndDate));
+			return  ledgerRepository.findByTransactionDateBetween(transactionStartDate, transactionEndDate);
 	    }
-	    else if(!isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate))	
+	    else if(!isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate == null && transactionEndDate == null)	
 	    {   
 			return  ledgerRepository.findByPaymentTypeAndDayType(paymentType, dayType);
 	    }
-	    else if(isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && !isNullOrEmpty(paymentBy) && isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate))	
+	    else if(isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && !isNullOrEmpty(paymentBy) && transactionStartDate == null && transactionEndDate== null)	
 	    {   
 			return  ledgerRepository.findByPaymentByAndDayType(paymentBy, dayType);
-	    }
-		else if(!isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && !isNullOrEmpty(paymentBy) && !isNullOrEmpty(transactionStartDate) && !isNullOrEmpty(transactionEndDate))	
+	    } 
+		else if(!isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && !isNullOrEmpty(paymentBy) && transactionStartDate != null && transactionEndDate!= null)	
 	    {   
-			 return ledgerRepository.findByDayTypeAndPaymentTypeAndPaymentByAndTransactionDateBetween(dayType , paymentType ,paymentBy, LocalDateTime.parse(transactionStartDate), LocalDateTime.parse(transactionEndDate));
+			 return ledgerRepository.findByDayTypeAndPaymentTypeAndPaymentByAndTransactionDateBetween(dayType , paymentType ,paymentBy, transactionStartDate, transactionEndDate);
 		}
 		
 		return  ledgerRepository.findAll();
@@ -135,6 +198,8 @@ public class LedgerService {
             return false;
         return true;
     }
+	
+	
 	
 
 }

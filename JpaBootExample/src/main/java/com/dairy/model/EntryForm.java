@@ -28,15 +28,21 @@ public class EntryForm {
 	
 	@Column(nullable = false)
 	private String dayType ; 
+	
 	@Column(nullable = false)
 	private double milkQuantity ;
+	
 	@Column(nullable = false)
 	private String milkType ;
+	
 	@Column(nullable = false)
 	private double perLiterPrice ;
+	
 	@Column(nullable = false)
 	private double totalAmount ;    
+	
 	private double fat ;
+	
 	private double snf ;
 	
     

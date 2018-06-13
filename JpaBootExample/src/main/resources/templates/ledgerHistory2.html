@@ -8,17 +8,19 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>jQuery UI Datepicker - Default functionality</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
   $( function() {
-    $( "#datepicker" ).datepicker();
+    $( "#startdate" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
   } );
+  
+  
+  $( function() {
+	    $( "#enddate" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
+	  } );
   </script>
-<!------ Include the above in your HEAD tag ---------->
 
 <title>Transactions Details</title>
 </head>
@@ -33,26 +35,59 @@
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-3">
             <h2 class="text-center pull-left" style="padding-left: 30px;"> <span class="glyphicon glyphicon-list-alt"> </span> Details </h2>
-            <input type="text" id="datepicker" placeholder="start date" name="date" class="form-control input-md" ></input>
           </div>
-          <div class="col-xs-9 col-sm-9 col-md-9">
-         
-            <div class="col-xs-12 col-sm-12 col-md-12">
-              <div class="col-xs-12 col-md-4">
-                <label> Search by Date</label>
-                <div class="form-group">
-                  <div class="input-group">
-                    <input type="text" class="form-control input-md" name="search">
-                    <div class="input-group-btn">
-                      <button type="button" class="btn btn-md btn-warning"> <span class=" glyphicon glyphicon-search"></span></button>
-                    </div>
-                  </div>
-                </div>
+          <div class="text-center">
+			<h2 style="color: #FF0000" th:text="${result}"></h2>
+		</div>
+         </div>
+        
+       
+     <div class="row">
+          
+        <form id="paymentHistory" th:action="@{paymentHistory}" method="post">
+ 
+           <div class="col-xs-9 col-sm-9 col-md-2">
+            <label> Search by User Id</label>
+            <input name="userId" type="number" placeholder="user Id" class="form-control input-md" ></input>
+          </div>
+          
+          <div class="col-xs-9 col-sm-9 col-md-2">
+             <label> Search by Start Date</label>
+            <input name="transactionStartDate" type="datetime-local" id="startdate" placeholder="start date" class="form-control input-md" ></input>
+          </div>
+          
+           <div class="col-xs-9 col-sm-9 col-md-2">
+            <label> Search by End Date</label>
+            <input name="transactionEndDate" type="datetime-local" id="enddate" placeholder="text" class="form-control input-md" ></input>
+          </div>
+          
+           <div class="col-xs-9 col-sm-9 col-md-2">
+            <label> Search by Payment Type</label>
+             <select name="paymentType" class="form-control input-md" >
+                  <option value="">--</option>
+                  <option value="CREDIT">Credit</option>
+                  <option value="DEBIT">Debit</option>
+             </select> 	
+          </div>
+          
+          <div class="col-xs-9 col-sm-9 col-md-2">
+           <label> Search by Day Type</label>
+             <select name="dayType" class="form-control input-md" >
+                  <option value="">--</option>
+                  <option value="EVENING">Evening</option>
+                  <option value="MORNING">Morning</option>
+             </select> 
+          </div>
+          
+          <div class="col-xs-9 col-sm-10 col-md-2">
+           <label>Submit</label>
+              <div class="input-group-btn">
+                <button  type="submit" class="btn btn-md btn-warning"> <span class=" glyphicon glyphicon-search"></span></button>
               </div>
-            </div>
           </div>
-        </div>
-      </div>
+        </form> 
+      </div> 
+    </div>
 
       <div class="panel-body table-responsive">
         <table class="table table-hover">
