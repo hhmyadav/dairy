@@ -158,6 +158,14 @@ public class LedgerService {
 	    {   
 			return  ledgerRepository.findByPaymentType(paymentType);
 	    }
+		else if(!isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate != null && transactionEndDate== null)
+	    {   
+			return  ledgerRepository.findByPaymentTypeAndTransactionDateBetween(paymentType, transactionStartDate, LocalDateTime.now());
+	    }
+		else if(!isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate != null && transactionEndDate!= null)
+	    {   
+			return  ledgerRepository.findByPaymentTypeAndTransactionDateBetween(paymentType, transactionStartDate, transactionEndDate);
+	    }
 	    else if(isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate == null && transactionEndDate== null)	
 	    {   
 			return  ledgerRepository.findByDayType(dayType);
