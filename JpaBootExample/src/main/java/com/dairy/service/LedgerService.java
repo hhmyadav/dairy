@@ -90,10 +90,8 @@ public class LedgerService {
 	public List<Ledger>getLedgersByAny(String dayType ,String paymentType,String paymentBy, String transactionStartDate , String transactionEndDate)
 	{     
 		
-		if(isNullOrEmpty(paymentType) && isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate) && isNullOrEmpty(dayType))	
-	    {   
-			return  ledgerRepository.findAll();
-	    }else if(!isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate))
+		   
+	    if(!isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate))
 	    {   
 			return  ledgerRepository.findByPaymentType(paymentType);
 	    }
@@ -119,14 +117,14 @@ public class LedgerService {
 	    }
 	    else if(isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && !isNullOrEmpty(paymentBy) && isNullOrEmpty(transactionStartDate) && isNullOrEmpty(transactionEndDate))	
 	    {   
-			return  ledgerRepository.findByPaymentTypeAndDayType(paymentType, dayType);
+			return  ledgerRepository.findByPaymentByAndDayType(paymentBy, dayType);
 	    }
 		else if(!isNullOrEmpty(paymentType) && !isNullOrEmpty(dayType) && !isNullOrEmpty(paymentBy) && !isNullOrEmpty(transactionStartDate) && !isNullOrEmpty(transactionEndDate))	
 	    {   
 			 return ledgerRepository.findByDayTypeAndPaymentTypeAndPaymentByAndTransactionDateBetween(dayType , paymentType ,paymentBy, LocalDateTime.parse(transactionStartDate), LocalDateTime.parse(transactionEndDate));
 		}
 		
-		return ledgerRepository.findAll();
+		return  ledgerRepository.findAll();
 		
 		
 		

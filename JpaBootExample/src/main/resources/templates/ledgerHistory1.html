@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th=“http://www.thymeleaf.org”>
+
+<head>
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<title>Transactions Details</title>
+</head>
+
+<body>
+
+
+
+<div class="container">
+    <h2>My Table</h2>
+    	<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">Developers</h3>
+					</div>
+					<table class="table table-hover" id="dev-table">
+						<thead>
+                            <tr>
+                                <th>User Id</th>
+                                <th>User Name</th>
+                                <th>Transaction Date</th>
+                                <th>DayType</th>
+                                <th>Payment By</th>
+                                <th>Payment Type</th>
+                                <th>Payment Summary</th>
+                                <th>Amount</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="transaction: ${ledgers}">
+                                <td th:text="${transaction.user.userId}"></td>
+                                <td th:text="${transaction.user.name}"></td>
+                                <td th:text="${#temporals.day(transaction.transactionDate)} +' '+ ${#temporals.monthNameShort(transaction.transactionDate)} +' '+ ${#temporals.year(transaction.transactionDate)} +' ('+${#temporals.dayOfWeekNameShort(transaction.transactionDate)}+')'"></td>
+                                <td th:text="${transaction.dayType}"></td>
+                                <td th:text="${transaction.paymentBy}"></td>
+                                <td th:text="${transaction.paymentType}"></td>
+                                <td th:text="${transaction.paymentSummary}"></td> 
+                                <td th:text="${transaction.amount}"></td>
+                             </tr> 
+                        </tbody>
+					</table>
+				</div>
+			</div>
+		
+		</div>
+	</div>
+
+</body>
+
+</html>
+

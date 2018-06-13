@@ -126,11 +126,37 @@ public class TransactionReportController {
 	    		                    @RequestParam(value = "dayType", required = false) String dayType,
 	    		                    @RequestParam(value = "paymentBy", required = false) String paymentBy,
 	    		                    
-	    		                    Ledger ledger ,Model model) {
-	    	 List<Ledger> ledgers = ledgerService.getLedgersByDayTypeAndPaymentTypeAndPaymentByAndTransactionDateBetween(dayType, paymentType, paymentBy, transactionStartDate, transactionEndDate);
-		    	  model.addAttribute("user",ledgers);
-		    	
-	       return "ledgerHistory";
+	    		                    Model model) {
+	    	
+	    	List<Ledger> ledgers = ledgerService.getLedgersByAny(dayType, paymentType, paymentBy, transactionStartDate, transactionEndDate);
+		    	 
+	    	
+	    	double totalCredit = 0 ;
+	    	double totalDebit  = 0 ;
+	    	
+	    	
+	    	for (int i = 0; i < ledgers.size(); i++) {
+	    		
+	    		Ledger ledger = ledgers.get(i);
+	    		
+	    		if(ledger.getPaymentType().equals("CREDIT"))
+	    		  totalCredit = totalCredit + ledger.getAmount();
+	    		
+	    		if(ledger.getPaymentType().equals("DEBIT"))
+	    		  totalDebit = totalDebit + ledger.getAmount();
+	    		
+			}
+	    	
+	    	double unBalancedAmount = totalCredit - totalDebit ;
+	    	
+	    	      model.addAttribute("ledgers",ledgers);
+		    	  model.addAttribute("numberOfTransactions",ledgers.size());
+		    	  model.addAttribute("totalCredit",totalCredit);
+		    	  model.addAttribute("totalDebit",totalDebit);
+		    	  model.addAttribute("profit",unBalancedAmount);
+		    	  model.addAttribute("dairyName","KrishnaDairy");
+		    	  
+	       return "ledgerHistory2";
 	    
 	    }
 	    

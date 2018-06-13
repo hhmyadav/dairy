@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th=“http://www.thymeleaf.org”>
+
+<head>
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<title>Transactions Details</title>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row"> 
+        <div class="col-xs-10">
+            <div class="panel panel-primary">
+                <!-- Default panel contents -->
+                <div class="panel-heading">
+                    <h2 class="panel-title">
+                        Transactions Details
+                    </h2>
+                </div>
+                <div class="panel-body">
+                    <h3>
+                      <span th:text="${dairyName}"></span>
+                    </h3>
+                </div>
+              <ul class="list-group">
+                    
+                 <li class="list-group-item">
+                    <h4><span th:text="'Total Number Of Transactions #  ' + ${numberOfTransactions}"></span> , <span th:text="'Total Credit :: Rs/- ' + ${totalCredit}"></span> , <span th:text="'Total Debit:: Rs/- ' + ${totalDebit}"></span> , <span th:text="'Profit:: Rs/- ' + ${profit}"></span> </h4>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>User Id</th>
+                                <th>User Name</th>
+                                <th>Transaction Date</th>
+                                <th>DayType</th>
+                                <th>Payment By</th>
+                                <th>Payment Type</th>
+                                <th>Payment Summary</th>
+                                <th>Amount</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="transaction: ${ledgers}">
+                                <td th:text="${transaction.user.userId}"></td>
+                                <td th:text="${transaction.user.name}"></td>
+                                <td th:text="${#temporals.day(transaction.transactionDate)} +' '+ ${#temporals.monthNameShort(transaction.transactionDate)} +' '+ ${#temporals.year(transaction.transactionDate)} +' ('+${#temporals.dayOfWeekNameShort(transaction.transactionDate)}+')'"></td>
+                                <td th:text="${transaction.dayType}"></td>
+                                <td th:text="${transaction.paymentBy}"></td>
+                                <td th:text="${transaction.paymentType}"></td>
+                                <td th:text="${transaction.paymentSummary}"></td> 
+                                <td th:text="${transaction.amount}"></td>
+                             </tr> 
+                        </tbody>
+                    </table>
+                     </li>
+               </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
+
