@@ -29,8 +29,8 @@ public class EntryFormService {
     @Transactional
 	public EntryForm saveEntryForm(Ledger ledger , EntryForm entryForm)
 	{    
-		if (entryForm.getCreatedDateTime() == null) 
-    	 entryForm.setCreatedDateTime(LocalDateTime.now());
+		if (entryForm.getEntryDateTime() == null) 
+    	 entryForm.setEntryDateTime(LocalDateTime.now());
         
 		
 		

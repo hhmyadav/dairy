@@ -339,7 +339,7 @@ table.table .avatar {
 
  <script>
   $( function() {
-    $( "#createdDateTime" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
+    $( "#entryDateTime" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
   } );
  </script>
 	
@@ -449,6 +449,7 @@ table.table .avatar {
 		var userId = $("#userId").val();
 
 		location.href = "/entryForm/user/" + userId;
+		
 
 	}
 	function updateNameSearch() {
@@ -578,8 +579,7 @@ table.table .avatar {
 					</div>
 					<div class="col-sm-6">
 						<a href="#addEmployeeModal" class="btn btn-success"
-							data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add
-								New User</span></a>
+							data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New User</span></a>
 					</div>
 				</div>
 			</div>
@@ -636,8 +636,8 @@ table.table .avatar {
 					date</label>
 
 				<div class="col-md-4">
-					<input id="createdDateTime" type="datetime-local"
-						th:field="*{createdDateTime}" class="form-control input-md">
+					<input id="entryDateTime" type="datetime-local"
+						th:field="*{entryDateTime}" class="form-control input-md">
 					<span class="help-block">Please Enter Date </span>
 				</div>
 			</div>

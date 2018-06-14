@@ -46,8 +46,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="transaction: ${user.dailyTransactions}">
-                                <td th:text="${#temporals.day(transaction.createdDateTime)} +' '+ ${#temporals.monthNameShort(transaction.createdDateTime)} +' '+ ${#temporals.year(transaction.createdDateTime)} +' ('+${#temporals.dayOfWeekNameShort(transaction.createdDateTime)}+')'"></td>
+                            <tr th:each="transaction: ${user.entryForms}">
+                                <td th:text="${#temporals.day(transaction.entryDateTime)} +' '+ ${#temporals.monthNameShort(transaction.entryDateTime)} +' '+ ${#temporals.year(transaction.entryDateTime)} +' ('+${#temporals.dayOfWeekNameShort(transaction.entryDateTime)}+')'"></td>
                                 <td th:text="${transaction.dayType}"></td>
                                 <td th:text="${transaction.milkQuantity}"></td>
                                 <td th:text="${transaction.fat}"></td>

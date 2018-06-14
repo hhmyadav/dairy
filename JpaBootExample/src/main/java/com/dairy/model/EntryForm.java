@@ -24,7 +24,7 @@ public class EntryForm {
 	
 	@Column(nullable = false)
 	@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
-	private LocalDateTime createdDateTime;
+	private LocalDateTime entryDateTime;
 	
 	@Column(nullable = false)
 	private String dayType ; 
@@ -113,13 +113,15 @@ public class EntryForm {
 		this.milkType = milkType;
 	}
 
-	public LocalDateTime getCreatedDateTime() {
-		return createdDateTime;
+	public LocalDateTime getEntryDateTime() {
+		return entryDateTime;
 	}
 
-	public void setCreatedDateTime(LocalDateTime createdDateTime) {
-		this.createdDateTime = createdDateTime;
+	public void setEntryDateTime(LocalDateTime entryDateTime) {
+		this.entryDateTime = entryDateTime;
 	}
+
+	
 
 
 

@@ -12,11 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 
 @Entity
 @Table(name="user")
@@ -25,8 +20,6 @@ public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private Long userId;
-    @Nullable
-    @NotEmpty
     @Column(nullable = false)
     private String name;
     private String email ;
@@ -39,7 +32,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "user")
-    private List<EntryForm> dailyTransactions = new ArrayList<EntryForm>();
+    private List<EntryForm> entryForms = new ArrayList<EntryForm>();
    
     
     @OneToMany(cascade = CascadeType.ALL,
@@ -99,12 +92,14 @@ public class User {
 		this.address = address;
 	}
 
-	public List<EntryForm> getDailyTransactions() {
-		return dailyTransactions;
+	
+
+	public List<EntryForm> getEntryForms() {
+		return entryForms;
 	}
 
-	public void setDailyTransactions(List<EntryForm> dailyTransactions) {
-		this.dailyTransactions = dailyTransactions;
+	public void setEntryForms(List<EntryForm> entryForms) {
+		this.entryForms = entryForms;
 	}
 
 	public List<Ledger> getLedgers() {

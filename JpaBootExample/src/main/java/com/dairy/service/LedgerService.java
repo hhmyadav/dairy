@@ -38,7 +38,7 @@ public class LedgerService {
 		
 		ledger.setDayType(entryForm.getDayType());
 		
-		ledger.setTransactionDate(entryForm.getCreatedDateTime());
+		ledger.setTransactionDate(entryForm.getEntryDateTime());
 		ledger.setPaymentBy(PAYMENT_BY_MILK);
 		ledger.setUser(entryForm.getUser());
 		ledger.setPaymentSummary(PAYMENT_SUMMARY_MILK_PURCHASED +entryForm.getUser().getName());

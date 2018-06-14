@@ -49,7 +49,7 @@ public class EntryFormController {
         		entryForm.setUser(user);
         	   }
         	   
-        	   entryForm.setCreatedDateTime(LocalDateTime.now());
+        	   entryForm.setEntryDateTime(LocalDateTime.now());
         	   
         	   entryForm.setDayType("m");
         	   if(LocalDateTime.now().getHour() >= 14)

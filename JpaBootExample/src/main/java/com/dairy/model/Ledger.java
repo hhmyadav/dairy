@@ -26,8 +26,9 @@ public class Ledger {
 	private String dayType; 
 	private double amount ;
 	private String paymentType ;
+	private String paymentBy ;
 	private String paymentSummary ;
-    private String paymentBy ;
+    
 	
 	
 	@ManyToOne

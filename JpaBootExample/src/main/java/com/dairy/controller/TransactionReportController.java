@@ -1,5 +1,6 @@
 package com.dairy.controller;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,6 +39,10 @@ public class TransactionReportController {
 	
 	@Autowired
 	LedgerRepository ledgerRepository ;
+	
+	
+	DecimalFormat df = new DecimalFormat("#.##");  
+	
 	
 	    @RequestMapping(value={""}, method={RequestMethod.POST,RequestMethod.GET})	
 	    public String getAllTransactions(Model model) {
@@ -92,35 +97,6 @@ public class TransactionReportController {
 	    }
 	    
 	    
-	    @RequestMapping(value={"paymentHistory/user/{id}"}, method={RequestMethod.POST,RequestMethod.GET})	
-	    public String userLedgerHistory(@RequestParam(value = "paymentType", required = false) String paymentType,
-	    		                        @RequestParam(value = "transactionStartDate", required = false) String transactionStartDate,
-	    		                        @RequestParam(value = "transactionEndDate", required = false) String transactionEndDate,
-	    		                        @RequestParam(value = "dayType", required = false) String dayType,
-	    		                        @PathVariable Optional<Integer> id ,Ledger ledger ,User user ,Model model) {
-	    	     
-	       if(id.isPresent())
-     	   { 
-     		  Integer userId = id.get();
-     		if(!userService.existsById(userId)) 
-     	     { 
-     		  model.addAttribute("result","Cannot find userId #" + userId);
-     	      return "userLedgerHistory";
-     	     }
-     	   }
-	    	
-	    	user = userService.getOne(id.get());
-	    	
-	       if(paymentType !=null && !paymentType.isEmpty())	
-	       {   
-	    	  List<Ledger> ledgers = ledgerService.getLedgersByUserAndPaymentType(user,paymentType);
-	          user.setLedgers(ledgers);
-	       }
-	    	model.addAttribute("user",user);
-	    	
-  	      return "userLedgerHistory";
-	    }
-	    
 	    @RequestMapping(value={"paymentHistory"}, method={RequestMethod.POST,RequestMethod.GET})	
 	    public String ledgerHistory(@RequestParam(value = "userId", required = false) Long userId,
 	    		                    @RequestParam(value = "paymentType", required = false) String paymentType,
@@ -146,8 +122,8 @@ public class TransactionReportController {
 	    	List<Ledger> ledgers = ledgerService.getLedgersByAny(userId,dayType, paymentType, paymentBy, transactionStartDate ,transactionEndDate);
 		    	 
 	    	
-	    	double totalCredit = 0 ;
-	    	double totalDebit  = 0 ;
+	    	Double totalCredit = (double) 0 ;
+	    	Double totalDebit  = (double) 0 ;
 	    	
 	    	
 	    	for (int i = 0; i < ledgers.size(); i++) {
@@ -162,14 +138,15 @@ public class TransactionReportController {
 	    		
 			}
 	    	
-	    	double unBalancedAmount = totalCredit - totalDebit ;
+	    	double remainingAmount = totalCredit - totalDebit ;
 	    	
 	    	      model.addAttribute("ledgers",ledgers);
 		    	  model.addAttribute("numberOfTransactions",ledgers.size());
-		    	  model.addAttribute("totalCredit",totalCredit);
-		    	  model.addAttribute("totalDebit",totalDebit);
-		    	  model.addAttribute("profit",unBalancedAmount);
+		    	  model.addAttribute("totalCredit",df.format(totalCredit));
+		    	  model.addAttribute("totalDebit",df.format(totalDebit));
+		    	  model.addAttribute("remainingAmount",df.format(remainingAmount));
 		    	  model.addAttribute("dairyName","KrishnaDairy");
+		    	  
 		    	  
 	       return "ledgerHistory2";
 	    
