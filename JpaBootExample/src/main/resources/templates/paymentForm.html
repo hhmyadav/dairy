@@ -6,8 +6,16 @@
 
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+ <script>
+  $( function() {
+    $( "#date" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
+  } );
+ </script>
+	
 </head>
 
 <body>
@@ -19,7 +27,7 @@
 <div class="container">
 	<div class="row">
         <div class="col-sm-12">
-            <legend th:text="${user.name}"></legend>
+            <legend th:text="${ledger.user.name}"></legend>
         </div>
       
         <div class="col-sm-7">
@@ -38,7 +46,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-	                           <tr th:each="entryForm: ${user.entryForms}">
+	                           <tr th:each="entryForm: ${ledger.user.entryForms}">
 	                                <td th:text="${#temporals.day(entryForm.entryDateTime)} +' '+ ${#temporals.monthNameShort(entryForm.entryDateTime)} +' '+ ${#temporals.year(entryForm.entryDateTime)} +' ('+${#temporals.dayOfWeekNameShort(entryForm.entryDateTime)}+')'"></td>
 	                                <td th:text="${entryForm.dayType}"></td>
 	                                <td th:text="${entryForm.milkQuantity}"></td>
@@ -52,13 +60,13 @@
             </div>
             <div class="row text-left">
                 <div class="col-xs-12">
-                    <h4>Total: <strong><span th:text="${user.amountBalance}"></span></strong></h4>
+                    <h4>Total: <strong><span th:text="${ledger.user.amountBalance}"></span></strong></h4>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12">
                     <hr style="border:1px dashed #dddddd;">
-                    <button type="button" class="btn btn-primary btn-block">Pay Now</button>
+                    <button type="button" class="btn btn-primary btn-block">Show More Details</button>
                 </div>                
             </div>
         </div>
@@ -66,50 +74,62 @@
         
           <!-- panel preview -->
         <div class="col-sm-5">
-            <h4>Add payment:</h4>
+            <h4>Pay Now :</h4>
             <div class="panel panel-default">
-                <div class="panel-body form-horizontal payment-form">
+               
+               <form th:action="@{paymentReceipt}" th:object="${ledger.user}" method="post">
+                   
+                  <div class="panel-body form-horizontal payment-form">
                     <div class="form-group">
-                        <label for="concept" class="col-sm-3 control-label">Concept</label>
+                        <label for="concept" class="col-sm-3 control-label">Name</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="concept" name="concept">
+                            <input type="text" th:field="*{name}" class="form-control" disabled="disabled">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="description" class="col-sm-3 control-label">Payment Summary</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="description" name="description">
+                            <input type="text" th:value="${ledger.paymentSummary}" class="form-control" >
                         </div>
                     </div> 
                     <div class="form-group">
                         <label for="amount" class="col-sm-3 control-label">Amount</label>
                         <div class="col-sm-9">
-                            <input type="number" class="form-control" id="amount" name="amount">
+                            <input type="number" th:field="*{amountBalance}" class="form-control" >
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="status" class="col-sm-3 control-label">Status</label>
+                        <label for="status" th:value="${ledger.paymentBy}"  class="col-sm-3 control-label">Payment By</label>
                         <div class="col-sm-9">
                             <select class="form-control" id="status" name="status">
-                                <option>Paid</option>
-                                <option>Unpaid</option>
+                                <option>Cash</option>
+                                <option>Milk</option>
+                                <option>Paytm</option>
+                                <option>Tez</option>
+                                <option>NetBanking</option>
+                                <option>Check</option>
+                                <option>Bitcoin</option>
                             </select>
                         </div>
                     </div> 
                     <div class="form-group">
                         <label for="date" class="col-sm-3 control-label">Date</label>
                         <div class="col-sm-9">
-                            <input type="date" class="form-control" id="date" name="date">
+                            <input type="datetime-local" th:value="${ledger.transactionDate}" class="form-control" id="date" name="date">
                         </div>
                     </div>   
-                    <div class="form-group">
-                        <div class="col-sm-12 text-right">
-                            <button type="button" class="btn btn-default preview-add-button">
-                                <span class="glyphicon glyphicon-plus"></span> Add
-                            </button>
-                        </div>
-                    </div>
+                    
+                    <div class="row">
+		                <div class="col-xs-12">
+		                    <hr style="border:1px dashed #dddddd;">
+		                    <button type="submit" class="btn btn-success btn-lg btn-block">
+		                    <span class="glyphicon glyphicon-ok"></span>  Pay Now
+		                    </button>
+		                </div>                
+                   </div>
                 </div>
+                
+                </form>
             </div>            
         </div> <!-- / panel preview -->
         

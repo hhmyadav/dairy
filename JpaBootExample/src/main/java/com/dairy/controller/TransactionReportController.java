@@ -51,31 +51,6 @@ public class TransactionReportController {
 	    }
 	    
 	    
-	    @RequestMapping(value={"/fromDate"}, method={RequestMethod.POST,RequestMethod.GET})	
-	    public String transactionBetweenDates(Model model) {
-	    	
-	    	LocalDateTime startDate =  LocalDateTime.of(2018, 05, 28, 15, 56); 
-	    	LocalDateTime endDate =  LocalDateTime.of(2018, 05, 28, 15, 56); 
-	    	
-	    	List<Ledger> legders = transactionReportService.getTransationByDate(startDate, endDate);
-	    	
-	    	model.addAttribute("ledgers",legders);
-	    	
-  	      return "userTransactionReport";
-	    }
-	    
-	    @RequestMapping(value={"/fromDateToNow"}, method={RequestMethod.POST,RequestMethod.GET})	
-	    public String transactionFromDateToNow(Model model) {
-	    	
-	    	LocalDateTime startDate =  LocalDateTime.of(2018, 05, 28, 15, 56); 
-	    	
-	    	List<Ledger> legders = transactionReportService.getTransationByDate(startDate, LocalDateTime.now());
-	    	
-	    	model.addAttribute("ledgers",legders);
-	    	
-  	      return "userTransactionReport";
-	    }
-	    
 	    
 	    @RequestMapping(value={"milkRecords/user/{id}"}, method={RequestMethod.POST,RequestMethod.GET})	
 	    public String userTransactionReport(User user ,@PathVariable Optional<Integer> id ,Model model) {
