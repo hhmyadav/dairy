@@ -40,6 +40,7 @@
 	   
 	     <div class="col-sm-10"> 
             <form th:action="@{${userId}}" method="post">
+            
                 <div class="col-sm-3"> 
                     <label class="col-sm-9">From Date:</label>
                     <div class="input-group">
@@ -55,12 +56,19 @@
 				      <input id="toDate" th:value="${toDate}" class="form-control" name="toDate" placeholder="To Date">
 				    </div>
 				 </div>
-			<div> 
-			 <label></label>
-			 <br>
-			 <br>
-				<button type="submit"  class="btn btn-primary btn-md"><i class="glyphicon glyphicon-search"></i></button>
-			</div>  
+				 
+				 <div class="col-sm-2">
+				 <label class="col-sm-12"> <br></label> 
+				  <button type="submit"  class="btn btn-primary btn-md"><i class="glyphicon glyphicon-search"></i> Search</button>
+				 </div>
+				 
+				 <div class="col-sm-2"> 
+                    <div> 
+                    <label class="col-sm-9"><br></label>
+                      <button type="submit" value="true" name="fromLastPaid" class="btn btn-primary btn-md"><i class="glyphicon glyphicon-search"> </i> From Last Paid</button>
+				    </div>
+				 </div> 
+			 
 			</form>
         </div>   
       

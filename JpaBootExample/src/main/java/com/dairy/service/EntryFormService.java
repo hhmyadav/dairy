@@ -38,8 +38,15 @@ public class EntryFormService {
 		
 	}
     
-    public List<EntryForm> getEntryForms(Long userId , LocalDateTime fromDate , LocalDateTime toDate)
-    {
+    public List<EntryForm> getEntryForms(Long userId , LocalDateTime fromDate , LocalDateTime toDate , Boolean fromLastPaid)
+    {   
+    	if(fromLastPaid != null)
+    	{
+    		fromDate = ledgerService.getTransactionDate(userId ,"DEBIT");
+    		System.out.println(fromDate.getDayOfMonth());
+    		System.out.println(fromDate.getMonth());
+    	}
+    	
     	if(fromDate!=null && toDate==null)
     	return entryFormRepository.findByUserUserIdAndEntryDateTimeAfter(userId, fromDate);
     	

@@ -43,13 +43,15 @@ public class PaymentFormController {
 	DateTimeFormatter ddMMyyyyFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 	
     @RequestMapping(value={"","user","user/{id}"} , method={RequestMethod.POST,RequestMethod.GET})	    
-    public String setPaymentForm(@PathVariable Optional<Integer> id , 
+    public String setPaymentForm(@PathVariable Optional<Integer> id ,
+    		                     @RequestParam(value = "fromLastPaid", required = false) Boolean fromLastPaid,
     		                     @RequestParam(value = "fromDate", required = false)
                                  @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm") LocalDateTime fromDate ,
                                  @RequestParam(value = "toDate", required = false)
                                  @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")  LocalDateTime toDate,                     
     		                     User user , Ledger ledger ,Model model) {
           
+    	  
     	   ledger.setUser(user);   
     	   
     	   if(!id.isPresent())
@@ -67,7 +69,9 @@ public class PaymentFormController {
     		 if(fromDate==null)
        		  fromDate = LocalDateTime.now().minusDays(11);
     		 
-    		 List<EntryForm> entryForms = entryFormService.getEntryForms(userId.longValue(), fromDate, toDate);
+    		 List<EntryForm> entryForms = entryFormService.getEntryForms(userId.longValue(), fromDate, toDate ,fromLastPaid);
+    		 
+    		 
     		 
     		 user.setEntryForms(entryForms);
     		 

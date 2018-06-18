@@ -117,6 +117,7 @@ public class LedgerService {
 		return ledgerRepository.findAll();
 	}
 	
+	
 	public List<Ledger>getLedgersByAny(Long userId , String dayType ,String paymentType,String paymentBy, LocalDateTime transactionStartDate , LocalDateTime transactionEndDate)
 	{     
 		if( (userId != null && userId > 0) && isNullOrEmpty(paymentType) && isNullOrEmpty(dayType) && isNullOrEmpty(paymentBy) && transactionStartDate == null && transactionEndDate == null)
@@ -230,6 +231,14 @@ public class LedgerService {
 		
 		
 	}
+	
+	public LocalDateTime getTransactionDate(Long userId , String paymentType)
+	{         
+		Ledger ledger = ledgerRepository.findFirstByUserUserIdAndPaymentTypeOrderByTransactionDateDesc(userId ,paymentType);
+		
+		return ledger.getTransactionDate() ;
+	}
+	
 	
 	public static boolean isNullOrEmpty(String str) {
         if(str != null && !str.trim().isEmpty())
