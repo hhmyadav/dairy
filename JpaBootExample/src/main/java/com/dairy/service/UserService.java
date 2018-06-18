@@ -46,17 +46,18 @@ public class UserService {
 	 }
 	 
      public void updateBalance(Ledger ledger)
-     {
+     {  
+    	 User user = getOne(ledger.getUser().getUserId());
+    	 
     	 if(ledger.getPaymentType().equals("CREDIT"))
     	 {   
-    		 User user = getOne(ledger.getUser().getUserId());
     		 double amountbalance = user.getAmountBalance() + ledger.getAmount() ;
     		 user.setAmountBalance(amountbalance);
     		 userRepository.save(user);
     	 }
-    	 if(ledger.getPaymentType().equals("DEBIT"))
+    	 else if(ledger.getPaymentType().equals("DEBIT"))
     	 {
-    		 User user = getOne(ledger.getUser().getUserId());
+    		 
     		 double amountbalance = user.getAmountBalance() - ledger.getAmount();
     		 user.setAmountBalance(amountbalance);
     		 userRepository.save(user);

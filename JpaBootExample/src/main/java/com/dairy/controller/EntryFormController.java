@@ -55,7 +55,7 @@ public class EntryFormController {
         	   if(LocalDateTime.now().getHour() >= 14)
         	   entryForm.setDayType("e");
         	   
-        	   entryForm.setMilkType("buffelow");
+        	   entryForm.setMilkType("buffalo");
         	   return "entryForm";
 	    }
         
@@ -75,7 +75,7 @@ public class EntryFormController {
      	   { model.addAttribute("result","Cannot find userId #" + entryForm.getUser().getUserId());
      	     return "entryForm";
      	   }
-     	    
+     	  
             
         	entryForm = entryFormService.saveEntryForm(ledger,entryForm);
         	

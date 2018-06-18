@@ -19,18 +19,21 @@ public class LedgerService {
 	 private static final String CREDIT = "CREDIT";
      private static final String DEBIT  = "DEBIT";
      private static final String DAYTYPE_NA = "NA";
-     private static final String PAYMENT_BY_MILK = "Milk";  
-     private static final String PAYMENT_BY_CASH = "Cash"; 
-     private static final String PAYMENT_BY_OLD_BALANCE = "OldBalance"; 
-	 private static final String PAYMENT_SUMMARY_MILK_PURCHASED =  "Purchased Milk From Buyer : " ;
-	 private static final String PAYMENT_SUMMARY_USER_ADDED =  "New User Added Adding Old Balance : " ;
+     private static final String DAYTYPE_EVENING= "EVENING";
+     private static final String DAYTYPE_MORNING = "MORNING";
+     private static final String PAYMENT_BY_MILK = "MILK";  
+     private static final String PAYMENT_BY_CASH = "CASH"; 
+     private static final String PAYMENT_BY_OLD_BALANCE = "OLD_BALANCE"; 
+     private static final String PAYMENT_SUMMARY_MILK_SOLD =  "Sold Milk To Buyer : " ;
+	 private static final String PAYMENT_SUMMARY_MILK_PURCHASED =  "Purchased Milk From Seller : " ;
+	 private static final String PAYMENT_SUMMARY_USER_ADDED =  "New User Added With Old Balance : " ;
 	 private static final String PAYMENT_SUMMARY_PAYMENT_FORM = "Paying Amount To User : " ;
 	
 	@Autowired
 	LedgerRepository ledgerRepository ; 
 	
 	
-	public void saveLedgerFromEntryForm(EntryForm entryForm , Ledger ledger)
+	public Ledger saveLedgerFromEntryForm(EntryForm entryForm , Ledger ledger)
 	{    
 		
 		ledger.setAmount(entryForm.getTotalAmount());
@@ -41,28 +44,54 @@ public class LedgerService {
 		ledger.setTransactionDate(entryForm.getEntryDateTime());
 		ledger.setPaymentBy(PAYMENT_BY_MILK);
 		ledger.setUser(entryForm.getUser());
+		
+		if(ledger.getPaymentSummary() == null || ledger.getPaymentSummary().equals(""))
 		ledger.setPaymentSummary(PAYMENT_SUMMARY_MILK_PURCHASED +entryForm.getUser().getName());
 		
 		ledgerRepository.save(ledger);
+		return ledger ;
 	}
 	
-	public void saveLedgerPaymentForm(Ledger ledger)
+	public Ledger saveLedgerFromPaymentForm(Ledger ledger)
 	{    
-		
-	    ledger.setPaymentType(DEBIT);
-	    
+	 
+	      ledger.setPaymentType(DEBIT);
 	      if(ledger.getTransactionDate() == null) 
 	      ledger.setTransactionDate((LocalDateTime.now()));
-	  
-	      if(ledger.getPaymentBy() == null || ledger.getPaymentBy().equals("") )
+	     
+	     
+	      if(ledger.getPaymentBy() == null || ledger.getPaymentBy().equals(""))
 	      ledger.setPaymentBy(PAYMENT_BY_CASH);
-	    
+	      else
+	      ledger.setPaymentBy(ledger.getPaymentBy().toUpperCase());
+	      
+	      
+	      if(ledger.getPaymentSummary() == null || ledger.getPaymentSummary().equals(""))
+	  		ledger.setPaymentSummary(PAYMENT_SUMMARY_PAYMENT_FORM +ledger.getUser().getName());
 	   
-		ledger.setPaymentSummary(PAYMENT_SUMMARY_PAYMENT_FORM + ledger.getUser().getName());
-		
+	      
 		ledgerRepository.save(ledger);
+		
+		return ledger ;
 	}
-
+    
+	public Ledger setDefaultLedgerForPaymentForm(Ledger ledger , User user)
+	{   
+		
+		ledger.setUser(user);
+		ledger.setPaymentType(DEBIT);
+		ledger.setDayType(DAYTYPE_MORNING);
+	 	if(LocalDateTime.now().getHour() >= 14)
+	 	 ledger.setDayType(DAYTYPE_EVENING);
+		
+		ledger.setAmount(user.getAmountBalance());
+	    ledger.setTransactionDate(LocalDateTime.now());
+ 	    ledger.setPaymentBy(PAYMENT_BY_CASH);
+		ledger.setPaymentSummary(PAYMENT_SUMMARY_PAYMENT_FORM + user.getName());
+		
+		return ledger ;
+	}
+	
 	public User setLedgerForNewUser(User user)
 	{   
 	
@@ -75,11 +104,6 @@ public class LedgerService {
 		user.getLedgers().get(0).setPaymentSummary(PAYMENT_SUMMARY_USER_ADDED + user.getName());
 		
 		return user ;
-	}
-	
-	public List<Ledger> getLedgersByUserAndPaymentType(User user , String paymentType)
-	{
-		return ledgerRepository.findByUserAndPaymentType(user, paymentType);
 	}
 	
 	public List<Ledger> getAllLedger()

@@ -635,7 +635,7 @@ table.table .avatar {
 					date</label>
 
 				<div class="col-md-4">
-					<input id="entryDateTime" type="datetime-local"
+					<input id="entryDateTime"
 						th:field="*{entryDateTime}" class="form-control input-md">
 					<span class="help-block">Please Enter Date </span>
 				</div>
@@ -670,8 +670,8 @@ table.table .avatar {
 				<div class="col-md-4">
 					<div class="checkbox">
 						<label> <input name="genderboxes" th:field="*{milkType}"
-							id="genderboxes-0" value="buffelow" type="radio">
-							Buffelow
+							id="genderboxes-0" value="buffalo" type="radio">
+							Buffalo
 						</label>
 					</div>
 					<div class="checkbox">
@@ -754,8 +754,7 @@ table.table .avatar {
 
 				<div class="col-md-8">
 					<button type="submit" class="btn btn-success">Save</button>
-					<a id="cancel" class="btn btn-danger" href="/">
-						Cancel</a>
+					<a id="cancel" class="btn btn-danger" href="/"> Cancel</a>
 				</div>
 			</div>
 		</form>

@@ -14,21 +14,24 @@
   $( function() {
     $( "#date" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
   } );
+  
+  
+  function updateName() {
+        var userId = $("#userId").val();
+		location.href = "/paymentForm/user/" + userId;
+   }
  </script>
 	
 </head>
 
 <body>
 
-
-<h2 id="result" style="color:#FF0000" th:text="${result}"></h2> 
-
-
 <div class="container">
+ <h3 style="color: #FF0000" th:text="${result}"></h3>
 	<div class="row">
         <div class="col-sm-12">
             <legend th:text="${ledger.user.name}"></legend>
-        </div>
+        </div>  
       
         <div class="col-sm-7">
             <h4>Last <span th:text="${numberOfDays}"></span> Days Transactions</h4>
@@ -38,8 +41,9 @@
                         <table class="table preview-table">
                             <thead>
                                 <tr>
-                                    <th>Date</th>
+                                    <th>Date                                                         </th>
                                     <th>Day</th>
+                                    <th>Type</th>
                                     <th>Liter</th>
                                     <th>Rate</th>
                                     <th>Amount</th>
@@ -49,6 +53,7 @@
 	                           <tr th:each="entryForm: ${ledger.user.entryForms}">
 	                                <td th:text="${#temporals.day(entryForm.entryDateTime)} +' '+ ${#temporals.monthNameShort(entryForm.entryDateTime)} +' '+ ${#temporals.year(entryForm.entryDateTime)} +' ('+${#temporals.dayOfWeekNameShort(entryForm.entryDateTime)}+')'"></td>
 	                                <td th:text="${entryForm.dayType}"></td>
+	                                <td th:text="${entryForm.milkType}"></td>
 	                                <td th:text="${entryForm.milkQuantity}"></td>
 	                                <td th:text="${entryForm.perLiterPrice}"></td>
 	                                <td th:text="${entryForm.totalAmount}"></td>
@@ -71,35 +76,44 @@
             </div>
         </div>
         
-        
           <!-- panel preview -->
         <div class="col-sm-5">
             <h4>Pay Now :</h4>
             <div class="panel panel-default">
                
-               <form th:action="@{paymentReceipt}" th:object="${ledger.user}" method="post">
+               <form th:action="@{paymentReceipt}" th:object="${ledger}" method="post">
                    
                   <div class="panel-body form-horizontal payment-form">
+                      
+                    <div class="form-group">
+                        <label for="concept" class="col-sm-3 control-label">Id</label>
+                        <div class="col-sm-9">
+                           <input id="userId" oninput="updateName()" type="number"
+						     th:field="*{user.userId}" class="form-control" /> <span
+						     class="help-block">Enter UserId For Change User</span>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="concept" class="col-sm-3 control-label">Name</label>
                         <div class="col-sm-9">
-                            <input type="text" th:field="*{name}" class="form-control" disabled="disabled">
-                        </div>
+                            <input type="text" th:value="${ledger.user.name}" class="form-control" disabled="disabled">
+                            <input type="hidden" th:field="*{user.name}" class="form-control">
+                        </div> 
                     </div>
                     <div class="form-group">
                         <label for="description" class="col-sm-3 control-label">Payment Summary</label>
                         <div class="col-sm-9">
-                            <input type="text" th:value="${ledger.paymentSummary}" class="form-control" >
+                            <input type="text" th:field="*{paymentSummary}" class="form-control" >
                         </div>
                     </div> 
                     <div class="form-group">
                         <label for="amount" class="col-sm-3 control-label">Amount</label>
                         <div class="col-sm-9">
-                            <input type="number" th:field="*{amountBalance}" class="form-control" >
+                            <input type="number" th:field="*{amount}" class="form-control" >
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="status" th:value="${ledger.paymentBy}"  class="col-sm-3 control-label">Payment By</label>
+                        <label for="status" th:field="*{paymentBy}"  class="col-sm-3 control-label">Payment By</label>
                         <div class="col-sm-9">
                             <select class="form-control" id="status" name="status">
                                 <option>Cash</option>
@@ -112,10 +126,11 @@
                             </select>
                         </div>
                     </div> 
+                   
                     <div class="form-group">
-                        <label for="date" class="col-sm-3 control-label">Date</label>
+                        <label for="date" class="col-sm-3 control-label">Date Time</label>
                         <div class="col-sm-9">
-                            <input type="datetime-local" th:value="${ledger.transactionDate}" class="form-control" id="date" name="date">
+                            <input th:field="*{transactionDate}" class="form-control" id="date">
                         </div>
                     </div>   
                     
@@ -133,9 +148,7 @@
             </div>            
         </div> <!-- / panel preview -->
         
-        
-        
-	</div>
+    </div>
 </div>
 
 

@@ -324,6 +324,12 @@ function rowClicked(value) {
     location.href = "/entryForm/user/"+ value;
 }
 
+function rowClickedPayNow(value) {
+    location.href = "/paymentForm/user/"+ value;
+}
+
+
+
 </script>
 </head>
 <body>
@@ -366,7 +372,7 @@ function rowClicked(value) {
                         <th>Remaining Balance</th>
                         <th>Address</th>
                         <th>Email</th>
-                        <th>UserType</th>
+                        <th>Pay Now</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -386,7 +392,12 @@ function rowClicked(value) {
                         <td th:text="${user.amountBalance}" th:onclick="'javascript:rowClicked(\'' + ${user.userId} + '\');'"></td>
                         <td th:text="${user.address}" th:onclick="'javascript:rowClicked(\'' + ${user.userId} + '\');'"></td>
                         <td th:text="${user.email}" th:onclick="'javascript:rowClicked(\'' + ${user.userId} + '\');'"></td>
-                        <td th:text="${user.userType}" th:onclick="'javascript:rowClicked(\'' + ${user.userId} + '\');'"></td>
+                        <td>
+                            <button th:onclick="'javascript:rowClickedPayNow(\'' + ${user.userId} + '\');'" type="button" class="btn btn-success btn-xs btn-block">
+		                     <span class="glyphicon glyphicon-ok"></span>  Pay Now
+		                    </button>
+                        </td>
+                       
                         
                         <td>
                             <a th:href="@{'#editUserModal' + ${user.userId}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
@@ -394,7 +405,7 @@ function rowClicked(value) {
                         </td>
                         
                         <td>
-                        
+                      
                         <!-- Delete Modal HTML -->
 	                        <div th:id="@{'deleteUserModal' + ${user.userId}}" class="modal fade">
 		                         <div class="modal-dialog">
@@ -449,15 +460,7 @@ function rowClicked(value) {
 											<label>Address</label>
 											<textarea id="editAddress"  th:field="*{address}" class="form-control"  ></textarea>
 										</div>
-										<div class="form-group">
-											<label>UserType</label>
-											
-											 <select id="editUserType"  name="userType" class="form-control" th:field="*{userType}" >
-				                                <option value="s">Seller</option>
-				                                <option value="b">Buyer</option>
-				                                <option value="o">Seller/Buyer</option>
-				                             </select> 
-										</div>					
+														
 									</div>
 								<div class="modal-footer">
 									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -468,6 +471,8 @@ function rowClicked(value) {
 									</div>
 								</div>
                          </td>
+                         
+                         </tr>
                 </tbody>
             </table>
             
@@ -525,15 +530,7 @@ function rowClicked(value) {
 							<label>Address</label>
 							<textarea th:field="*{address}" class="form-control"  ></textarea>
 						</div>
-						<div class="form-group">
-							<label>UserType</label>
-							
-							 <select name="userType" class="form-control" th:field="*{userType}" required>
-                                <option value="s">Seller</option>
-                                <option value="b">Buyer</option>
-                                <option value="o">Seller/Buyer</option>
-                             </select> 
-						</div>					
+										
 					</div>
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">

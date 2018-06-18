@@ -33,8 +33,6 @@ public class EntryFormService {
     	 entryForm.setEntryDateTime(LocalDateTime.now());
         
 		
-		
-		
 		if(entryForm.getDayType().equals("m"))
 		 entryForm.setDayType(MORNING);
 		 	
