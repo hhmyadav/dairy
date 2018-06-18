@@ -56,22 +56,25 @@ public class LedgerService {
 	{    
 	 
 	      ledger.setPaymentType(DEBIT);
-	      if(ledger.getTransactionDate() == null) 
-	      ledger.setTransactionDate((LocalDateTime.now()));
+	    
 	     
-	     
+	      if(ledger.getTransactionDate() == null)
+	       ledger.setTransactionDate((LocalDateTime.now()));
+	      
+	      ledger.setDayType(DAYTYPE_MORNING);
+		 	if(ledger.getTransactionDate().getHour() >= 14)
+		  ledger.setDayType(DAYTYPE_EVENING);
+	      
 	      if(ledger.getPaymentBy() == null || ledger.getPaymentBy().equals(""))
 	      ledger.setPaymentBy(PAYMENT_BY_CASH);
-	      else
-	      ledger.setPaymentBy(ledger.getPaymentBy().toUpperCase());
 	      
+	      ledger.setPaymentBy(ledger.getPaymentBy().toUpperCase());
 	      
 	      if(ledger.getPaymentSummary() == null || ledger.getPaymentSummary().equals(""))
 	  		ledger.setPaymentSummary(PAYMENT_SUMMARY_PAYMENT_FORM +ledger.getUser().getName());
 	   
 	      
 		ledgerRepository.save(ledger);
-		
 		return ledger ;
 	}
     
@@ -80,12 +83,15 @@ public class LedgerService {
 		
 		ledger.setUser(user);
 		ledger.setPaymentType(DEBIT);
+		
+		ledger.setTransactionDate(LocalDateTime.now());
+		
 		ledger.setDayType(DAYTYPE_MORNING);
 	 	if(LocalDateTime.now().getHour() >= 14)
 	 	 ledger.setDayType(DAYTYPE_EVENING);
 		
 		ledger.setAmount(user.getAmountBalance());
-	    ledger.setTransactionDate(LocalDateTime.now());
+	  
  	    ledger.setPaymentBy(PAYMENT_BY_CASH);
 		ledger.setPaymentSummary(PAYMENT_SUMMARY_PAYMENT_FORM + user.getName());
 		

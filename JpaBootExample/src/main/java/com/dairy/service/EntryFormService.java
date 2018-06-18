@@ -1,6 +1,7 @@
 package com.dairy.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +23,6 @@ public class EntryFormService {
 	@Autowired
 	UserService userService ;
 	
-	 private static final String MORNING = "MORNING";
-     private static final String EVENING  = "EVENING";
-	
 	
     @Transactional
 	public EntryForm saveEntryForm(Ledger ledger , EntryForm entryForm)
@@ -32,21 +30,24 @@ public class EntryFormService {
 		if (entryForm.getEntryDateTime() == null) 
     	 entryForm.setEntryDateTime(LocalDateTime.now());
         
-		
-		if(entryForm.getDayType().equals("m"))
-		 entryForm.setDayType(MORNING);
-		 	
-		
-		if(entryForm.getDayType().equals("e"))
-	     entryForm.setDayType(EVENING);
-			 
-		
-    	entryFormRepository.save(entryForm);
+		entryFormRepository.save(entryForm);
 		ledgerService.saveLedgerFromEntryForm(entryForm, ledger);
 		userService.updateBalance(ledger);
 		
 		return entryForm ;
 		
 	}
+    
+    public List<EntryForm> getEntryForms(Long userId , LocalDateTime fromDate , LocalDateTime toDate)
+    {
+    	if(fromDate!=null && toDate==null)
+    	return entryFormRepository.findByUserUserIdAndEntryDateTimeAfter(userId, fromDate);
+    	
+    	if(fromDate!=null && toDate!=null)
+    	return entryFormRepository.findByUserUserIdAndEntryDateTimeBetween(userId, fromDate ,toDate);
+    	
+    	return entryFormRepository.findByUserUserId(userId);
+    	
+    }
 
 }

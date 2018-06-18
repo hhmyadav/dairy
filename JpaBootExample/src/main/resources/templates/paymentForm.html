@@ -15,6 +15,13 @@
     $( "#date" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
   } );
   
+  $( function() {
+	    $( "#fromDate" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
+	  } );
+  $( function() {
+	    $( "#toDate" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
+	  } );
+  
   
   function updateName() {
         var userId = $("#userId").val();
@@ -29,12 +36,45 @@
 <div class="container">
  <h3 style="color: #FF0000" th:text="${result}"></h3>
 	<div class="row">
-        <div class="col-sm-12">
+	   
+	   
+	     <div class="col-sm-10"> 
+            <form th:action="@{${userId}}" method="post">
+                <div class="col-sm-3"> 
+                    <label class="col-sm-9">From Date:</label>
+                    <div class="input-group">
+				      <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+				      <input id="fromDate" th:value="${fromDate}"class="form-control" name="fromDate" placeholder="From Date">
+				    </div>
+				 </div>
+				 
+				<div class="col-sm-3"> 
+				    <label class="col-sm-9">To Date:</label>
+                    <div class="input-group">
+				      <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+				      <input id="toDate" th:value="${toDate}" class="form-control" name="toDate" placeholder="To Date">
+				    </div>
+				 </div>
+			<div> 
+			 <label></label>
+			 <br>
+			 <br>
+				<button type="submit"  class="btn btn-primary btn-md"><i class="glyphicon glyphicon-search"></i></button>
+			</div>  
+			</form>
+        </div>   
+      
+       
+        <div class="col-sm-12"> 
+          <br>
+        </div>  
+        
+        <div class="col-sm-12"> 
             <legend th:text="${ledger.user.name}"></legend>
         </div>  
-      
+      <h4>Last <span th:text="${numberOfDays}"></span> Days Transactions</h4>
         <div class="col-sm-7">
-            <h4>Last <span th:text="${numberOfDays}"></span> Days Transactions</h4>
+            
             <div class="row">
                 <div class="col-xs-12">
                     <div class="table-responsive">
@@ -65,14 +105,25 @@
             </div>
             <div class="row text-left">
                 <div class="col-xs-12">
-                    <h4>Total: <strong><span th:text="${ledger.user.amountBalance}"></span></strong></h4>
+                    <h4>Total: <strong><span th:text="${ledger.amount}"></span></strong></h4>
                 </div>
             </div>
+             <div class="row text-left">
+                <div class="col-xs-12">
+                    <h4>User Balance: <strong><span th:text="${ledger.user.amountBalance}"></span></strong></h4>
+                </div>
+            </div>
+            
             <div class="row">
+                <form th:action="@{/transactionReport}" method="post">
                 <div class="col-xs-12">
                     <hr style="border:1px dashed #dddddd;">
-                    <button type="button" class="btn btn-primary btn-block">Show More Details</button>
-                </div>                
+                    <input type="hidden" th:value="${ledger.user.userId}" name="userId">
+                    <input type="hidden" th:value="${fromDate}" name="transactionStartDate">
+                    <input type="hidden" th:value="${toDate}" name="transactionEndDate">
+                    <button type="submit" class="btn btn-primary btn-block">Show More Details</button>
+                </div>  
+                </form>              
             </div>
         </div>
         

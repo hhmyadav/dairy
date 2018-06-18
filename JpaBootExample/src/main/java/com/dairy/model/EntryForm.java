@@ -30,20 +30,20 @@ public class EntryForm {
 	private String dayType ; 
 	
 	@Column(nullable = false)
-	private double milkQuantity ;
+	private Double milkQuantity ;
 	
 	@Column(nullable = false)
 	private String milkType ;
 	
 	@Column(nullable = false)
-	private double perLiterPrice ;
+	private Double perLiterPrice ;
 	
 	@Column(nullable = false)
-	private double totalAmount ;    
+	private Double totalAmount ;    
 	
-	private double fat ;
+	private Double fat ;
 	
-	private double snf ;
+	private Double snf ;
 	
     
 	@ManyToOne
@@ -73,37 +73,37 @@ public class EntryForm {
 	public void setDayType(String dayType) {
 		this.dayType = dayType;
 	}
-	public double getMilkQuantity() {
+	public Double getMilkQuantity() {
 		return milkQuantity;
 	}
-	public void setMilkQuantity(double milkQuantity) {
+	public void setMilkQuantity(Double milkQuantity) {
 		this.milkQuantity = milkQuantity;
 	}
-	public double getPerLiterPrice() {
+	public Double getPerLiterPrice() {
 		return perLiterPrice;
 	}
-	public void setPerLiterPrice(double perLiterPrice) {
+	public void setPerLiterPrice(Double perLiterPrice) {
 		this.perLiterPrice = perLiterPrice;
 	}
 	
-	public double getTotalAmount() {
+	public Double getTotalAmount() {
 		return totalAmount;
 	}
 
-	public void setTotalAmount(double totalAmount) {
+	public void setTotalAmount(Double totalAmount) {
 		this.totalAmount = totalAmount;
 	}
 
-	public double getFat() {
+	public Double getFat() {
 		return fat;
 	}
-	public void setFat(double fat) {
+	public void setFat(Double fat) {
 		this.fat = fat;
 	}
-	public double getSnf() {
+	public Double getSnf() {
 		return snf;
 	}
-	public void setSnf(double snf) {
+	public void setSnf(Double snf) {
 		this.snf = snf;
 	}
 	public String getMilkType() {

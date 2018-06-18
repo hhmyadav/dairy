@@ -13,20 +13,21 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name="user")
 public class User {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
-    private Long userId;
+    @GeneratedValue(strategy=GenerationType.AUTO )
+     private Long userId;
     @Column(nullable = false)
     private String name;
     private String email ;
     private String address ;
-    private long mobileNumber;
+    private Long mobileNumber;
     private char userType ;
-    private double amountBalance ;
+    private Double amountBalance ;
 
     
     @OneToMany(cascade = CascadeType.ALL,
@@ -51,11 +52,11 @@ public class User {
 	}
 
     
-    public long getMobileNumber() {
+    public Long getMobileNumber() {
 		return mobileNumber;
 	}
 
-	public void setMobileNumber(long mobileNumber) {
+	public void setMobileNumber(Long mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
 
@@ -110,11 +111,11 @@ public class User {
 		this.ledgers = ledgers;
 	}
 
-	public double getAmountBalance() {
+	public Double getAmountBalance() {
 		return amountBalance;
 	}
 
-	public void setAmountBalance(double amountBalance) {
+	public void setAmountBalance(Double amountBalance) {
 		this.amountBalance = amountBalance;
 	}
 

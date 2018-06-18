@@ -51,11 +51,11 @@ public class EntryFormController {
         	   
         	   entryForm.setEntryDateTime(LocalDateTime.now());
         	   
-        	   entryForm.setDayType("m");
+        	   entryForm.setDayType("MORNING");
         	   if(LocalDateTime.now().getHour() >= 14)
-        	   entryForm.setDayType("e");
+        	   entryForm.setDayType("EVENING");
         	   
-        	   entryForm.setMilkType("buffalo");
+        	   entryForm.setMilkType("Buffalo");
         	   return "entryForm";
 	    }
         

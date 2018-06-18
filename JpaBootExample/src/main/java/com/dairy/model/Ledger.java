@@ -2,7 +2,6 @@ package com.dairy.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,16 +19,15 @@ public class Ledger {
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-	private long id ; 
+	private Long id ; 
 	@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
 	private LocalDateTime transactionDate ;
 	private String dayType; 
-	private double amount ;
+	private Double amount ;
 	private String paymentType ;
 	private String paymentBy ;
 	private String paymentSummary ;
-    
-	
+   
 	
 	@ManyToOne
 	@JoinColumn(name = "userId",nullable=false)
@@ -42,10 +40,10 @@ public class Ledger {
 	public void setPaymentType(String paymentType) {
 		this.paymentType = paymentType;
 	}
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
@@ -64,10 +62,10 @@ public class Ledger {
 	public void setDayType(String dayType) {
 		this.dayType = dayType;
 	}
-	public double getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
-	public void setAmount(double amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 	public String getPaymentSummary() {

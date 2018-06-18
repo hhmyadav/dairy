@@ -47,7 +47,7 @@ public class TransactionReportController {
 	    @RequestMapping(value={""}, method={RequestMethod.POST,RequestMethod.GET})	
 	    public String getAllTransactions(Model model) {
 	    	
-  	      return "userTransactionReport";
+  	      return "ledgerHistory2";
 	    }
 	    
 	    

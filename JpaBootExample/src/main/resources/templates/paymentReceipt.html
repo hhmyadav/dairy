@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-xs-6 col-sm-6 col-md-6">
                     <address>
-                        <strong  >Krishna Milk Dairy</strong>
+                        <strong>Krishna Milk Dairy</strong>
                         <br>
                         Shivpur
                         <br>
@@ -55,13 +55,13 @@
                     <tbody>
                         <tr>
                             <td class="col-md-9"><em>Cow Milk</em></td>
-                            <td class="col-md-1" style="text-align: center"> 2 </td>
+                            <td th:text="${cowMilkQuantity}" class="col-md-1" style="text-align: center"> 2 </td>
                             <td class="col-md-1 text-center">13 -/rs</td>
                             <td class="col-md-1 text-center">26 -rs</td>
                         </tr>
                         <tr>
                             <td class="col-md-9"><em>Buffalo Milk</em></td>
-                            <td class="col-md-1" style="text-align: center"> 23 </td>
+                            <td th:text="${buffaloMilkQuantity}" class="col-md-1" style="text-align: center"> 23 </td>
                             <td class="col-md-1 text-center">48 Rs.</td>
                             <td class="col-md-1 text-center">1254 Rs.</td>
                         </tr>
@@ -88,7 +88,7 @@
                             <td></td>
                             <td></td>
                             <td class="text-right"><h4><strong>Total:</strong></h4></td>
-                            <td class="text-center text-danger"><h4><strong>$31.53</strong></h4></td>
+                            <td class="text-center text-danger"><h4><strong th:text="${finalAmount}">$31.53</strong></h4></td>
                         </tr>
                     </tbody>
                 </table>
