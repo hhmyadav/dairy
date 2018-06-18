@@ -1,5 +1,6 @@
 package com.dairy.controller;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -41,6 +42,7 @@ public class PaymentFormController {
 	EntryFormService entryFormService ; 
 	
 	DateTimeFormatter ddMMyyyyFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+	DecimalFormat df = new DecimalFormat("#.##");  
 	
     @RequestMapping(value={"","user","user/{id}"} , method={RequestMethod.POST,RequestMethod.GET})	    
     public String setPaymentForm(@PathVariable Optional<Integer> id ,

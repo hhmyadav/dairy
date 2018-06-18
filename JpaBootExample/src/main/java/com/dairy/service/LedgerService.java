@@ -1,5 +1,6 @@
 package com.dairy.service;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,6 +30,8 @@ public class LedgerService {
 	 private static final String PAYMENT_SUMMARY_USER_ADDED =  "New User Added With Old Balance : " ;
 	 private static final String PAYMENT_SUMMARY_PAYMENT_FORM = "Paying Amount To User : " ;
 	
+	 private DecimalFormat twoDecimalFormat = new DecimalFormat("#.##");  
+	 
 	@Autowired
 	LedgerRepository ledgerRepository ; 
 	
