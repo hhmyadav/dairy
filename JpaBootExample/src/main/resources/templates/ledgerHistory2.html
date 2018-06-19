@@ -136,7 +136,6 @@
                             <tr th:each="transaction: ${ledgers}">
                                 <td th:text="${transaction.user.userId}"></td>
                                 <td th:text="${transaction.user.name}"></td>
-                                <td th:text="${transaction.user.amountBalance}"></td>
                                 <td th:text="${#temporals.day(transaction.transactionDate)} +' '+ ${#temporals.monthNameShort(transaction.transactionDate)} +' '+ ${#temporals.year(transaction.transactionDate)} +' ('+${#temporals.dayOfWeekNameShort(transaction.transactionDate)}+')'"></td>
                                 <td th:text="${transaction.dayType}"></td>
                                 <td th:text="${transaction.paymentBy}"></td>

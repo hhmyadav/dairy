@@ -123,7 +123,7 @@
             </div>
             
             <div class="row">
-                <form th:action="@{/transactionReport}" method="post">
+                <form th:action="@{/transactionReport/paymentHistory}" method="post">
                 <div class="col-xs-12">
                     <hr style="border:1px dashed #dddddd;">
                     <input type="hidden" th:value="${ledger.user.userId}" name="userId">
