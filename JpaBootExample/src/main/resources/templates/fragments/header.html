@@ -114,68 +114,59 @@ $(document).ready(function(){
 
 		if ((fat != '' && fat >= 2) && (snf != '' && snf >= 7)) 
 		{
-			alert(snf + "   : " + fat);
-			var incvaluf = 0.21;
+			//alert(snf + "   : " + fat);
+			var incvalur = 0.21;
 			
 			
 			var basePrice = 13.95;
 			
-			for (var i = 2 ; i < fat; i = i + 0.1) 
+			for (var i = 2 ; i.toFixed(2) < fat; i = i + 0.1) 
 			{
 				
-				if (incvaluf == 0.20) {
-					basePrice = Number(basePrice.toFixed(2)) + incvaluf;
-					incvaluf = 0.21;
+				if (incvalur == 0.20) {
+					basePrice = Number(basePrice.toFixed(2)) + incvalur;
+					incvalur = 0.21;
 				}else {
-					basePrice = Number(basePrice.toFixed(2)) + incvaluf;
-					incvaluf = 0.20;
+					basePrice = Number(basePrice.toFixed(2)) + incvalur;
+					incvalur = 0.20;
 				}
 			}
 			
-			updatePrice2(basePrice,snf);
-		}
+			incvalur = 0.50;
+			
+			for (var i = 7; i.toFixed(2) < snf; i = i + 0.1) 
+	    	{   
+	    	                    
+	           if((fat + "").split(".")[1] % 2 == 0 && i == 7.0) {
+						incvalur = 0.51;
+					}
+	    
+				 if (incvalur == 0.51) {
+					basePrice = Number(basePrice.toFixed(2)) + incvalur;
+					//alert(" 51i  : " + basePrice); 
+					incvalur = 0.50;
+				} else {
+					basePrice = Number(basePrice.toFixed(2)) + incvalur;
+					//alert(" 50i  : " + basePrice); 
+					incvalur = 0.51;
+				}  
+				 
+				 basePrice = Number(basePrice.toFixed(2))
+	              
+			}
+	    	
+	    	$("#price").val(basePrice.toFixed(2));
+
+			var price = $("#price").val();
+
+			$('#totalAmount').val(price * milkQuantity);
+	     }
+			
+			
+    }
 
 		
-	}
-
-   
-    function updatePrice2(value , value1)
-    {  
-    	
-    	var basePrice = value ; 
-    	var incvalur = 0.50;
-    	var snf = value1 ;
-    	
-    	
-    	alert(snf + "   : " + basePrice);
-    	
-    	for (var i = 7; i < snf; i = i + 0.1) 
-    	{   
-    		i = Number(i.toFixed(2))
-    		alert(" i  : " + i); 
-			/* if (fat%2 == 0 && i == 7.0) {
-				incvalur = 0.51;
-			}
- */
-			if (incvalur == 0.51) {
-				basePrice = Number(basePrice.toFixed(2)) + incvalur;
-				alert(" 51i  : " + basePrice); 
-				incvalur = 0.50;
-			} else {
-				basePrice = Number(basePrice.toFixed(2)) + incvalur;
-				alert(" 50i  : " + basePrice); 
-				incvalur = 0.51;
-			}
-               basePrice = Number(basePrice.toFixed(2))
-		}
-    	
-    	$("#price").val(basePrice.toFixed(2));
-
-		var price = $("#price").val();
-
-		$('#totalAmount').val(price * milkQuantity);
-     }
-  
+	
 	function updateTotalAmount() {
 
 		var milkQuantity = $("#milkQuantity").val();
