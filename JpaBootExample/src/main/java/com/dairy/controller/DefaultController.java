@@ -30,7 +30,7 @@ public class DefaultController {
    public String indexGet(Model model) {
 	    
 	   LOGGER.info("--------HomePage Opened---------");
-          return "homePage";
+          return "dashBoard";
     }
 
     

@@ -222,136 +222,10 @@ table.table .avatar {
 </style>
 
 
-	
-
-<script type="text/javascript">
-	
-		/* 
-	 function doAjaxPost() {  
-	 // get the form values  
-	 var userId = $('#userId').val();
-	 var fat = $('#fat').val();
-	 alert(userId)
-	
-	 $.ajax({  
-	 type: 'POST',  
-	 url : "/userOperation/test",
-	
-	 data: $("#filtring-form").serialize(),
-	 success: function(data){ 
-	
-
-	 alert(data)
-	 //alert(jdata)
-	 // we have the response  
-	 $('#info').html(data);
-	 },  
-	 error: function(e){  
-	
-	 alert('Error: ' + e);  
-	 }  
-	 });  
-	 }
-	
-	 */
-
-	/* 
-	 $( document ).ready(function() {
-	
-	 // SUBMIT FORM
-	 $("#userForm").submit(function(event) {
-	 // Prevent the form from submitting via the browser.
-	 event.preventDefault();
-	 ajaxPost();
-	 });
-	
-	
-	 function ajaxPost(){
-	
-	 // PREPARE FORM DATA
-	 var formData = {
-	 userId : $("#userId").val(),
-	 name :  $("#name").val()
-	 milkQuantity : $("#milkQuantity").val();
-	 snf : $("#snf").val();
-	 fat : $("#fat").val();
-	 price : $("#price").val();
-	 totalAmount : $("#totalAmount").val();
-	 genderboxes-0
-	 genderboxes-1
-	
-	 }
-	
-	 // DO POST
-	 $.ajax({
-	 type : "POST",
-	 contentType : "application/json",
-	 url : window.location + "api/customer/save",
-	 data : JSON.stringify(formData),
-	 dataType : 'json',
-	 success : function(result) {
-	 if(result.status == "Done"){
-	 $("#postResultDiv").html("<p style='background-color:#7FA7B0; color:white; padding:20px 20px 20px 20px'>" + 
-	 "Post Successfully! <br>" +
-	 "---> Customer's Info: FirstName = " + 
-	 result.data.firstname + " ,LastName = " + result.data.lastname + "</p>");
-	 }else{
-	 $("#postResultDiv").html("<strong>Error</strong>");
-	 }
-	 console.log(result);
-	 },
-	 error : function(e) {
-	 alert("Error!")
-	 console.log("ERROR: ", e);
-	 }
-	 });
-	
-	 // Reset FormData after Posting
-	 resetData();
-	
-	 }
-	
-	 function resetData(){
-	 $("#firstname").val("");
-	 $("#lastname").val("");
-	 }
-	 })
-	 */
-</script>
-
-
 </head>
 <body>
 <div th:replace="fragments/header :: header"> </div>
-    <!-- <div class="container">
-		<div class="table-wrapper">
-			<div class="table-title">
-				<div class="row">
-					<div class="col-sm-6">
-
-						<h2>
-							Entry <b>Form</b>
-						</h2>
-
-					</div>
-					<div class="col-sm-3">
-						<div class="search-box">
-							<div class="input-group">
-								<input type="text" id="userIdSearch" oninput="updateNameSearch()"
-									class="form-control" placeholder="Search Name or Id"> <span
-									class="input-group-addon"><i class="material-icons">&#xE8B6;</i></span>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<a href="#addEmployeeModal" class="btn btn-success"
-							data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New User</span></a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> -->
-
+    
 	<div class="container">
          
 		<div class="text-center">
@@ -369,7 +243,7 @@ table.table .avatar {
 
 				<div class="col-md-4">
 
-					<input id="userId" onchange="updateName()" type="number"
+					<input id="userId" onchange="updateNameEntryForm()" type="number"
 						th:field="*{user.userId}" class="form-control input-md" /> <span
 						class="help-block">Please enter UserId</span>
 				</div>
