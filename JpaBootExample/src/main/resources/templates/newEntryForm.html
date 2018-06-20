@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html xmlns:th=“http://www.thymeleaf.org”>
+<head>
+
+<div th:replace="fragments/headerB4 :: header-css" />
+      
+         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous"> 
+     
+   
+<title>Today Entry</title>
+
+ <script>
+  $( function() {
+    $( "#entryDateTime" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
+  } );
+ </script>
+	
+<script type="text/javascript">
+	$(document).ready(function() {
+		// Activate tooltips
+		$('[data-toggle="tooltip"]').tooltip();
+
+		// Filter table rows based on searched term
+		$("#search").on("keyup", function() {
+			var term = $(this).val().toLowerCase();
+			$("table tbody tr").each(function() {
+				$row = $(this);
+				var name = $row.find("td:nth-child(2)").text().toLowerCase();
+				console.log(name);
+				if (name.search(term) < 0) {
+					$row.hide();
+				} else {
+					$row.show();
+				}
+			});
+		});
+	});
+</script>
+<script type="text/javascript">
+	/*     
+	 $(document).ready(function() {
+	 // Activate tooltip
+	 $('[data-toggle="tooltip"]').tooltip();
+
+	 // Select/Deselect checkboxes
+	 var checkbox = $('table tbody input[type="checkbox"]');
+	 $("#selectAll").click(function() {
+	 if (this.checked) {
+	 checkbox.each(function() {
+	 this.checked = true;
+	 });
+	 } else {
+	 checkbox.each(function() {
+	 this.checked = false;
+	 });
+	 }
+	 });
+	 checkbox.click(function() {
+	 if (!this.checked) {
+	 $("#selectAll").prop("checked", false);
+	 }
+	 });
+	 });
+	 */
+
+	function updatePrice() {
+
+		var milkQuantity = $("#milkQuantity").val();
+
+		var snf = 9 ; /* $("#snf").val(); */
+
+		var fat = $("#fat").val();
+
+		if (fat != '' && fat >= 2 && snf != '' && snf >= 7) {
+			//alert(snf + "   : " + fat);
+			var incvalur = 0.21;
+			var basePrice = 13.95;
+			
+			for (var i = 2.0; i < fat; i = i + 0.1) {
+				
+				
+				if (incvalur == 0.20) {
+					basePrice = Number(basePrice.toFixed(2)) + incvalur;
+					incvalur = 0.21;
+				} else {
+					basePrice = Number(basePrice.toFixed(2)) + incvalur;
+					incvalur = 0.20;
+				}
+				
+
+			}
+			
+
+		}
+
+		$("#price").val(basePrice.toFixed(2));
+
+		var price = $("#price").val();
+
+		$('#totalAmount').val(price * milkQuantity);
+	}
+
+	function updateTotalAmount() {
+
+		var milkQuantity = $("#milkQuantity").val();
+
+		var snf = $("#snf").val();
+
+		var fat = $("#fat").val();
+
+		var calculatedPrice = snf * fat;
+
+		var price = $("#price").val();
+
+		$('#totalAmount').val(price * milkQuantity);
+	}
+   
+	
+	function updateName() {
+
+		var userId = $("#userId").val();
+
+		location.href = "/entryForm/user/" + userId;
+		
+
+	}
+	function updateNameSearch() {
+
+		var userId = $("#userIdSearch").val();
+
+		location.href = "/entryForm/user/" + userId;
+
+	}
+	
+</script>
+
+
+</head>
+<body>
+
+<div class="container">
+ <div th:replace="fragments/headerB4 :: header"> </div>
+<form>
+
+<div class="row">
+
+ <div class=col-md-4>
+  
+   <div class="form-group row">
+    <label for="userId" class="col-4 col-form-label">User Id :</label> 
+     <div class="col-8">
+       <div class="input-group">
+        <div class="input-group-addon">
+          <i class="fa fa-address-card"></i>
+        </div> 
+        <input id="userId" name="userId" placeholder="user Id" aria-describedby="userIdHelpBlock" class="form-control here" type="text"> 
+        <div class="input-group-addon append">
+          <i class="fa fa-user"></i>
+        </div>
+      </div> 
+      <span id="userIdHelpBlock" class="form-text text-muted">Please enter UserId</span>
+    </div>
+  </div>
+  
+  <div class="form-group row">
+    <label for="name" class="col-4 col-form-label">Name :</label> 
+    <div class="col-8">
+      <div class="input-group">
+        <div class="input-group-addon">
+          <i class="fa fa-address-card"></i>
+        </div> 
+        <input id="name" name="name" placeholder="user name" aria-describedby="nameHelpBlock" class="form-control here" type="text"> 
+        <div class="input-group-addon append">
+          <i class="fa fa-user"></i>
+        </div>
+      </div> 
+      <span id="nameHelpBlock" class="form-text text-muted">User name cannot be changed</span>
+    </div>
+  </div>
+ 
+  <div class="form-group row">
+    <label for="accountBalance" class="col-4 col-form-label">Account Balance :</label> 
+    <div class="col-8">
+      <div class="input-group">
+        <div class="input-group-addon">Rs.</div> 
+        <input id="accountBalance" name="accountBalance" placeholder="current balance" aria-describedby="accountBalanceHelpBlock" class="form-control here" type="text"> 
+        <div class="input-group-addon append">-/</div>
+      </div> 
+      <span id="accountBalanceHelpBlock" class="form-text text-muted">Total Account Balance in Rupees (INR)</span>
+    </div>
+  </div>
+ </div>
+ 
+<div class="col-md-4">
+  
+  <div class="form-group row">
+    <label for="transactionDate" class="col-4 col-form-label">Entry Date :</label> 
+    <div class="col-8">
+      <div class="input-group">
+        <div class="input-group-addon">
+          <i class="fa fa-user"></i>
+        </div> 
+        <input id="entryDateTime" name="transactionDate" placeholder="dd/mm/yyyy HH:MM" aria-describedby="transactionDateHelpBlock" class="form-control here" type="text"> 
+        <div class="input-group-addon append">
+          <i class="fa fa-calendar"></i>
+        </div>
+      </div> 
+      <span id="transactionDateHelpBlock" class="form-text text-muted">Change date for old entries</span>
+    </div>
+  </div>
+  
+  <div class="form-group row">
+    <label for="dayType" class="col-4 col-form-label">Day :</label> 
+    <div class="col-8">
+      <select id="dayType" name="dayType" aria-describedby="dayTypeHelpBlock" class="custom-select">
+        <option value="MORNING">Morning</option>
+        <option value="EVENING">Evening</option>
+      </select> 
+      <span id="dayTypeHelpBlock" class="form-text text-muted">Please select Day</span>
+    </div>
+  </div>
+ 
+  <div class="form-group row">
+    <label for="milkType" class="col-4 col-form-label">Milk :</label> 
+    <div class="col-8">
+      <select id="milkType" name="milkType" aria-describedby="milkTypeHelpBlock" class="custom-select">
+        <option value="Buffalo">Buffalo</option>
+        <option value="Cow">Cow</option>
+      </select> 
+      <span id="milkTypeHelpBlock" class="form-text text-muted">Please select Milk</span>
+    </div>
+  </div> 
+ </div>
+
+<div class="col-md-4">
+ <div class="form-group row">
+    <label for="milkQuantity" class="col-4 col-form-label">Quantity :</label> 
+    <div class="col-8">
+      <div class="input-group">
+        <div class="input-group-addon">
+          <i class="fa fa-money"></i>
+        </div> 
+        <input id="milkQuantity" name="milkQuantity" placeholder="Milk Quantity " aria-describedby="milkQuantityHelpBlock" class="form-control here" required="required" type="text"> 
+        <div class="input-group-addon append">
+          <i class="fa fa-money"></i>
+        </div>
+      </div> 
+      <span id="milkQuantityHelpBlock" class="form-text text-muted">Please enter quantity of milk in liter</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="fat" class="col-4 col-form-label">FAT :</label> 
+    <div class="col-8">
+      <div class="input-group">
+        <div class="input-group-addon">
+          <i class="fa fa-money"></i>
+        </div> 
+        <input id="fat" name="fat" placeholder="Milk FAT" aria-describedby="fatHelpBlock" class="form-control here" type="text"> 
+        <div class="input-group-addon append">
+          <i class="fa fa-money"></i>
+        </div>
+      </div> 
+      <span id="fatHelpBlock" class="form-text text-muted">Please enter FAT</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="snf" class="col-4 col-form-label">SNF :</label> 
+    <div class="col-8">
+      <div class="input-group">
+        <div class="input-group-addon">
+          <i class="fa fa-money"></i>
+        </div> 
+        <input id="snf" name="snf" placeholder="Milk SNF" class="form-control here" aria-describedby="snfHelpBlock" type="text"> 
+        <div class="input-group-addon append">
+          <i class="fa fa-money"></i>
+        </div>
+      </div> 
+      <span id="snfHelpBlock" class="form-text text-muted">Please enter SNF</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="price" class="col-4 col-form-label">Price :</label> 
+    <div class="col-8">
+      <div class="input-group">
+        <div class="input-group-addon">
+          <i class="fa fa-money"></i>
+        </div> 
+        <input id="price" name="price" placeholder="Price" aria-describedby="priceHelpBlock" class="form-control here" required="required" type="text"> 
+        <div class="input-group-addon append">
+          <i class="fa fa-money"></i>
+        </div>
+      </div> 
+      <span id="priceHelpBlock" class="form-text text-muted">Please enter Rs. Per/Liter</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="totalAmount" class="col-4 col-form-label">Total Amount:</label> 
+    <div class="col-8">
+      <div class="input-group">
+        <div class="input-group-addon">Rs.</div> 
+        <input id="totalAmount" name="totalAmount" placeholder="Total Amount" aria-describedby="totalAmountHelpBlock" required="required" class="form-control here" type="text"> 
+        <div class="input-group-addon append">/-</div>
+      </div> 
+      <span id="totalAmountHelpBlock" class="form-text text-muted">Total amount in Rs. to be paid</span>
+    </div>
+  </div> 
+
+</div>
+  <div class="form-group row">
+    <div class="offset-4 col-8">
+      <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </div>
+  
+ </div>
+  
+</form>
+</div>   
+</body>
+</html>

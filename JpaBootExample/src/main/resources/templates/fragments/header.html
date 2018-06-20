@@ -1,29 +1,227 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:fragment="header-css">
+    	<div th:fragment="header-css">
         <!-- this is header-css -->
-        <link rel="stylesheet" type="text/css"
-              href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+       
+     
+        <link rel="stylesheet" th:href="@{/css/main.css}" href="../../css/main.css" /> 
+       
+        
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  
+<script type="text/javascript">
 
-        <link rel="stylesheet" th:href="@{/css/main.css}"
-              href="../../css/main.css" />
-    </div>
+
+$(document).ready(function(){
+	// Activate tooltips
+	$('[data-toggle="tooltip"]').tooltip();
+    
+	// Filter table rows based on searched term
+    $("#search").on("keyup", function() {
+        var term = $(this).val().toLowerCase();
+        $("table tbody tr").each(function(){
+            $row = $(this);
+            var name = $row.find("td:nth-child(2)").text().toLowerCase();
+            console.log(name);
+            if(name.search(term) < 0){                
+                $row.hide();
+            } else{
+                $row.show();
+            }
+        });
+    });
+});
+ 
+ $(document).ready(function(){
+		// Activate tooltip
+		$('[data-toggle="tooltip"]').tooltip();
+		
+		// Select/Deselect checkboxes
+		var checkbox = $('table tbody input[type="checkbox"]');
+		$("#selectAll").click(function(){
+			if(this.checked){
+				checkbox.each(function(){
+					this.checked = true;                        
+				});
+			} else{
+				checkbox.each(function(){
+					this.checked = false;                        
+				});
+			} 
+		});
+		checkbox.click(function(){
+			if(!this.checked){
+				$("#selectAll").prop("checked", false);
+			}
+		});
+	});
+
+	function rowClicked(value) {
+	    location.href = "/entryForm/user/"+ value;
+	}
+
+	function rowClickedPayNow(value) {
+	    location.href = "/paymentForm/user/"+ value;
+	}
+ 
+  $( function() {
+    $( "#startdate" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
+  } );
+  
+  
+  $( function() {
+	    $( "#enddate" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
+	  } );
+
+  
+  $( function() {
+    $( "#date" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
+  } );
+  
+  $( function() {
+	    $( "#fromDate" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
+	  } );
+  $( function() {
+	    $( "#toDate" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
+	  } );
+ 
+  $( function() {
+    $( "#entryDateTime" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
+  } );
+  
+  function updateName() {
+        var userId = $("#userId").val();
+		location.href = "/paymentForm/user/" + userId;
+   }
+  
+  
+  function updatePrice() {
+
+		var milkQuantity = $("#milkQuantity").val();
+		
+		var snf = $("#snf").val();
+
+		var fat = $("#fat").val();
+
+		if ((fat != '' && fat >= 2) && (snf != '' && snf >= 7)) 
+		{
+			//alert(snf + "   : " + fat);
+			var incvalur = 0.21;
+			
+			
+			var basePrice = 13.95;
+			
+			for (var i = 2 ; i.toFixed(2) < fat; i = i + 0.1) 
+			{
+				
+				if (incvalur == 0.20) {
+					basePrice = Number(basePrice.toFixed(2)) + incvalur;
+					incvalur = 0.21;
+				}else {
+					basePrice = Number(basePrice.toFixed(2)) + incvalur;
+					incvalur = 0.20;
+				}
+			}
+			
+			incvalur = 0.50;
+			
+			for (var i = 7; i.toFixed(2) < snf; i = i + 0.1) 
+	    	{   
+	    	                    
+	           if((fat + "").split(".")[1] % 2 == 0 && i == 7.0) {
+						incvalur = 0.51;
+					}
+	    
+				 if (incvalur == 0.51) {
+					basePrice = Number(basePrice.toFixed(2)) + incvalur;
+					//alert(" 51i  : " + basePrice); 
+					incvalur = 0.50;
+				} else {
+					basePrice = Number(basePrice.toFixed(2)) + incvalur;
+					//alert(" 50i  : " + basePrice); 
+					incvalur = 0.51;
+				}  
+				 
+				 basePrice = Number(basePrice.toFixed(2))
+	              
+			}
+	    	
+	    	$("#price").val(basePrice.toFixed(2));
+
+			var price = $("#price").val();
+
+			$('#totalAmount').val(price * milkQuantity);
+	     }
+			
+			
+    }
+
+		
+	
+	function updateTotalAmount() {
+
+		var milkQuantity = $("#milkQuantity").val();
+
+		var price = $("#price").val();
+
+		$('#totalAmount').val(price * milkQuantity);
+	}
+ 
+	
+	function updateName() {
+
+		var userId = $("#userId").val();
+
+		location.href = "/entryForm/user/" + userId;
+		
+
+	}
+	function updateNameSearch() {
+
+		var userId = $("#userIdSearch").val();
+
+		location.href = "/entryForm/user/" + userId;
+
+	}
+
+  
+ </script>
+        
+
+</div>
 </head>
 <body>
 <div th:fragment="header">
-    <!-- this is header -->
-    <nav class="navbar navbar-inverse">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" th:href="@{https://www.dxc.com}">www.DXC.com</a>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a th:href="@{/}">Home</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+   <nav class="navbar navbar-inverse">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">WebSiteName</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="/">Home</a></li>
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Page 1-1</a></li>
+          <li><a href="#">Page 1-2</a></li>
+          <li><a href="#">Page 1-3</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Page 2</a></li>
+      <li><a href="#">Page 3</a></li>
+    </ul>
+  </div>
+</nav> 
 </div>
 
 </body>
