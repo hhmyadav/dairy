@@ -74,7 +74,6 @@ public class PaymentFormController {
     		 List<EntryForm> entryForms = entryFormService.getEntryForms(userId.longValue(), fromDate, toDate ,fromLastPaid);
     		 
     		 
-    		 
     		 user.setEntryForms(entryForms);
     		 
     		 ledger = ledgerService.setDefaultLedgerForPaymentForm(ledger , user);

@@ -2,6 +2,7 @@ package com.dairy.service;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class LedgerService {
 	 private static final String PAYMENT_SUMMARY_USER_ADDED =  "New User Added With Old Balance : " ;
 	 private static final String PAYMENT_SUMMARY_PAYMENT_FORM = "Paying Amount To User : " ;
 	
-	 private DecimalFormat twoDecimalFormat = new DecimalFormat("#.##");  
+	
 	 
 	@Autowired
 	LedgerRepository ledgerRepository ; 
@@ -93,7 +94,18 @@ public class LedgerService {
 	 	if(LocalDateTime.now().getHour() >= 14)
 	 	 ledger.setDayType(DAYTYPE_EVENING);
 		
-		ledger.setAmount(user.getAmountBalance());
+	 	double currentTotalAmount = (double) 0 ;
+	 	List<EntryForm> entryForms = user.getEntryForms();
+        
+        Iterator<EntryForm> entryForm = entryForms.iterator();
+		  
+		  while (entryForm.hasNext()) {
+		
+			EntryForm entryform = entryForm.next();
+			
+			currentTotalAmount = currentTotalAmount + entryform.getTotalAmount();
+		  } 
+		ledger.setAmount(format2Decimal(currentTotalAmount));
 	  
  	    ledger.setPaymentBy(PAYMENT_BY_CASH);
 		ledger.setPaymentSummary(PAYMENT_SUMMARY_PAYMENT_FORM + user.getName());
@@ -235,11 +247,11 @@ public class LedgerService {
 		
 	}
 	
-	public LocalDateTime getTransactionDate(Long userId , String paymentType)
+	public Ledger getLedgerByLastTransactionDate(Long userId , String paymentType)
 	{         
 		Ledger ledger = ledgerRepository.findFirstByUserUserIdAndPaymentTypeOrderByTransactionDateDesc(userId ,paymentType);
 		
-		return ledger.getTransactionDate() ;
+		return ledger ;
 	}
 	
 	
@@ -247,6 +259,12 @@ public class LedgerService {
         if(str != null && !str.trim().isEmpty())
             return false;
         return true;
+    }
+	
+    public Double format2Decimal(double value)
+    {    
+        DecimalFormat twoDecimalFormat = new DecimalFormat("#.##");  
+    	return Double.valueOf(twoDecimalFormat.format(value));
     }
 	
 	

@@ -79,26 +79,10 @@ public class EntryFormController {
             
         	entryForm = entryFormService.saveEntryForm(ledger,entryForm);
         	
-        	redirectAttribute.addFlashAttribute("result", "Successfully Saved "+entryForm.getUser().getName()+ " Form.");
+        	redirectAttribute.addFlashAttribute("result", "Successfully Saved "+entryForm.getUser().getName()+ " Entry");
         	return "redirect:/entryForm/user/" + entryForm.getUser().getUserId();
 	    }
        
-        
-       /* @RequestMapping(value="byDate", method={RequestMethod.POST,RequestMethod.GET})
-        public String getTransactionsByDate(
-	    		  @RequestParam(value="fromDate", required=true) String fromDate,
-	              @RequestParam(value="toDate", required=false) Date todate,Model model) {
-	    	
-    	   return "entryForm";
-	    }
-        
-        @RequestMapping(value="byUserIdandDate", method={RequestMethod.POST,RequestMethod.GET})
-        public String getTransactionsByUserIdandDate(
-        		  @RequestParam(value="userId", required=true) String userId,
-	              @RequestParam(value="fromDate", required=true) Date fromdate,
-	              @RequestParam(value="toDate", required=false) String toDate,Model model){
-	    	
-    	   return "entryForm";
-	    }*/
+      
         
 }

@@ -1,7 +1,6 @@
 package com.dairy.controller;
 
 import java.text.DecimalFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.dairy.model.EntryForm;
 import com.dairy.model.Ledger;
 import com.dairy.model.User;
 import com.dairy.repository.LedgerRepository;

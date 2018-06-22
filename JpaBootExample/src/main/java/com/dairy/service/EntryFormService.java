@@ -42,9 +42,10 @@ public class EntryFormService {
     {   
     	if(fromLastPaid != null)
     	{
-    		fromDate = ledgerService.getTransactionDate(userId ,"DEBIT");
-    		System.out.println(fromDate.getDayOfMonth());
-    		System.out.println(fromDate.getMonth());
+    	  Ledger ledger = ledgerService.getLedgerByLastTransactionDate(userId ,"DEBIT");
+    	   
+    	   if(ledger!=null)
+    	   fromDate = ledger.getTransactionDate();
     	}
     	
     	if(fromDate!=null && toDate==null)
