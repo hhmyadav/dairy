@@ -61,7 +61,8 @@ public class PaymentFormController {
     	   
     	   
     		  Integer userId = id.get();
-    		if(!userService.existsById(userId)) 
+    		 
+    		 if(!userService.existsById(userId)) 
     	     { 
     		  model.addAttribute("result","Cannot find userId #" + userId);
     	      return "paymentForm";
@@ -69,21 +70,18 @@ public class PaymentFormController {
     		 user = userService.getOne(userId);
     		 
     		 if(fromDate==null)
-       		  fromDate = LocalDateTime.now().minusDays(11);
+       		  {
+    			 fromDate = LocalDateTime.now().minusDays(11);
+    		  }
     		 
-    		 List<EntryForm> entryForms = entryFormService.getEntryForms(userId.longValue(), fromDate, toDate ,fromLastPaid);
+    		 List<EntryForm> entryForms = entryFormService.getEntryForms(model , userId.longValue(), fromDate, toDate ,fromLastPaid);
     		 
     		 
     		 user.setEntryForms(entryForms);
     		 
     		 ledger = ledgerService.setDefaultLedgerForPaymentForm(ledger , user);
     		 
-    		 if(toDate == null)
-    	       toDate = LocalDateTime.now();
-    			 
-    	     
-    		 model.addAttribute("fromDate", fromDate.format(ddMMyyyyFormatter));
-    		 model.addAttribute("toDate",toDate.format(ddMMyyyyFormatter));
+    		
     		 
     		 long numberOfDays = ChronoUnit.DAYS.between(fromDate, toDate);
     		 
