@@ -1,7 +1,5 @@
 package com.dairy.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -18,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.dairy.model.Ledger;
 import com.dairy.model.User;
 import com.dairy.service.UserService;
-import com.mysql.fabric.FabricCommunicationException;
-import com.mysql.fabric.Response;
+
 
 @Controller
 @RequestMapping("/userOperation")
