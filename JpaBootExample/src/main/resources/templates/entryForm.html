@@ -234,7 +234,7 @@ table.table .avatar {
 		</div>
 		
 		<div class="">
-		<form id="userForm" th:action="@{save}" 
+		<form id="entryForm" th:action="@{save}" 
 			th:object="${entryForm}" class="form-horizontal" method="post">
 
 			<!-- UserId input-->
@@ -291,13 +291,13 @@ table.table .avatar {
 
 				<div class="col-md-4">
 					<div class="checkbox">
-						<label> <input name="genderboxes" th:field="*{dayType}"
-							id="genderboxes-0" value="MORNING" type="radio"> Morning
+						<label> <input th:field="*{dayType}"
+							value="MORNING" type="radio"> Morning
 						</label>
 					</div>
 					<div class="checkbox">
-						<label> <input name="genderboxes" th:field="*{dayType}"
-							id="genderboxes-1" value="EVENING" type="radio"> Evening
+						<label> <input th:field="*{dayType}"
+							 value="EVENING" type="radio"> Evening
 						</label>
 					</div>
 					<span class="help-block">Please select day type</span>
@@ -312,14 +312,14 @@ table.table .avatar {
 
 				<div class="col-md-4">
 					<div class="checkbox">
-						<label> <input name="genderboxes" th:field="*{milkType}"
-							id="genderboxes-0" value="Buffalo" type="radio">
+						<label> <input th:field="*{milkType}"
+							oninput="updatePrice()" value="Buffalo" type="radio">
 							Buffalo
 						</label>
 					</div>
 					<div class="checkbox">
-						<label> <input name="genderboxes" th:field="*{milkType}"
-							id="genderboxes-1" value="Cow" type="radio"> Cow
+						<label> <input th:field="*{milkType}"
+							oninput="updatePrice()" value="Cow" type="radio"> Cow
 						</label>
 					</div>
 					<span class="help-block">Please select milk type</span>
