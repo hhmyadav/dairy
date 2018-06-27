@@ -314,11 +314,14 @@ $(document).ready(function(){
 });
 
 function rowClicked(value) {
-	window.location.href = "/entryForm/user/"+ value;
+	
+	var ctx = "${pageContext.request.contextPath}"
+	
+	window.location.href = ctx +"/entryForm/user/"+ value;
 }
 
 function rowClickedPayNow(value) {
-	window.location.href = "/paymentForm/user/"+ value;
+	window.location.href = ctx +"/paymentForm/user/"+ value;
 }
 
 
