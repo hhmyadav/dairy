@@ -26,7 +26,7 @@ public class DefaultController {
 			model.addAttribute("ownerName",ownerName);
 	    }
    
-   @RequestMapping(value={"/","/index","/result"}, method={RequestMethod.POST,RequestMethod.GET})
+   @RequestMapping(value={"/","/index","/home","/welcome"}, method={RequestMethod.POST,RequestMethod.GET})
    public String indexGet(Model model) {
 	    
 	   LOGGER.info("--------HomePage Opened---------");

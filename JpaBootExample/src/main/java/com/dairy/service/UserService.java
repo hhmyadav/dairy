@@ -25,7 +25,8 @@ public class UserService {
 	 
 	 @Transactional
 	 public void addUser(User user)
-	 {   
+	 {  
+		if(user.getAmountBalance()==null) user.setAmountBalance(0.0);  
 		user = ledgerService.setLedgerForNewUser(user);
 		userRepository.save(user);
 	 }

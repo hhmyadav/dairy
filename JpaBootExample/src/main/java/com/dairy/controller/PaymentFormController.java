@@ -82,7 +82,7 @@ public class PaymentFormController {
     		 ledger = ledgerService.setDefaultLedgerForPaymentForm(ledger , user);
     		 
     		
-    		 
+    		 toDate = LocalDateTime.now();
     		 long numberOfDays = ChronoUnit.DAYS.between(fromDate, toDate);
     		 
     		 model.addAttribute("numberOfDays",numberOfDays);

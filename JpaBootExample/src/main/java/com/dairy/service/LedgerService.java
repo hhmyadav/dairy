@@ -119,7 +119,7 @@ public class LedgerService {
 		user.getLedgers().get(0).setPaymentType(CREDIT);
 		user.getLedgers().get(0).setDayType(DAYTYPE_NA);
 		user.getLedgers().get(0).setTransactionDate(LocalDateTime.now());
-		user.getLedgers().get(0).setAmount(user.getAmountBalance());
+		user.getLedgers().get(0).setAmount(format2Decimal(user.getAmountBalance()));
 		user.getLedgers().get(0).setPaymentBy(PAYMENT_BY_OLD_BALANCE);
 		user.getLedgers().get(0).setUser(user);
 		user.getLedgers().get(0).setPaymentSummary(PAYMENT_SUMMARY_USER_ADDED + user.getName());
