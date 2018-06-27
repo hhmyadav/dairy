@@ -90,14 +90,12 @@
 			<!-- By default that is to put the resulting archive into the 'webapps' 
 				folder. -->
 			<!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
-			<id>openshift</id>
+			
 			<build>
 				<finalName>ROOT</finalName>
 				<plugins>
 					<plugin>
-						<artifactId>maven-war-plugin</artifactId>
 						<configuration>
-							<outputDirectory>webapps</outputDirectory>
 							<warName>ROOT</warName>
 						</configuration>
 					</plugin>
