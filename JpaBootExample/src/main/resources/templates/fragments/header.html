@@ -343,7 +343,17 @@ $(document).ready(function(){
 		
 	  
   }
-   
+  function updatePriceSell() { 
+	
+	  var milkQuantity = $("#milkQuantity").val();
+	  var price = $("#price").val();
+	 
+      var totalAmount = price * milkQuantity ;
+			
+	  $('#totalAmount').val(totalAmount.toFixed(2));
+
+  } 
+  
   
   function updatePriceOld() {
 
@@ -416,9 +426,14 @@ $(document).ready(function(){
 	}
  
 	
-	function updateNameEntryForm() {
+	function updateNameEntryFormBuy() {
         var userId = $("#userId").val();
-        location.href = "/entryForm/user/" + userId;
+        location.href = "/entryForm/user/buy/" + userId;
+
+	}
+	function updateNameEntryFormSell() {
+        var userId = $("#userId").val();
+        location.href = "/entryForm/user/sell/" + userId;
 
 	}
 	
@@ -458,10 +473,11 @@ $(document).ready(function(){
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="/">Dashboard</a></li>
-      <li><a th:href="@{/userOperation/users}">User Management</a></li>
-      <li><a th:href="@{/entryForm/user}">Entry Form</a></li>
-      <li><a th:href="@{/paymentForm/user}">Pay Now</a></li>
-      <li><a th:href="@{/transactionReport}">Check Records</a></li>
+		      <li><a th:href="@{/userOperation/users}">User Management</a></li>
+		      <li><a th:href="@{/entryForm/user/buy}">Buy Milk</a></li>
+		      <li><a th:href="@{/entryForm/user/sell}">Sell Milk</a></li>
+		      <li><a th:href="@{/paymentForm/user}">Pay Now</a></li>
+		      <li><a th:href="@{/transactionReport}">Check Records</a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">

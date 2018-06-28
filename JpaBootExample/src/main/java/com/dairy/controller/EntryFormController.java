@@ -31,11 +31,11 @@ public class EntryFormController {
 	     
 	@Autowired
 	UserService userService ;
-	  
+	   
 
 	
-	    @RequestMapping(value={"","user","user/{id}"} , method={RequestMethod.POST,RequestMethod.GET})	    
-        public String setEntryFormByUserId(@PathVariable Optional<Integer> id , User user , EntryForm entryForm,Model model) {
+	    @RequestMapping(value={"user/{type}","user/{type}/{id}"} , method={RequestMethod.GET})	    
+        public String setEntryFormByUserId(@PathVariable String type,@PathVariable Optional<Integer> id , User user , EntryForm entryForm,Model model) {
         	
         	   if(id.isPresent())
         	   { 
@@ -43,7 +43,9 @@ public class EntryFormController {
         		if(!userService.existsById(userId)) 
         	     { 
         		  model.addAttribute("result","Cannot find userId #" + userId);
-        	      return "entryForm";
+        		  if(type.toLowerCase().equals("buy"))
+               	   return "buyEntryForm";
+        		  return "sellEntryForm";
         	     }
         		user = userService.getOne(userId);
         		entryForm.setUser(user);
@@ -56,13 +58,21 @@ public class EntryFormController {
         	   entryForm.setDayType("EVENING");
         	   
         	   entryForm.setMilkType("Buffalo");
-        	   return "entryForm";
+        	   
+        	   if(type.toLowerCase().equals("sell"))
+        	   {   entryForm.setType("SELL");
+        	       entryForm.setPerLiterPrice(40.0); 
+        		   return "sellEntryForm";
+        	   }
+        	   entryForm.setType("BUY");
+        	   return "test2";
 	    }
         
         
-        @RequestMapping(value="user/save", method={RequestMethod.POST})	    
+        @RequestMapping(value="user/{type}/save", method={RequestMethod.POST})	    
         public String saveEntryForm(Ledger ledger , @Valid EntryForm entryForm,RedirectAttributes redirectAttribute , BindingResult bindingResult ,Model model) {
              
+        	
             if (bindingResult.hasErrors()) {
         		
         		System.out.println(bindingResult.getFieldErrorCount());
@@ -80,7 +90,7 @@ public class EntryFormController {
         	entryForm = entryFormService.saveEntryForm(ledger,entryForm);
         	
         	redirectAttribute.addFlashAttribute("result", "Successfully Saved "+entryForm.getUser().getName()+ " Entry");
-        	return "redirect:/entryForm/user/" + entryForm.getUser().getUserId();
+        	return "redirect:/entryForm/user/{type}/" + entryForm.getUser().getUserId();
 	    }
        
       

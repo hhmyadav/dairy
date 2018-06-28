@@ -40,17 +40,28 @@ public class LedgerService {
 	public Ledger saveLedgerFromEntryForm(EntryForm entryForm , Ledger ledger)
 	{    
 		
-		ledger.setAmount(entryForm.getTotalAmount());
-		ledger.setPaymentType(CREDIT);
 		
-		ledger.setDayType(entryForm.getDayType());
+		
 		
 		ledger.setTransactionDate(entryForm.getEntryDateTime());
-		ledger.setPaymentBy(PAYMENT_BY_MILK);
+		ledger.setDayType(entryForm.getDayType());
 		ledger.setUser(entryForm.getUser());
 		
-		if(ledger.getPaymentSummary() == null || ledger.getPaymentSummary().equals(""))
-		ledger.setPaymentSummary(PAYMENT_SUMMARY_MILK_PURCHASED +entryForm.getUser().getName());
+		ledger.setAmount(entryForm.getTotalAmount());
+		ledger.setPaymentBy(PAYMENT_BY_MILK);
+		if(entryForm.getType().toUpperCase().equals("BUY"))
+		{
+			ledger.setPaymentType(CREDIT);
+			if(ledger.getPaymentSummary() == null || ledger.getPaymentSummary().equals(""))
+			ledger.setPaymentSummary(PAYMENT_SUMMARY_MILK_PURCHASED +entryForm.getUser().getName());
+		}
+		else if(entryForm.getType().toUpperCase().equals("SELL"))
+		{
+			ledger.setPaymentType(DEBIT);
+			if(ledger.getPaymentSummary() == null || ledger.getPaymentSummary().equals(""))
+			ledger.setPaymentSummary(PAYMENT_SUMMARY_MILK_SOLD +entryForm.getUser().getName());
+		}
+		
 		
 		ledgerRepository.save(ledger);
 		return ledger ;

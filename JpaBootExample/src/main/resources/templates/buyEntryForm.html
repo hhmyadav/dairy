@@ -230,20 +230,23 @@ table.table .avatar {
          
 		<div class="text-center">
 			<h2 style="color: #FF0000" th:text="${result}"></h2>
-			<h1 class="nice">Entry Form</h1>
+			<h1 class="nice">Milk Buying Form</h1>
 		</div>
 		
 		<div class="">
 		<form id="entryForm" th:action="@{save}" 
 			th:object="${entryForm}" class="form-horizontal" method="post">
-
+           
+           
+           <input id="buy" type="hidden" th:field="*{type}" value="buy" class="form-control input-md">
+           
 			<!-- UserId input-->
 			<div class="form-group">
 				<label class="col-md-4 control-label" for="name">UserId : </label>
 
 				<div class="col-md-4">
 
-					<input id="userId" onchange="updateNameEntryForm()" type="number"
+					<input id="userId" onchange="updateNameEntryFormBuy()" type="number"
 						th:field="*{user.userId}" class="form-control input-md" /> <span
 						class="help-block">Please enter UserId</span>
 				</div>

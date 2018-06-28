@@ -26,7 +26,7 @@ public class User {
     private String email ;
     private String address ;
     private Long mobileNumber;
-    private char userType ;
+    private String userType ;
     private Double amountBalance ;
 
     
@@ -60,11 +60,11 @@ public class User {
 		this.mobileNumber = mobileNumber;
 	}
 
-	public char getUserType() {
+	public String getUserType() {
 		return userType;
 	}
 
-	public void setUserType(char userType) {
+	public void setUserType(String userType) {
 		this.userType = userType;
 	}
 

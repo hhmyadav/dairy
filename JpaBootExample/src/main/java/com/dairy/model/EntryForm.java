@@ -41,6 +41,9 @@ public class EntryForm {
 	@Column(nullable = false)
 	private Double totalAmount ;    
 	
+	@Column(nullable = false)
+	private String type ;    
+	
 	private Double fat ;
 	
 	private Double snf ;
@@ -119,6 +122,14 @@ public class EntryForm {
 
 	public void setEntryDateTime(LocalDateTime entryDateTime) {
 		this.entryDateTime = entryDateTime;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	
