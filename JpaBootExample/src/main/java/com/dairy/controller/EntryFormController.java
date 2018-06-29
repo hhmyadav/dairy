@@ -60,10 +60,12 @@ public class EntryFormController {
         	   if(type.toUpperCase().equals("SELL"))
         	   {   entryForm.setType(type.toUpperCase());
         	       entryForm.setPerLiterPrice(40.0); 
+        	       model.addAttribute("entryForms",entryFormService.getEntryForms(type));
         		   return "sellMilk";
         	   }
         	   else if(type.toUpperCase().equals("BUY"))
         	   {   entryForm.setType(type.toUpperCase());
+        	       model.addAttribute("entryForms",entryFormService.getEntryForms(type));
     	           return "buyMilk";
     	       }
         	  

@@ -14,6 +14,6 @@ public interface EntryFormRepository extends JpaRepository<EntryForm, Long> {
 	public List<EntryForm> findByUserUserId(Long userId);
 	public List<EntryForm> findByUserUserIdAndEntryDateTimeAfter(Long userId , LocalDateTime fromDate);
     public List<EntryForm> findByUserUserIdAndEntryDateTimeBetween(Long userId , LocalDateTime fromDate ,LocalDateTime toDate);
-    
+    public List<EntryForm> findByType(String type);
 	
 }

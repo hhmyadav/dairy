@@ -41,6 +41,11 @@ public class EntryFormService {
 		
 	}
     
+    public List<EntryForm> getEntryForms(String type)
+    {
+    	return entryFormRepository.findByType(type);
+    }
+    
     public List<EntryForm> getEntryForms(Model model ,Long userId , LocalDateTime fromDate , LocalDateTime toDate , Boolean fromLastPaid)
     {   
  	   model.addAttribute("fromDate", fromDate.format(ddMMyyyyFormatter));
