@@ -357,7 +357,7 @@ function updateTotalAmount() {
 
 
 <div class="table-responsive">
-<table class="table">
+<table class="table table-striped table-hover">
 	<thead>
 		 <tr>
 			<th>User Id</th>
@@ -391,8 +391,6 @@ function updateTotalAmount() {
                   <span class="glyphicon glyphicon-ok"></span>  Pay Now
                  </button>
              </td>
-                       
-                        
               <td>
                  <a th:href="@{'#editUserModal' + ${user.userId}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                  <a th:href="@{'#deleteUserModal' + ${user.userId}}"  class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
