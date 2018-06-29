@@ -7,6 +7,19 @@
 
 <base th:replace="fragments/header :: header-css" />
 
+<script>
+function updatePriceSell() { 
+	
+	  var milkQuantity = $("#milkQuantity").val();
+	  var price = $("#price").val();
+	 
+    var totalAmount = price * milkQuantity ;
+			
+	  $('#totalAmount').val(totalAmount.toFixed(2));
+
+} 
+</script>
+
 </head>
 
 <body>
@@ -15,61 +28,46 @@
    
  <div class="container">  
       
+     <div class="page-header text-center">
+        <h2>Selling Milk  Entry</h2>
+    </div>
    
-   <div class="text-center">
-			<h2 style="color: #FF0000" th:text="${result}"></h2>
-			<h1 class="nice">Milk Selling Form</h1>
-  </div>
-   
-      <div class="col-md-4"> </div>
- 
-   
-   
-   <div class="col-md-12"> 
-   
-    <label for="accountBalance" class="control-label col-xs-3">.</label> 
-   
-   </div>
-   <div class="col-md-12"> 
-   
-    <label for="accountBalance" class="control-label col-xs-3">.</label> 
-   
-   </div>
-   
+    <div class="text-center">
+		<h2 style="color: #FF0000" th:text="${result}"></h2>
+    </div>
   
- 
-   <div class="row">
+  <div class="row">
      <form th:action="@{save}" th:object="${entryForm}" method="post">
-      
-      <div class="col-md-1">
-      
-      </div>
-      
-      <div class="col-md-5">
+    
+      <div class="col-xs-12">
+              
+             <div class=col-xs-3> 
               <div class="form-group">
 			    <label for="id" class="control-label col-xs-3">Id :</label> 
-			    <div class="col-xs-9">
+			    <div class="col-xs-12">
 			      <div class="input-group">
 			        <div class="input-group-addon">
 			          <i class="fa fa-address-book"></i>
 			        </div> 
-			        <input id="id" name="id" aria-describedby="idHelpBlock" class="form-control" type="text"> 
+			        <input id="userId" th:field="*{user.userId}" onchange="updateNameEntryFormSell()" type="number" aria-describedby="idHelpBlock" class="form-control"> 
 			        <div class="input-group-addon">
-			          <i class="fa fa-address-book"></i>
+			          <i class="fa fa-search"></i>
 			        </div>
 			      </div> 
 			      <span id="idHelpBlock" class="help-block">User Id </span>
 			    </div>
 			  </div>
-  
+              </div>
+             <div class=col-xs-5> 
 			  <div class="form-group">
 			    <label for="name" class="control-label col-xs-3">Name :</label> 
-			    <div class="col-xs-9">
+			    <div class="col-xs-12">
 			      <div class="input-group">
 			        <div class="input-group-addon">
 			          <i class="fa fa-address-card"></i>
 			        </div> 
-			        <!-- <input id="name" name="name" aria-describedby="nameHelpBlock" class="form-control" type="text">  -->
+			        <input id="name" name="name"  th:field="*{user.name}" disabled="disabled" aria-describedby="nameHelpBlock" class="form-control" type="text">
+			        <input type="hidden" id="name"  th:field="*{user.name}" class="form-control input-md" />
 			        <div class="input-group-addon">
 			          <i class="fa fa-address-card"></i>
 			        </div>
@@ -77,98 +75,67 @@
 			      <span id="nameHelpBlock" class="help-block">User Name</span>
 			    </div>
 			  </div>
-  
+            </div>
+            <div class=col-xs-4> 
 			  <div class="form-group">
-			    <label for="accountBalance" class="control-label col-xs-3">Account Balance :</label> 
-			    <div class="col-xs-9">
+			    <label for="accountBalance" class="control-label col-xs-3">Balance:</label> 
+			    <div class="col-xs-10">
 			      <div class="input-group">
 			        <div class="input-group-addon">Rs.</div>
-			       <!--  <input id="accountBalance" name="accountBalance" placeholder="0.00" aria-describedby="accountBalanceHelpBlock" class="form-control" type="text">  -->
+			        <input id="accountBalance" th:field="*{user.amountBalance}" name="accountBalance" placeholder="0.00" disabled="disabled" aria-describedby="accountBalanceHelpBlock" class="form-control" type="text">
 			        <div class="input-group-addon">/-</div>
 			      </div> 
 			      <span id="accountBalanceHelpBlock" class="help-block">Total Account Balance in Rupees (INR)</span>
 			    </div>
 			  </div> 
-			  
+			  </div>
    </div>
   
-   <div class="col-md-4"> </div>
  
-   <div class="col-md-12"> 
-   
-    <label for="accountBalance" class="control-label col-xs-3">.</label> 
-   
+   <div class="col-xs-12"> 
+     <label class="control-label col-xs-3" >.</label> 
    </div>
    
-   
-   <div class="col-md-12"> 
-   
-    <label for="accountBalance" class="control-label col-xs-3">.</label> 
-   
+   <div class="col-xs-12"> 
+      <label class="control-label col-xs-3" >.</label> 
    </div>
-   <div class="col-md-12"> 
-   
-    <label for="accountBalance" class="control-label col-xs-3">.</label> 
-   
-   </div>
- 
   
-   <div class="col-md-12"> 
+   <div class="col-xs-12"> 
       
-       <div class=col-md-5>
-  
-           <div class="form-group">
-			    <label for="milkQuantity" class="control-label col-xs-3">Liter :</label> 
+       <div class=col-xs-5>
+              
+            <div class="form-group">
+             <label for="milkType" class="control-label col-xs-3">Milk :</label> 
+		      <div class="col-xs-7">
+		       <select th:field="*{milkType}" class="select form-control" aria-describedby="milkTypeHelpBlock">
+		        <option value="COW">Cow</option>
+		        <option value="BUFFALO">Buffalo</option>
+		       </select> 
+		      <span id="milkTypeHelpBlock" class="help-block">Please select Cow or Buffalo</span>
+		   </div>
+            </div> 
+              
+             <div class="form-group">
+			    <label for="milkQuantity"  class="control-label col-xs-3">Liter :</label> 
 			    <div class="col-xs-7">
 			      <div class="input-group">
 			        <div class="input-group-addon">
 			          <i class="fa fa-archive"></i>
 			        </div> 
-			        <input id="milkQuantity" name="milkQuantity" placeholder="0.00" aria-describedby="milkQuantityHelpBlock" class="form-control" required="required" type="text"> 
+			        <input th:field="*{milkQuantity}" oninput="updatePriceSell()" onchange="updatePriceSell()"  placeholder="0.00" aria-describedby="milkQuantityHelpBlock" class="form-control" required="required" type="text"> 
 			        <div class="input-group-addon">
 			          <i class="fa fa-archive"></i>
 			        </div>
 			      </div> 
 			      <span id="milkQuantityHelpBlock" class="help-block">Please enter quantity of milk Liter</span>
 			    </div>
-			  </div>
-			  <div class="form-group">
-			    <label for="fat" class="control-label col-xs-3">FAT :</label> 
-			    <div class="col-xs-7">
-			      <div class="input-group">
-			        <div class="input-group-addon">
-			          <i class="fa fa-qq"></i>
-			        </div> 
-			        <input id="fat" name="fat" placeholder="0.0" class="form-control" aria-describedby="fatHelpBlock" type="text"> 
-			        <div class="input-group-addon">
-			          <i class="fa fa-qq"></i>
-			        </div>
-			      </div> 
-			      <span id="fatHelpBlock" class="help-block">Please enter FAT</span>
-			    </div>
-			  </div>
-			  <div class="form-group">
-			    <label for="snf" class="control-label col-xs-3">SNF :</label> 
-			    <div class="col-xs-7">
-			      <div class="input-group">
-			        <div class="input-group-addon">
-			          <i class="fa fa-skype"></i>
-			        </div> 
-			        <input id="snf" name="snf" placeholder="0.0" class="form-control" aria-describedby="snfHelpBlock" type="text"> 
-			        <div class="input-group-addon">
-			          <i class="fa fa-skype"></i>
-			        </div>
-			      </div> 
-			      <span id="snfHelpBlock" class="help-block">Please enter SNF</span>
-			    </div>
-			  </div> 
-  
-			  <div class="form-group">
+			 </div>
+				  <div class="form-group">
 			    <label for="price" class="control-label col-xs-3">Price/L :</label> 
 			    <div class="col-xs-7">
 			      <div class="input-group">
 			        <div class="input-group-addon">Rs.</div> 
-			        <input id="price" name="price" placeholder="0.00" aria-describedby="priceHelpBlock" required="required" class="form-control" type="text"> 
+			        <input id="price" name="price" oninput="updatePriceSell()" onchange="updatePriceSell()" th:field="*{perLiterPrice}" placeholder="0.00" aria-describedby="priceHelpBlock" required="required" class="form-control" type="text"> 
 			        <div class="input-group-addon">/-</div>
 			      </div> 
 			      <span id="priceHelpBlock" class="help-block">Please enter Rs. Per/Liter</span>
@@ -181,7 +148,7 @@
 			        <div class="input-group-addon">
 			          <i class="fa fa-money"></i>
 			        </div> 
-			        <input id="totalAmount" name="totalAmount" placeholder="0.00" class="form-control" aria-describedby="totalAmountHelpBlock" type="text"> 
+			        <input th:field="*{totalAmount}" placeholder="0.00" class="form-control" aria-describedby="totalAmountHelpBlock" type="text"> 
 			        <div class="input-group-addon">
 			          <i class="fa fa-money"></i>
 			        </div>
@@ -189,19 +156,25 @@
 			      <span id="totalAmountHelpBlock" class="help-block">Total amount in Rs. to be paid</span>
 			    </div>
 			  </div> 
-			  
-			  
+			   <div class="col-xs-12"> 
+                 <label class="control-label col-xs-3" >.</label> 
+               </div>
+              <div class="col-xs-12"> 
+                 <label class="control-label col-xs-3">.</label> 
+              </div>
+  
+ 
 			  <div class="form-group row">
-			    <div class="col-xs-offset-4 col-xs-8">
-			      <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+			    <div class="col-xs-offset-3 col-xs-7">
+			      <button name="submit" type="submit" class="btn btn-danger btn-block"><strong>Save Sell Entry</strong> </button>
 			    </div>
 			  </div>
   
   </div>
    
-  <div class="col-md-1"> </div>
+  <div class="col-xs-1"> </div>
   
-  <div class=col-md-5> 
+  <div class=col-xs-5> 
   
   <div class="form-group">
     <label for="entryDateTime" class="control-label col-xs-3">Entry Date :</label> 
@@ -210,7 +183,7 @@
         <div class="input-group-addon">
           <i class="fa fa-calendar"></i>
         </div> 
-        <input id="entryDateTime" name="entryDateTime" placeholder="dd/mm/yyyy HH:MM" aria-describedby="entryDateTimeHelpBlock" class="form-control" type="text"> 
+        <input th:field="*{entryDateTime}" placeholder="dd/mm/yyyy HH:MM" aria-describedby="entryDateTimeHelpBlock" class="form-control" type="text"> 
         <div class="input-group-addon">
           <i class="fa fa-calendar"></i>
         </div>
@@ -218,27 +191,18 @@
       <span id="entryDateTimeHelpBlock" class="help-block">Change date for old entry only</span>
     </div>
   </div>
+  
   <div class="form-group">
     <label for="dayType" class="control-label col-xs-3">Day :</label> 
     <div class="col-xs-9">
-      <select id="dayType" name="dayType" class="select form-control" aria-describedby="dayTypeHelpBlock">
+      <select th:field="*{dayType}" class="select form-control" aria-describedby="dayTypeHelpBlock">
         <option value="MORNING">Morning</option>
         <option value="EVENING">Evening</option>
       </select> 
       <span id="dayTypeHelpBlock" class="help-block">Select day for old entry only</span>
     </div>
   </div>
-  <div class="form-group">
-    <label for="milkType" class="control-label col-xs-3">Milk :</label> 
-    <div class="col-xs-9">
-      <select id="milkType" name="milkType" class="select form-control" aria-describedby="milkTypeHelpBlock">
-        <option value="cow">Cow</option>
-        <option value="buffalo">Buffalo</option>
-      </select> 
-      <span id="milkTypeHelpBlock" class="help-block">Please select Cow or Buffalo</span>
-    </div>
-  </div>
-  
+
   <div class="form-group">
     <label for="summary" class="control-label col-xs-3">Summary :</label> 
     <div class="col-xs-9">
@@ -247,16 +211,18 @@
     </div>
   </div> 
   
+    </div>
   </div>
-   
-</div>
   
-  
-  
-  
+ </form>
+ 
+</div> 
 
-</form>
- </div> 
+<div>
+
+</div>
+
+
 
    
 </div>  

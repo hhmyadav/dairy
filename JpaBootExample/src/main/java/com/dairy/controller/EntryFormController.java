@@ -32,8 +32,6 @@ public class EntryFormController {
 	@Autowired
 	UserService userService ;
 	   
-
-	
 	    @RequestMapping(value={"user/{type}","user/{type}/{id}"} , method={RequestMethod.GET})	    
         public String setEntryFormByUserId(@PathVariable String type,@PathVariable Optional<Integer> id , User user , EntryForm entryForm,Model model) {
         	
@@ -43,9 +41,9 @@ public class EntryFormController {
         		if(!userService.existsById(userId)) 
         	     { 
         		  model.addAttribute("result","Cannot find userId #" + userId);
-        		  if(type.toLowerCase().equals("buy"))
-               	   return "buyEntryForm";
-        		  return "sellEntryForm";
+        		  if(type.toUpperCase().equals("BUY"))
+               	   return "buyMilk";
+        		  return "sellMilk";
         	     }
         		user = userService.getOne(userId);
         		entryForm.setUser(user);
@@ -57,15 +55,19 @@ public class EntryFormController {
         	   if(LocalDateTime.now().getHour() >= 14)
         	   entryForm.setDayType("EVENING");
         	   
-        	   entryForm.setMilkType("Buffalo");
+        	   entryForm.setMilkType("BUFFALO");
         	   
-        	   if(type.toLowerCase().equals("sell"))
-        	   {   entryForm.setType("SELL");
+        	   if(type.toUpperCase().equals("SELL"))
+        	   {   entryForm.setType(type.toUpperCase());
         	       entryForm.setPerLiterPrice(40.0); 
-        		   return "sellEntryForm";
+        		   return "sellMilk";
         	   }
-        	   entryForm.setType("BUY");
-        	   return "test2";
+        	   else if(type.toUpperCase().equals("BUY"))
+        	   {   entryForm.setType(type.toUpperCase());
+    	           return "buyMilk";
+    	       }
+        	  
+        	   return "error";
 	    }
         
         
@@ -78,12 +80,12 @@ public class EntryFormController {
         		System.out.println(bindingResult.getFieldErrorCount());
         		System.out.println(bindingResult.getAllErrors());
         		model.addAttribute("result",bindingResult.getAllErrors());
-				return "entryForm";
+				return "buyMilk";
 			}
             
            if(!userService.existsById(entryForm.getUser().getUserId())) 
      	   { model.addAttribute("result","Cannot find userId #" + entryForm.getUser().getUserId());
-     	     return "entryForm";
+     	     return "buyMilk";
      	   }
      	  
             
