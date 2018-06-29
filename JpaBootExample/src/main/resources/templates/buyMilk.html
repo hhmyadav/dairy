@@ -356,6 +356,39 @@ function updateTotalAmount() {
 </div>
 
 
+<div class="table-responsive">
+<table class="table">
+	<thead>
+		 <tr>
+			<th>User Id</th>
+			<th>User Name</th>
+			<th>Date Time</th>
+			<th>Day</th>
+			<th>Milk</th>
+			<th>Quantity</th>
+			<th>FAT</th>
+			<th>SNF</th>
+			<th>Price/L</th>
+			<th>Total-Amount</th>
+		 </tr>
+	</thead>
+	<tbody>
+		 <tr th:each="entry : ${entryForms}" style="cursor: pointer">
+		    <td th:text="${entry.user.userId}"></td>
+			<td th:text="${entry.user.name}"></td>
+			<td th:text="${entry.entryDateTime}"></td>
+			<td th:text="${entry.dayType}"></td>
+			<td th:text="${entry.milkType}"></td>
+			<td th:text="${entry.milkQuantity}"></td>
+			<td th:text="${entry.fat}"></td>
+			<td th:text="${entry.snf}"></td>
+			<td th:text="${entry.perLiterPrice}"></td>
+			<td th:text="${entry.totalAmount}"></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
 
    
 </div>  
