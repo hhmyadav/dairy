@@ -25,7 +25,9 @@ public class User {
     private String name;
     private String email ;
     private String address ;
+    @Column(unique = true)
     private Long mobileNumber;
+    @Column(nullable = true)
     private String userType ;
     private Double amountBalance ;
 
