@@ -16,7 +16,7 @@ public interface EntryFormRepository extends PagingAndSortingRepository<EntryFor
 	public List<EntryForm> findByUserUserId(Long userId);
 	public List<EntryForm> findByUserUserIdAndEntryDateTimeAfter(Long userId , LocalDateTime fromDate);
     public List<EntryForm> findByUserUserIdAndEntryDateTimeBetween(Long userId , LocalDateTime fromDate ,LocalDateTime toDate);
-    public Page<EntryForm> findByType(String type,Pageable pageable);
+    public Page<EntryForm> findByTypeOrderByEntryDateTime(String type,Pageable pageable);
     
     Page<EntryForm> findAll(Pageable pageable);
 	
