@@ -152,7 +152,7 @@
 		<div class="page-header text-center">
 			<h2>Buying Milk Entry</h2>
 		</div>
-
+      
 		<div class="text-center">
 			<h3 style="color: #FF0000" th:text="${result}"></h3>
 		</div>
@@ -349,7 +349,7 @@
 						<div class="form-group row">
 							<div class="col-xs-offset-3 col-xs-7">
 								<button name="submit" type="submit"
-									class="btn btn-success btn-block">
+									class="btn btn-primary btn-block">
 									<strong>Save Buy Entry</strong>
 								</button>
 							</div>
@@ -453,12 +453,39 @@
 								<span class="glyphicon glyphicon-ok"></span> Pay Now
 							</button>
 						</td>
-						<td><a th:href="@{'#editUserModal' + ${user.userId}}"
+						<td><a th:href="@{'#editEntryModal' + ${entry.Id}}"
 							class="edit" data-toggle="modal"><i class="material-icons"
 								data-toggle="tooltip" title="Edit">&#xE254;</i></a> <a
-							th:href="@{'#deleteUserModal' + ${user.userId}}" class="delete"
+							th:href="@{'#deleteEntryModal' + ${entry.Id}}" class="delete"
 							data-toggle="modal"><i class="material-icons"
-								data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>
+								data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+					    </td>
+					    
+					    <td>
+					     <!-- Delete Modal HTML -->
+                        <div th:id="@{'deleteEntryModal' + ${entry.Id}}" class="modal fade">
+	                         <div class="modal-dialog">
+		                       <div class="modal-content">
+			                    <form th:action="@{/entryForm/user/buy/deleteEntry}" th:method="delete">
+				                  <div class="modal-header">
+				                  <input type="hidden" name="id" th:value="${entry.Id}">
+				                <h4 class="modal-title">Delete User</h4>
+					             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				                 </div>
+				                <div class="modal-body">					
+					            <p>Are you sure you want to delete these Records?</p>
+					           <p class="text-warning"><small>This action cannot be undone.</small></p>
+				                 </div>
+				                 <div class="modal-footer">
+					              <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					           <input type="submit" class="btn btn-danger" value="Delete">
+				                  </div>
+				              </form>
+			                 </div>
+			                </div>
+                         </div>
+					    
+					    </td>
 					</tr>
 				</tbody>
 			</table>
@@ -519,9 +546,12 @@
 
 				</div>
 
-			</div>
+	       </div>
 
 		</div>
+		
+		  
+		
 	</div>
 
 </body>

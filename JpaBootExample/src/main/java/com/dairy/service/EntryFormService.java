@@ -24,7 +24,7 @@ public class EntryFormService {
     private static final int BUTTONS_TO_SHOW = 3;
     private static final int INITIAL_PAGE = 0;
     private static final int INITIAL_PAGE_SIZE = 10;
-    private static final int[] PAGE_SIZES = {10,20,30,40,50,100};
+    private static final int[] PAGE_SIZES = {5,10,20,30,40,50,100};
 	
 	@Autowired
 	EntryFormRepository entryFormRepository ;
@@ -43,8 +43,10 @@ public class EntryFormService {
 		if (entryForm.getEntryDateTime() == null) 
     	 entryForm.setEntryDateTime(LocalDateTime.now());
         
+		ledger = ledgerService.getLedgerFromEntryForm(entryForm, ledger);
+		
+		entryForm.setLedger(ledger);
 		entryFormRepository.save(entryForm);
-		ledgerService.saveLedgerFromEntryForm(entryForm, ledger);
 		userService.updateBalance(ledger);
 		
 		return entryForm ;
@@ -86,7 +88,7 @@ public class EntryFormService {
     	
     }
     
-    public Page<EntryForm>  getEntryFormsPaginationAndSorting(Model model ,Optional<Integer> pageSize,Optional<Integer> page,String type)
+    public Page<EntryForm>  setEntryFormsPaginationAndSorting(Model model ,Optional<Integer> pageSize,Optional<Integer> page,String type)
     {  
     	
         int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
@@ -104,6 +106,30 @@ public class EntryFormService {
      return entryForms ;
     }
     
+    public void deleteEntryFormById(String id)
+    {    
+    	entryFormRepository.deleteById(Long.valueOf(id));
+    }
+    
+    
+    public EntryForm setDefaultEntryFormValues(EntryForm entryForm,String type)
+    {     
+    	
+    	 entryForm.setType(type.toUpperCase());
+    	 entryForm.setEntryDateTime(LocalDateTime.now());
+  	     
+    	 entryForm.setDayType("MORNING");
+  	     if(LocalDateTime.now().getHour() >= 14)
+  	     entryForm.setDayType("EVENING");
+  	   
+  	     entryForm.setMilkType("BUFFALO");
+  	     
+  	     if(type.toUpperCase().equals("SELL"))
+	       entryForm.setPerLiterPrice(40.0); 
+  	     
+  	     
+    	return entryForm ;
+    }
     
     
 

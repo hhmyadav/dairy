@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -32,6 +33,11 @@ public class Ledger {
 	@ManyToOne
 	@JoinColumn(name = "userId",nullable=false)
 	private User user ;
+	
+	
+	@OneToOne
+	@JoinColumn(name = "entry_id")
+	private EntryForm entryForm ;
 	
 	
 	public String getPaymentType() {
@@ -86,6 +92,13 @@ public class Ledger {
 	public void setPaymentBy(String paymentBy) {
 		this.paymentBy = paymentBy;
 	}
+	public EntryForm getEntryForm() {
+		return entryForm;
+	}
+	public void setEntryForm(EntryForm entryForm) {
+		this.entryForm = entryForm;
+	}
+	
 	
 	
 	

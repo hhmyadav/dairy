@@ -1,7 +1,6 @@
 package com.dairy.controller;
 
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -34,13 +33,23 @@ public class EntryFormController {
 	UserService userService ;
 	   
 	    @RequestMapping(value={"user/{type}","user/{type}/{id}"} , method={RequestMethod.GET})	    
-        public String setEntryFormByUserId(@RequestParam("pageSize") Optional<Integer> pageSize,
-                                           @RequestParam("page") Optional<Integer> page,EntryForm entryForm, BindingResult bindingResult, @PathVariable String type,@PathVariable Optional<Integer> id , User user ,Model model) {
+        public String entryFormController(@RequestParam("pageSize") Optional<Integer> pageSize,
+                                          @RequestParam("page") Optional<Integer> page,
+                                          @PathVariable String type,
+                                          @PathVariable Optional<Integer> id ,
+                                          EntryForm entryForm, 
+                                          User user ,
+                                          BindingResult bindingResult, 
+                                          Model model) {
         	                               
-
+                if(!type.toUpperCase().equals("BUY") && !type.toUpperCase().equals("SELL"))  
+	    	     return "dashBoard";
+               	 
+                entryFormService.setEntryFormsPaginationAndSorting(model,pageSize,page,type);
+             	  
 	           if(id.isPresent())
         	   { 
-        		  Integer userId = id.get();
+            	  Integer userId = id.get();
         		if(!userService.existsById(userId)) 
         	     { 
         		  model.addAttribute("result","Cannot find userId #" + userId);
@@ -52,42 +61,30 @@ public class EntryFormController {
         		entryForm.setUser(user);
         	   }
         	   
+               entryForm = entryFormService.setDefaultEntryFormValues(entryForm,type);
 	         
-        	   entryForm.setEntryDateTime(LocalDateTime.now());
-        	   
-        	   entryForm.setDayType("MORNING");
-        	   if(LocalDateTime.now().getHour() >= 14)
-        	   entryForm.setDayType("EVENING");
-        	   
-        	   entryForm.setMilkType("BUFFALO");
-        	   entryForm.setType(type.toUpperCase());
-        	   entryFormService.getEntryFormsPaginationAndSorting(model,pageSize,page,type);
-          	 
-        	   if(type.toUpperCase().equals("SELL"))
-        	   {   entryForm.setPerLiterPrice(40.0); 
-        	        return "sellMilk";
-        	   }
-        	   else if(type.toUpperCase().equals("BUY"))
-        	     return "buyMilk";
-    	       
-        	  
-        	   return "error";
+               if(entryForm.getType().equals("SELL"))
+        	   return "sellMilk";
+        	   else 
+        	   return "buyMilk";
+    	    
 	    }
         
         
         @RequestMapping(value="user/{type}/save", method={RequestMethod.POST})	    
-        public String saveEntryForm(Ledger ledger , @PathVariable String type ,@Valid EntryForm entryForm,RedirectAttributes redirectAttribute , BindingResult bindingResult ,Model model) {
+        public String saveEntryForm(@PathVariable String type ,
+        		                    @Valid EntryForm entryForm,
+        		                    Ledger ledger , 
+        		                    RedirectAttributes redirectAttribute , 
+        		                    BindingResult bindingResult ,Model model) {
              
         	
-            if (bindingResult.hasErrors()) {
-        		
-        		System.out.println(bindingResult.getFieldErrorCount());
-        		System.out.println(bindingResult.getAllErrors());
+            if (bindingResult.hasErrors()) 
+            {
         		model.addAttribute("result",bindingResult.getAllErrors());
 				if(type.toUpperCase().equals("BUY"))
         		return "buyMilk";
 				return "sellMilk";
-				
 			}
             
            if(!userService.existsById(entryForm.getUser().getUserId())) 
@@ -102,6 +99,28 @@ public class EntryFormController {
         	redirectAttribute.addFlashAttribute("result", "Successfully Saved "+entryForm.getUser().getName()+ " Entry");
         	return "redirect:/entryForm/user/{type}/" + entryForm.getUser().getUserId();
 	    }
+        
+        @RequestMapping(value="user/{type}/deleteEntry", method={RequestMethod.DELETE})	    
+        public String deleteEntryForm(@RequestParam("id") String id,
+        		                      @PathVariable String type,
+                                      RedirectAttributes redirectAttribute) {
+        	
+        	
+        	// delete from entry 
+        	// delete from ledger 
+        	// adjust balance 
+        	 
+
+        	System.out.println(id);
+        	System.out.println(type);
+        
+        	
+        	entryFormService.deleteEntryFormById(id);
+        	
+        	
+        	redirectAttribute.addFlashAttribute("result", "Entry Deleted Successfully ! ");
+        	return "redirect:/entryForm/user/"+type;
+        }
        
       
         

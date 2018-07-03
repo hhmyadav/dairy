@@ -23,11 +23,12 @@ public class LedgerService {
      private static final String DAYTYPE_NA = "NA";
      private static final String DAYTYPE_EVENING= "EVENING";
      private static final String DAYTYPE_MORNING = "MORNING";
-     private static final String PAYMENT_BY_MILK = "MILK";  
+     private static final String PAYMENT_BY_MILK_BUY = "MILK_BUY";  
+     private static final String PAYMENT_BY_MILK_SELL = "MILK_SELL"; 
      private static final String PAYMENT_BY_CASH = "CASH"; 
      private static final String PAYMENT_BY_OLD_BALANCE = "OLD_BALANCE"; 
-     private static final String PAYMENT_SUMMARY_MILK_SOLD =  "Sold Milk To Buyer : " ;
-	 private static final String PAYMENT_SUMMARY_MILK_PURCHASED =  "Purchased Milk From Seller : " ;
+     private static final String PAYMENT_SUMMARY_MILK_SELL =  "Sold Milk To Buyer : " ;
+	 private static final String PAYMENT_SUMMARY_MILK_BUY =  "Purchased Milk From Seller : " ;
 	 private static final String PAYMENT_SUMMARY_USER_ADDED =  "New User Added With Old Balance : " ;
 	 private static final String PAYMENT_SUMMARY_PAYMENT_FORM = "Paying Amount To User : " ;
 	
@@ -37,33 +38,30 @@ public class LedgerService {
 	LedgerRepository ledgerRepository ; 
 	
 	
-	public Ledger saveLedgerFromEntryForm(EntryForm entryForm , Ledger ledger)
+	public Ledger getLedgerFromEntryForm(EntryForm entryForm , Ledger ledger)
 	{    
 		
-		
-		
-		
 		ledger.setTransactionDate(entryForm.getEntryDateTime());
-		ledger.setDayType(entryForm.getDayType());
+		ledger.setDayType(entryForm.getDayType().toUpperCase());
 		ledger.setUser(entryForm.getUser());
 		
 		ledger.setAmount(entryForm.getTotalAmount());
-		ledger.setPaymentBy(PAYMENT_BY_MILK);
+		
 		if(entryForm.getType().toUpperCase().equals("BUY"))
-		{
+		{   
 			ledger.setPaymentType(CREDIT);
 			if(ledger.getPaymentSummary() == null || ledger.getPaymentSummary().equals(""))
-			ledger.setPaymentSummary(PAYMENT_SUMMARY_MILK_PURCHASED +entryForm.getUser().getName());
+			ledger.setPaymentSummary(PAYMENT_SUMMARY_MILK_BUY +entryForm.getUser().getName());
+			ledger.setPaymentBy(PAYMENT_BY_MILK_BUY);
 		}
 		else if(entryForm.getType().toUpperCase().equals("SELL"))
 		{
 			ledger.setPaymentType(DEBIT);
 			if(ledger.getPaymentSummary() == null || ledger.getPaymentSummary().equals(""))
-			ledger.setPaymentSummary(PAYMENT_SUMMARY_MILK_SOLD +entryForm.getUser().getName());
+			ledger.setPaymentSummary(PAYMENT_SUMMARY_MILK_SELL +entryForm.getUser().getName());
+			ledger.setPaymentBy(PAYMENT_BY_MILK_SELL);
 		}
 		
-		
-		ledgerRepository.save(ledger);
 		return ledger ;
 	}
 	
