@@ -43,6 +43,9 @@ public class EntryFormService {
 		if (entryForm.getEntryDateTime() == null) 
     	 entryForm.setEntryDateTime(LocalDateTime.now());
         
+		entryForm.setType(entryForm.getType().toUpperCase());
+		
+		
 		ledger = ledgerService.getLedgerFromEntryForm(entryForm, ledger);
 		
 		entryForm.setLedger(ledger);
