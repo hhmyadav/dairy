@@ -102,12 +102,16 @@ public class EntryFormController {
         
         @RequestMapping(value="user/{type}/deleteEntry", method={RequestMethod.DELETE})	    
         public String deleteEntryForm(@RequestParam("id") String id,
+        		                      @RequestParam("userId") String userId,
         		                      @PathVariable String type,
                                       RedirectAttributes redirectAttribute) {
         	
-        	entryFormService.updateBalanceAndDeleteEntry(id,type);
+        	entryFormService.deleteEntryAndUpdateBalance(id);
         	
         	redirectAttribute.addFlashAttribute("result", "Entry Deleted Successfully ! ");
+        	
+        	if(userId!=null)
+        	return "redirect:/entryForm/user/"+type+"/"+userId;
         	return "redirect:/entryForm/user/"+type;
         }
        

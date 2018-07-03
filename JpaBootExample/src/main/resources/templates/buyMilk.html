@@ -469,6 +469,7 @@
 			                    <form th:action="@{/entryForm/user/buy/deleteEntry}" th:method="delete">
 				                  <div class="modal-header">
 				                  <input type="hidden" name="id" th:value="${entry.Id}">
+				                  <input type="hidden" name="userId" th:value="${entry.user.userId}">
 				                <h4 class="modal-title">Delete User</h4>
 					             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				                 </div>
