@@ -45,7 +45,6 @@ public class EntryFormService {
         
 		entryForm.setType(entryForm.getType().toUpperCase());
 		
-		
 		ledger = ledgerService.getLedgerFromEntryForm(entryForm, ledger);
 		
 		entryForm.setLedger(ledger);

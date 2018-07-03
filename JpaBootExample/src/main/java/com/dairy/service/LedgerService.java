@@ -62,6 +62,8 @@ public class LedgerService {
 			ledger.setPaymentBy(PAYMENT_BY_MILK_SELL);
 		}
 		
+		ledger.setEntryForm(entryForm);
+		
 		return ledger ;
 	}
 	

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,7 +51,7 @@ public class EntryForm {
 	
 	private Double snf ;
 	
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "entryForm")
+	@OneToOne(cascade = CascadeType.ALL,fetch=FetchType.LAZY, mappedBy = "entryForm")
 	private Ledger ledger;
     
 	@ManyToOne
