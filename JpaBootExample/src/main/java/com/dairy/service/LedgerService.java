@@ -265,6 +265,13 @@ public class LedgerService {
 		return ledger ;
 	}
 	
+	public Ledger getLedgerByEntryFormId(Long id)
+	{
+        Ledger ledger = ledgerRepository.findByEntryFormId(id);
+		return ledger ;
+	}
+	
+	
 	
 	public static boolean isNullOrEmpty(String str) {
         if(str != null && !str.trim().isEmpty())

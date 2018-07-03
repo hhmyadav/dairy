@@ -105,18 +105,7 @@ public class EntryFormController {
         		                      @PathVariable String type,
                                       RedirectAttributes redirectAttribute) {
         	
-        	
-        	// delete from entry 
-        	// delete from ledger 
-        	// adjust balance 
-        	 
-
-        	System.out.println(id);
-        	System.out.println(type);
-        
-        	
-        	entryFormService.deleteEntryFormById(id);
-        	
+        	entryFormService.updateBalanceAndDeleteEntry(id,type);
         	
         	redirectAttribute.addFlashAttribute("result", "Entry Deleted Successfully ! ");
         	return "redirect:/entryForm/user/"+type;

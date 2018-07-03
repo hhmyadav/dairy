@@ -65,5 +65,24 @@ public class UserService {
     	 }
     	 
      }
+     public void reverseBalance(Ledger ledger)
+     {  
+    	 User user = getOne(ledger.getUser().getUserId());
+    	 
+    	 if(ledger.getPaymentType().equals("DEBIT"))
+    	 {   
+    		 double amountbalance = user.getAmountBalance() + ledger.getAmount() ;
+    		 user.setAmountBalance(amountbalance);
+    		 userRepository.save(user);
+    	 }
+    	 else if(ledger.getPaymentType().equals("CREDIT"))
+    	 {
+    		 
+    		 double amountbalance = user.getAmountBalance() - ledger.getAmount();
+    		 user.setAmountBalance(amountbalance);
+    		 userRepository.save(user);
+    	 }
+    	 
+     }
     
 }
