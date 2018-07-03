@@ -92,7 +92,7 @@ public class EntryFormService {
         int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
        
-        Page<EntryForm> entryForms = entryFormRepository.findByType(type.toUpperCase() ,new PageRequest(evalPage,evalPageSize));
+        Page<EntryForm> entryForms = entryFormRepository.findByTypeOrderByEntryDateTimeDesc(type.toUpperCase() ,PageRequest.of(evalPage,evalPageSize));
         
         PagerModel pager = new PagerModel(entryForms.getTotalPages(),entryForms.getNumber(),BUTTONS_TO_SHOW);
 
