@@ -46,14 +46,14 @@ public class PaymentFormController {
 	
     @RequestMapping(value={"","user","user/{id}"} , method={RequestMethod.POST,RequestMethod.GET})	    
     public String setPaymentForm(@PathVariable Optional<Integer> id ,
-    		                     @RequestParam(value = "fromLastPaid", required = false) Boolean fromLastPaid,
+    		                     @RequestParam(value = "numberOfLastDays", required = false) Integer numberOfLastDays,
     		                     @RequestParam(value = "fromDate", required = false)
                                  @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm") LocalDateTime fromDate ,
                                  @RequestParam(value = "toDate", required = false)
                                  @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")  LocalDateTime toDate,                     
     		                     User user , Ledger ledger ,Model model) {
           
-    	  
+    	
     	   ledger.setUser(user);   
     	   
     	   if(!id.isPresent())
@@ -68,25 +68,12 @@ public class PaymentFormController {
     	      return "paymentForm";
     	     }
     		 user = userService.getOne(userId);
-    		 
-    		 if(fromDate==null)
-       		  {
-    			 fromDate = LocalDateTime.now().minusDays(11);
-    		  }
-    		 
-    		 List<EntryForm> entryForms = entryFormService.getEntryForms(model , userId.longValue(), fromDate, toDate ,fromLastPaid);
-    		 
-    		 
+    		
+    		 List<EntryForm> entryForms = entryFormService.getEntryForms(model , userId.longValue(), fromDate, toDate ,numberOfLastDays);
+    		
     		 user.setEntryForms(entryForms);
     		 
     		 ledger = ledgerService.setDefaultLedgerForPaymentForm(ledger , user);
-    		 
-    		
-    		 toDate = LocalDateTime.now();
-    		 long numberOfDays = ChronoUnit.DAYS.between(fromDate, toDate);
-    		 
-    		 model.addAttribute("numberOfDays",numberOfDays);
-    		 
     		 
     		 
     	    return "paymentForm";
@@ -106,7 +93,7 @@ public class PaymentFormController {
    	   { model.addAttribute("result","Cannot find userId #" + ledger.getUser().getUserId());
    	     return "paymentForm";
    	   }
-      if(ledger.getAmount() == 1)
+      if(ledger.getAmount() < 1)
       {
     	  model.addAttribute("result","Amount cannot be less than Rs. 1/-");
     	     return "paymentForm";

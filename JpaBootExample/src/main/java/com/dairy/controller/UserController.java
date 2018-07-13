@@ -53,21 +53,19 @@ public class UserController {
 			if (bindingResult.hasErrors()) {
 				return "manageUsers";
 			}  
-			 
-			 user.getLedgers().add(ledger);	
-			 userService.addUser(user);
+			 userService.addUser(ledger , user);
 		     
   	     return "forward:/userOperation/users";
 	    }
 	    
 	    @RequestMapping(value="/editUser/{userId}", method={RequestMethod.POST,RequestMethod.GET})	
-	    public String editUser(@PathVariable("userId") Long userId,@Valid User user,  BindingResult bindingResult ,Model model) {
+	    public String editUser(@PathVariable("userId") Long userId,@Valid User user,Ledger ledger,  BindingResult bindingResult ,Model model) {
 	    	
 	    	
 			if (bindingResult.hasErrors()) {
 				return "manageUsers";
 			}
-	    	  userService.addUser(user);
+	    	  userService.editUser(ledger ,user);
 		     
   	     return "forward:/userOperation/users";
 	    }

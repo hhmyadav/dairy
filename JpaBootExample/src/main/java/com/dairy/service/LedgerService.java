@@ -27,9 +27,11 @@ public class LedgerService {
      private static final String PAYMENT_BY_MILK_SELL = "MILK_SELL"; 
      private static final String PAYMENT_BY_CASH = "CASH"; 
      private static final String PAYMENT_BY_OLD_BALANCE = "OLD_BALANCE"; 
+     private static final String PAYMENT_BY_EDITED_BALANCE = "EDITED_BALANCE";
      private static final String PAYMENT_SUMMARY_MILK_SELL =  "Sold Milk To Buyer : " ;
 	 private static final String PAYMENT_SUMMARY_MILK_BUY =  "Purchased Milk From Seller : " ;
 	 private static final String PAYMENT_SUMMARY_USER_ADDED =  "New User Added With Old Balance : " ;
+	 private static final String PAYMENT_SUMMARY_USER_EDITED =  "User Edited With New Balance : " ;
 	 private static final String PAYMENT_SUMMARY_PAYMENT_FORM = "Paying Amount To User : " ;
 	
 	
@@ -124,19 +126,51 @@ public class LedgerService {
 		return ledger ;
 	}
 	
-	public User setLedgerForNewUser(User user)
-	{   
-	
-		user.getLedgers().get(0).setPaymentType(CREDIT);
-		user.getLedgers().get(0).setDayType(DAYTYPE_NA);
-		user.getLedgers().get(0).setTransactionDate(LocalDateTime.now());
-		user.getLedgers().get(0).setAmount(format2Decimal(user.getAmountBalance()));
-		user.getLedgers().get(0).setPaymentBy(PAYMENT_BY_OLD_BALANCE);
-		user.getLedgers().get(0).setUser(user);
-		user.getLedgers().get(0).setPaymentSummary(PAYMENT_SUMMARY_USER_ADDED + user.getName());
+	public User getLedgerForNewUser(Ledger ledger , User user)
+	{  
+		user.setAmountBalance(format2Decimal(user.getAmountBalance()));
+		ledger.setPaymentType(CREDIT);
+		ledger.setDayType(DAYTYPE_NA);
+		ledger.setTransactionDate(LocalDateTime.now());
+		ledger.setAmount(format2Decimal(user.getAmountBalance()));
+		ledger.setPaymentBy(PAYMENT_BY_OLD_BALANCE);
+		ledger.setPaymentSummary(PAYMENT_SUMMARY_USER_ADDED + user.getName());
+		ledger.setUser(user);
+		user.getLedgers().add(ledger);
 		
 		return user ;
 	}
+	
+	public User getLedgerForEditedUser(Ledger ledger , User user ,double oldBalance)
+	{  
+		
+		double changeBalance = user.getAmountBalance();
+		
+		if(changeBalance > oldBalance)
+		{
+			ledger.setPaymentType(CREDIT);
+			double transactionAmount = changeBalance - oldBalance ;
+			ledger.setAmount(format2Decimal(transactionAmount));
+		}
+		if(changeBalance < oldBalance)
+		{
+			ledger.setPaymentType(DEBIT);
+			double transactionAmount = oldBalance - changeBalance ;
+			ledger.setAmount(format2Decimal(transactionAmount));
+		}
+		
+		ledger.setDayType(DAYTYPE_NA);
+		ledger.setTransactionDate(LocalDateTime.now());
+		ledger.setPaymentBy(PAYMENT_BY_EDITED_BALANCE);
+		ledger.setPaymentSummary(PAYMENT_SUMMARY_USER_EDITED +changeBalance+", Old Balance :"+oldBalance+" , Name : "+user.getName());
+		ledger.setUser(user);
+		user.getLedgers().add(ledger);
+		
+		return user ;
+	}
+	
+	
+	
 	
 	public List<Ledger> getAllLedger()
 	{
@@ -261,6 +295,13 @@ public class LedgerService {
 	public Ledger getLedgerByLastTransactionDate(Long userId , String paymentType)
 	{         
 		Ledger ledger = ledgerRepository.findFirstByUserUserIdAndPaymentTypeOrderByTransactionDateDesc(userId ,paymentType);
+		
+		return ledger ;
+	}
+	
+	public Ledger getLedgerByFirstTransactionDate(Long userId , String paymentType)
+	{         
+		Ledger ledger = ledgerRepository.findFirstByUserUserIdAndPaymentTypeOrderByTransactionDateAsc(userId ,paymentType);
 		
 		return ledger ;
 	}

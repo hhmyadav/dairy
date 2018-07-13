@@ -1,7 +1,10 @@
 package com.dairy.service;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,38 +60,117 @@ public class EntryFormService {
 	}
   
     
-    public List<EntryForm> getEntryForms(Model model ,Long userId , LocalDateTime fromDate , LocalDateTime toDate , Boolean fromLastPaid)
+    public List<EntryForm> getEntryForms(Model model ,Long userId , LocalDateTime fromDate , LocalDateTime toDate ,Integer numberOfLastDays)
     {   
- 	   model.addAttribute("fromDate", fromDate.format(ddMMyyyyFormatter));
-        
- 	    
- 	   if(fromLastPaid != null)
+    	List<EntryForm> entryForms = null ;
+    	
+    	
+    	LocalDateTime lastPaidAmountDate = null ;
+    	double lastPaidAmount = 0.0 ;
+    	double cowMilkQuantity = 0.0 ;
+    	double cowMilkAmount = 0.0 ;
+    	double buffaloMilkQuantity = 0.0 ;
+    	double buffaloMilkAmount = 0.0 ;
+    	double milkTotalQuantity = 0.0 ;
+    	double finalAmount = 0.0 ;
+    	
+    
+    	
+    	Ledger ledger = ledgerService.getLedgerByLastTransactionDate(userId ,"DEBIT");
+    	if(ledger!=null) 
+    	{
+    		lastPaidAmount = ledger.getAmount();
+    		lastPaidAmountDate = ledger.getTransactionDate();
+    	}
+    	
+    	
+       if(numberOfLastDays==null && fromDate == null &&  toDate == null)
        {
-    	  Ledger ledger = ledgerService.getLedgerByLastTransactionDate(userId ,"DEBIT");
     	   
-    	   if(ledger==null)
-    	   {   
-    		   model.addAttribute("result", "Never Paid");
-    		   return entryFormRepository.findByUserUserId(userId);
+    	   if(ledger==null)	
+    	   {    
+    		    ledger = ledgerService.getLedgerByLastTransactionDate(userId ,"CREDIT");
+         	    fromDate = ledger.getTransactionDate();
+         	    toDate = LocalDateTime.now();
+    		    model.addAttribute("result", "Never Paid");
+    		    entryForms = entryFormRepository.findByUserUserId(userId);
     	   }
-    	   else  
-    	   {   
-    		   fromDate = ledger.getTransactionDate();
-    		   model.addAttribute("fromDate", fromDate.format(ddMMyyyyFormatter));
+           else 
+           {
+        	   fromDate = ledger.getTransactionDate();
+    	       toDate = LocalDateTime.now();
+    	       entryForms = entryFormRepository.findByUserUserIdAndEntryDateTimeAfter(userId, fromDate);
+    	          
     	   }
-    	   
-    	}
- 	    
- 	    if(fromDate!=null && toDate==null)
-    	{   toDate = LocalDateTime.now();
-    	    model.addAttribute("toDate",toDate.format(ddMMyyyyFormatter));
-		    return entryFormRepository.findByUserUserIdAndEntryDateTimeAfter(userId, fromDate);
-    	}
-    	else if(fromDate!=null && toDate!=null)
-    	return entryFormRepository.findByUserUserIdAndEntryDateTimeBetween(userId, fromDate ,toDate);
+       }
+       else if(numberOfLastDays!=null)
+       {
+    	   fromDate = LocalDateTime.now().minusDays(numberOfLastDays);
+    	   toDate = LocalDateTime.now();
+    	   entryForms = entryFormRepository.findByUserUserIdAndEntryDateTimeAfter(userId, fromDate);
+           
+    	  
+       }
+       else if(numberOfLastDays==null && fromDate != null &&  toDate == null)
+       {
+    	   toDate = LocalDateTime.now();
+    	   entryForms = entryFormRepository.findByUserUserIdAndEntryDateTimeAfter(userId, fromDate);
+           
+       }
+       
+       else if(numberOfLastDays==null && fromDate != null &&  toDate != null)
+       {
+    	   toDate = LocalDateTime.now();
+    	   entryForms = entryFormRepository.findByUserUserIdAndEntryDateTimeBetween(userId, fromDate ,toDate);
+	   }
+       else if(numberOfLastDays==null && fromDate == null &&  toDate != null)
+       {
+    	   ledger = ledgerService.getLedgerByFirstTransactionDate(userId ,"CREDIT");
+     	   fromDate = ledger.getTransactionDate();
     	
-    	return entryFormRepository.findByUserUserId(userId);
-    	
+    	   entryForms = entryFormRepository.findByUserUserIdAndEntryDateTimeBetween(userId, fromDate ,toDate);
+       }
+       else
+    	 entryForms = entryFormRepository.findByUserUserId(userId);
+	        
+       Iterator<EntryForm> entryForm = entryForms.iterator();
+		  
+		  while (entryForm.hasNext()) {
+		
+			EntryForm entryform = entryForm.next();
+			
+			if(entryform.getMilkType().toUpperCase().equals("COW"))
+			{
+				cowMilkQuantity = cowMilkQuantity + entryform.getMilkQuantity();
+				cowMilkAmount = cowMilkAmount + entryform.getTotalAmount();
+			}
+			
+			if(entryform.getMilkType().toUpperCase().equals("BUFFALO"))
+			{
+				buffaloMilkQuantity = buffaloMilkQuantity + entryform.getMilkQuantity();
+				buffaloMilkAmount = buffaloMilkAmount + entryform.getTotalAmount();
+			}
+				
+			milkTotalQuantity = milkTotalQuantity + entryform.getMilkQuantity();
+			finalAmount = finalAmount + entryform.getTotalAmount();
+			
+		  }
+         
+           long numberOfDays = ChronoUnit.DAYS.between(fromDate,toDate);  
+	       model.addAttribute("fromDate", fromDate.format(ddMMyyyyFormatter));
+		   model.addAttribute("toDate", toDate.format(ddMMyyyyFormatter));
+		   model.addAttribute("numberOfDays",numberOfDays);
+		   model.addAttribute("lastPaidAmount",format2Decimal(lastPaidAmount));	 
+		   model.addAttribute("lastPaidAmountDate" , lastPaidAmountDate);
+		   model.addAttribute("cowMilkQuantity",format2Decimal(cowMilkQuantity));	
+		   model.addAttribute("cowMilkAmount",format2Decimal(cowMilkAmount));
+		   model.addAttribute("buffaloMilkQuantity" , format2Decimal(buffaloMilkQuantity));
+		   model.addAttribute("buffaloMilkAmount" , format2Decimal(buffaloMilkAmount));
+		   model.addAttribute("milkTotalQuantity" , format2Decimal(milkTotalQuantity));
+		   model.addAttribute("finalAmount" , format2Decimal(finalAmount));
+
+       
+	   return entryForms ;
     }
     
     public Page<EntryForm>  setEntryFormsPaginationAndSorting(Model model ,Optional<Integer> pageSize,Optional<Integer> page,String type)
@@ -139,6 +221,11 @@ public class EntryFormService {
     	Ledger ledger = ledgerService.getLedgerByEntryFormId(Long.valueOf(id));
     	userService.reverseBalance(ledger);  
         deleteEntryFormById(id);
+    }
+    public Double format2Decimal(double value)
+    {    
+        DecimalFormat twoDecimalFormat = new DecimalFormat("#.##");  
+    	return Double.valueOf(twoDecimalFormat.format(value));
     }
     
 

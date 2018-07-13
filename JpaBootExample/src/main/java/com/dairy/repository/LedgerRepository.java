@@ -59,6 +59,7 @@ public interface LedgerRepository extends JpaRepository<Ledger, Long>{
 	public List<Ledger> findByDayType(String dayType);
 	
     public Ledger findFirstByUserUserIdAndPaymentTypeOrderByTransactionDateDesc(Long userId,String paymentType);
+    public Ledger findFirstByUserUserIdAndPaymentTypeOrderByTransactionDateAsc(Long userId,String paymentType);
 	
      
     public Ledger findByEntryFormId(long id);

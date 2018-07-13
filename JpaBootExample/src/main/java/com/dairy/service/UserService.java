@@ -1,6 +1,8 @@
 package com.dairy.service;
 
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,11 +26,32 @@ public class UserService {
 	 }
 	 
 	 @Transactional
-	 public void addUser(User user)
+	 public void addUser(Ledger ledger ,User user)
 	 {  
 		if(user.getAmountBalance()==null) user.setAmountBalance(0.0);  
-		user = ledgerService.setLedgerForNewUser(user);
+		user = ledgerService.getLedgerForNewUser(ledger,user);
 		userRepository.save(user);
+	 }
+	 
+	 @Transactional
+	 public void editUser(Ledger ledger , User user)
+	 {  
+		 
+		if(user.getAmountBalance()==null) 
+			user.setAmountBalance(0.0);
+		else
+		    user.setAmountBalance(format2Decimal(user.getAmountBalance()));
+		
+		Optional<User> oldUser = userRepository.findById(user.getUserId());
+		
+		double changeBalance = user.getAmountBalance();
+		double oldBalance = oldUser.get().getAmountBalance();
+		
+		if(changeBalance != oldBalance)
+		  user = ledgerService.getLedgerForEditedUser(ledger,user,oldBalance);
+		
+		 userRepository.save(user);
+	
 	 }
 	 
 	 public boolean existsById(long userId)
@@ -53,14 +76,13 @@ public class UserService {
     	 if(ledger.getPaymentType().equals("CREDIT"))
     	 {   
     		 double amountbalance = user.getAmountBalance() + ledger.getAmount() ;
-    		 user.setAmountBalance(amountbalance);
+    		 user.setAmountBalance(format2Decimal(amountbalance));
     		 userRepository.save(user);
     	 }
     	 else if(ledger.getPaymentType().equals("DEBIT"))
     	 {
-    		 
     		 double amountbalance = user.getAmountBalance() - ledger.getAmount();
-    		 user.setAmountBalance(amountbalance);
+    		 user.setAmountBalance(format2Decimal(amountbalance));
     		 userRepository.save(user);
     	 }
     	 
@@ -76,13 +98,17 @@ public class UserService {
     		 userRepository.save(user);
     	 }
     	 else if(ledger.getPaymentType().equals("CREDIT"))
-    	 {
-    		 
+    	 {  
     		 double amountbalance = user.getAmountBalance() - ledger.getAmount();
     		 user.setAmountBalance(amountbalance);
     		 userRepository.save(user);
     	 }
-    	 
+     }
+     
+     public Double format2Decimal(double value)
+     {    
+         DecimalFormat twoDecimalFormat = new DecimalFormat("#.##");  
+     	return Double.valueOf(twoDecimalFormat.format(value));
      }
     
 }

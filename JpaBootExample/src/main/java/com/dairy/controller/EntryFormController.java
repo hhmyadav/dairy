@@ -111,7 +111,7 @@ public class EntryFormController {
         	redirectAttribute.addFlashAttribute("result", "Entry Deleted Successfully ! ");
         	
         	if(userId!=null)
-        	return "redirect:/entryForm/user/"+type+"/"+userId;
+        	return "redirect:/entryForm/user/"+type+"/"+userId;	
         	return "redirect:/entryForm/user/"+type;
         }
        
