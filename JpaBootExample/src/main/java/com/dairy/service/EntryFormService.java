@@ -67,12 +67,7 @@ public class EntryFormService {
     	
     	LocalDateTime lastPaidAmountDate = null ;
     	double lastPaidAmount = 0.0 ;
-    	double cowMilkQuantity = 0.0 ;
-    	double cowMilkAmount = 0.0 ;
-    	double buffaloMilkQuantity = 0.0 ;
-    	double buffaloMilkAmount = 0.0 ;
-    	double milkTotalQuantity = 0.0 ;
-    	double finalAmount = 0.0 ;
+    	
     	
     
     	
@@ -120,7 +115,6 @@ public class EntryFormService {
        
        else if(numberOfLastDays==null && fromDate != null &&  toDate != null)
        {
-    	   toDate = LocalDateTime.now();
     	   entryForms = entryFormRepository.findByUserUserIdAndEntryDateTimeBetween(userId, fromDate ,toDate);
 	   }
        else if(numberOfLastDays==null && fromDate == null &&  toDate != null)
@@ -132,44 +126,16 @@ public class EntryFormService {
        }
        else
     	 entryForms = entryFormRepository.findByUserUserId(userId);
-	        
-       Iterator<EntryForm> entryForm = entryForms.iterator();
+	  
 		  
-		  while (entryForm.hasNext()) {
-		
-			EntryForm entryform = entryForm.next();
-			
-			if(entryform.getMilkType().toUpperCase().equals("COW"))
-			{
-				cowMilkQuantity = cowMilkQuantity + entryform.getMilkQuantity();
-				cowMilkAmount = cowMilkAmount + entryform.getTotalAmount();
-			}
-			
-			if(entryform.getMilkType().toUpperCase().equals("BUFFALO"))
-			{
-				buffaloMilkQuantity = buffaloMilkQuantity + entryform.getMilkQuantity();
-				buffaloMilkAmount = buffaloMilkAmount + entryform.getTotalAmount();
-			}
-				
-			milkTotalQuantity = milkTotalQuantity + entryform.getMilkQuantity();
-			finalAmount = finalAmount + entryform.getTotalAmount();
-			
-		  }
-         
            long numberOfDays = ChronoUnit.DAYS.between(fromDate,toDate);  
 	       model.addAttribute("fromDate", fromDate.format(ddMMyyyyFormatter));
 		   model.addAttribute("toDate", toDate.format(ddMMyyyyFormatter));
 		   model.addAttribute("numberOfDays",numberOfDays);
 		   model.addAttribute("lastPaidAmount",format2Decimal(lastPaidAmount));	 
 		   model.addAttribute("lastPaidAmountDate" , lastPaidAmountDate);
-		   model.addAttribute("cowMilkQuantity",format2Decimal(cowMilkQuantity));	
-		   model.addAttribute("cowMilkAmount",format2Decimal(cowMilkAmount));
-		   model.addAttribute("buffaloMilkQuantity" , format2Decimal(buffaloMilkQuantity));
-		   model.addAttribute("buffaloMilkAmount" , format2Decimal(buffaloMilkAmount));
-		   model.addAttribute("milkTotalQuantity" , format2Decimal(milkTotalQuantity));
-		   model.addAttribute("finalAmount" , format2Decimal(finalAmount));
-
-       
+		  
+		
 	   return entryForms ;
     }
     

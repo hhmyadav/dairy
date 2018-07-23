@@ -3,6 +3,16 @@
 
 <head>
 <base th:replace="fragments/header :: header-css" />	
+
+<style type="text/css">
+
+.my-table thead th {
+    padding: 10px 0 5px 0 !important;
+  }
+}
+
+</style>
+
 </head>
 
 <body>
@@ -42,33 +52,42 @@
                       <button type="submit" value="10" name="numberOfLastDays" class="btn btn-primary btn-md"><i class="glyphicon glyphicon-search"> </i> Last 10 Days</button>
 				    </div>
 				 </div> 
-			 
+		
 			</form>
-        </div>   
-      
-       
-        <div class="col-sm-12"> 
-          <br>
-        </div>  
+			      
+			     <div class="col-sm-2">
+                    <h4>Last <span th:text="${numberOfDays}"></span> Days Transactions</h4>
+                 </div>
+                 
+			
+		 </div>   
+        
+                 
+                  
+                   <div class="col-xs-12">&nbsp;</div>
+                   <div class="col-xs-12">&nbsp;</div>
+                   
         
         <div class="col-sm-12"> 
            
-	         <div class="col-sm-4"> 
+	         <div class="col-sm-3"> 
 	            <legend th:text="${ledger.user.name}"></legend>
 	        </div>
-            
-             <div class="col-sm-4"> 
-	            <legend>Last Paid Amount: <span th:text="${lastPaidAmount}"></span></legend>
+             
+	        <div class="col-sm-5"> 
+	            <legend>Last Payment Date: <span th:text="${lastPaidAmount != null} ? ${#temporals.day(lastPaidAmountDate)} +' '+ ${#temporals.monthNameShort(lastPaidAmountDate)} +' '+ ${#temporals.year(lastPaidAmountDate)} +' ('+${#temporals.dayOfWeekNameShort(lastPaidAmountDate)}+')'"></span></legend>
 	        </div>
 	        
-	        <div class="col-sm-4"> 
-	            <legend>On Date: <span th:text="${lastPaidAmount != null} ? ${#temporals.day(lastPaidAmountDate)} +' '+ ${#temporals.monthNameShort(lastPaidAmountDate)} +' '+ ${#temporals.year(lastPaidAmountDate)} +' ('+${#temporals.dayOfWeekNameShort(lastPaidAmountDate)}+')'"></span></legend>
+	         <div class="col-sm-4"> 
+	            <legend>Last Payment Amount: <span th:text="${lastPaidAmount}"></span></legend>
 	        </div>
            	
-            	
-        </div>  
-      <h4>Last <span th:text="${numberOfDays}"></span> Days Transactions</h4>
-        <div class="col-sm-7">
+        </div>
+        
+       
+         <div class="col-xs-12">&nbsp;</div>
+       
+       <div class="col-sm-7">
             
             <div class="row">
                 <div class="col-xs-12">
@@ -82,7 +101,7 @@
                                     <th>Liter</th>
                                     <th>Rate</th>
                                     <th>Amount</th>
-                                </tr>
+                                </tr>	
                             </thead>
                             <tbody>
 	                           <tr th:each="entryForm: ${ledger.user.entryForms}">
@@ -98,45 +117,7 @@
                     </div>                            
                 </div>
             </div>
-            <div class="row text-left">
-                <div class="col-xs-12">
-                      
-	                <div class="col-xs-4">
-	                    <h4>Cow Liter: <strong><span th:text="${cowMilkQuantity}"></span></strong></h4>
-	                </div>  
-	                <div class="col-xs-4">
-	                    <h4>Buffalo Liter: <strong><span th:text="${buffaloMilkQuantity}"></span></strong></h4>
-	                </div>  
-	                <div class="col-xs-4">
-	                    <h4>Total Liter: <strong><span th:text="${milkTotalQuantity}"></span></strong></h4>
-	                </div> 
-                       
-                </div>
-                 <div class="col-xs-12">
-                    
-	                <div class="col-xs-4">
-	                    <h4>Cow Amount: <strong><span th:text="${cowMilkAmount}"></span></strong></h4>
-	                </div>  
-	                <div class="col-xs-4">
-	                    <h4>Buffalo Amount: <strong><span th:text="${buffaloMilkAmount}"></span></strong></h4>
-	                </div>  
-	                <div class="col-xs-4">
-	                    <h4>Final Amount : <strong><span th:text="${finalAmount}"></span></strong></h4>
-	                </div> 
-                       
-                </div>
-            </div>
-            
-             <div class="row text-left">
-                <div class="col-xs-12">
-                     <h4>Total Amount: <strong><span th:text="${ledger.amount}"></span></strong></h4>
-                </div>
-            </div>
-             <div class="row text-left">
-                <div class="col-xs-12">
-                    <h4>Total User Balance: <strong><span th:text="${ledger.user.amountBalance}"></span></strong></h4>
-                </div>
-            </div>
+           
             
             
             <div class="row">
@@ -152,13 +133,85 @@
             </div>
         </div>
         
-          <!-- panel preview -->
+       
+           <div class="col-xs-5">&nbsp;</div>
+           <div class="col-xs-5">&nbsp;</div>
+       
+       
+           <!-- Details preview -->
         <div class="col-sm-5">
-            <h4>Pay Now :</h4>
+        	
+             <div class="row text-left">
+                <div class="col-xs-12">
+                      
+	                <div class="col-xs-3">
+	                    <h5>Cow/L: <strong><span th:text="${cowMilkQuantity}"></span></strong></h5>
+	                </div>  
+	                <div class="col-xs-4">
+	                    <h5>Buffalo/L: <strong><span th:text="${buffaloMilkQuantity}"></span></strong></h5>
+	                </div>  
+	                <div class="col-xs-5">
+	                    <h5>Total Liter: <strong><span th:text="${milkTotalQuantity}"></span></strong></h5>
+	                </div> 
+                       
+                </div>
+                
+                 <div class="col-xs-12">
+                    
+	                <div class="col-xs-3">
+	                    <h5>Amount: <strong><span th:text="${cowMilkAmount}"></span></strong></h5>
+	                </div>  
+	                <div class="col-xs-4">
+	                    <h5>Amount: <strong><span th:text="${buffaloMilkAmount}"></span></strong></h5>
+	                </div>  
+	                <div class="col-xs-5">
+	                    <h5>Total Amount: <strong><span th:text="${finalAmount}"></span></strong></h5>
+	                </div> 
+                       
+                </div>
+                
+                 <div class="col-xs-12">&nbsp;</div>
+                <div class="col-xs-12">
+	                 <div class="col-xs-6">
+	                     <h5>Final Amount: <strong><span th:text="${ledger.amount}"></span></strong></h5>
+	                 </div>
+	            </div>
+             
+              
+           </div>
+            
+             <div class="row text-left">
+                  <div class="col-xs-12">&nbsp;</div>
+             </div>
+              
+              
+              <div class="col-xs-5">
+                <h4>Pay Now :</h4>
+              </div>
+	         <div class="col-xs-7">
+	           <h4>Total User Balance: <strong><span th:text="${ledger.user.amountBalance}"></span></strong></h4>
+	         </div>
+            
+              
+        <!-- panel preview -->
+    
+         <div class="col-sm-12">
+            
+            
+             <form th:action="@{paymentReceipt}" th:object="${ledger}" method="post">
+                
+                <input type="hidden" th:value="${numberOfDays}" name="numberOfDays">
+                <input type="hidden" th:value="${fromDate}" name="fromDate">
+                <input type="hidden" th:value="${toDate}" name="toDate">
+                <input type="hidden" th:value="${cowMilkQuantity}" name="cowMilkQuantity">
+                <input type="hidden" th:value="${buffaloMilkQuantity}" name="buffaloMilkQuantity">
+                <input type="hidden" th:value="${milkTotalQuantity}" name="milkTotalQuantity">
+                <input type="hidden" th:value="${cowMilkAmount}" name="cowMilkAmount">
+                <input type="hidden" th:value="${buffaloMilkAmount}" name="buffaloMilkAmount">
+                <input type="hidden" th:value="${finalAmount}" name="finalAmount">  
+            
             <div class="panel panel-default">
-               
-               <form th:action="@{paymentReceipt}" th:object="${ledger}" method="post">
-                   
+                 
                   <div class="panel-body form-horizontal payment-form">
                       
                     <div class="form-group">
@@ -203,32 +256,32 @@
                         </div>
                     </div> 
                    
-                    <div class="form-group">
-                        <label for="date" class="col-sm-3 control-label">Date Time</label>
-                        <div class="col-sm-9">
-                            <input th:field="*{transactionDate}" class="form-control" id="date">
-                        </div>
-                    </div>   
-                    
-                    <div class="row">
-		                <div class="col-xs-12">
-		                    <hr style="border:1px dashed #dddddd;">
-		                    <button type="submit" class="btn btn-success btn-lg btn-block">
-		                    <span class="glyphicon glyphicon-ok"></span>  Pay Now
-		                    </button>
-		                </div>                
+	                    <div class="form-group">
+	                        <label for="date" class="col-sm-3 control-label">Date Time</label>
+	                        <div class="col-sm-9">
+	                            <input th:field="*{transactionDate}" class="form-control" id="date">
+	                        </div>
+	                    </div>   
+	                    
+	                    <div class="row">
+			                <div class="col-xs-12">
+			                    <hr style="border:1px dashed #dddddd;">
+			                    <button type="submit" class="btn btn-success btn-lg btn-block">
+			                    <span class="glyphicon glyphicon-ok"></span>  Pay Now
+			                    </button>
+			                </div>                
+	                   </div>
                    </div>
-                </div>
                 
-                </form>
-            </div>            
-        </div> <!-- / panel preview -->
-        
+                  </div>   
+                  
+                    </form>          
+              </div> 
+      </div> 
+      
     </div>
+    
 </div>
-
-
-
 
 </body>
 

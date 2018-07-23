@@ -1,10 +1,6 @@
 package com.dairy.controller;
 
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +21,7 @@ import com.dairy.model.Ledger;
 import com.dairy.model.User;
 import com.dairy.service.EntryFormService;
 import com.dairy.service.LedgerService;
+import com.dairy.service.PaymentRecieptService;
 import com.dairy.service.UserService;
 
 @Controller
@@ -41,11 +38,12 @@ public class PaymentFormController {
 	@Autowired
 	EntryFormService entryFormService ; 
 	
-	DateTimeFormatter ddMMyyyyFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-	DecimalFormat df = new DecimalFormat("#.##");  
+	@Autowired
+	PaymentRecieptService paymentRecieptService ;
+	
 	
     @RequestMapping(value={"","user","user/{id}"} , method={RequestMethod.POST,RequestMethod.GET})	    
-    public String setPaymentForm(@PathVariable Optional<Integer> id ,
+    public String getPaymentForm(@PathVariable Optional<Integer> id ,
     		                     @RequestParam(value = "numberOfLastDays", required = false) Integer numberOfLastDays,
     		                     @RequestParam(value = "fromDate", required = false)
                                  @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm") LocalDateTime fromDate ,
@@ -70,11 +68,14 @@ public class PaymentFormController {
     		 user = userService.getOne(userId);
     		
     		 List<EntryForm> entryForms = entryFormService.getEntryForms(model , userId.longValue(), fromDate, toDate ,numberOfLastDays);
-    		
+    		 
+    		 paymentRecieptService.setPaymentForm(entryForms, model);
+    		 
     		 user.setEntryForms(entryForms);
     		 
     		 ledger = ledgerService.setDefaultLedgerForPaymentForm(ledger , user);
     		 
+    		 model.addAttribute("ledger",ledger);
     		 
     	    return "paymentForm";
     }
@@ -82,70 +83,48 @@ public class PaymentFormController {
     
     
     @RequestMapping(value={"/user/paymentReceipt"}, method={RequestMethod.POST})	
-    public String paymentReceipt(@Valid Ledger ledger, BindingResult bindingResult ,Model model) {
+    public String paymentReceipt(@Valid Ledger ledger,
+    		                     @RequestParam(value = "fromDate", required = true)
+                                 @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm") LocalDateTime fromDate ,
+                                 @RequestParam(value = "toDate", required = true)
+                                 @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")  LocalDateTime toDate,
+    		                     @RequestParam(value = "numberOfDays", required = false) Long numberOfDays,
+    		                     @RequestParam(value = "cowMilkQuantity", required = false) Double cowMilkQuantity,
+    		                     @RequestParam(value = "cowMilkAmount", required = false) Double cowMilkAmount,
+    		                     @RequestParam(value = "buffaloMilkQuantity", required = false) Double buffaloMilkQuantity,
+    		                     @RequestParam(value = "buffaloMilkAmount", required = false) Double buffaloMilkAmount,
+    		                     @RequestParam(value = "milkTotalQuantity", required = true) Double milkTotalQuantity,
+    		                     @RequestParam(value = "finalAmount", required = true) Double finalAmount,
+    		                     BindingResult bindingResult ,Model model) {
     	    
-    	if (bindingResult.hasErrors()) {
+    	if (bindingResult.hasErrors()) 
+    	{
     		model.addAttribute("result",bindingResult.getAllErrors());
 			return "paymentForm";
 		}
     	
       if(!userService.existsById(ledger.getUser().getUserId())) 
-   	   { model.addAttribute("result","Cannot find userId #" + ledger.getUser().getUserId());
+   	  { model.addAttribute("result","Cannot find userId #" + ledger.getUser().getUserId());
    	     return "paymentForm";
-   	   }
-      if(ledger.getAmount() < 1)
+   	  }
+      
+      
+      if(ledger.getAmount()==null || ledger.getAmount() < 1)
       {
     	  model.addAttribute("result","Amount cannot be less than Rs. 1/-");
     	     return "paymentForm";
       }
-    	
-        ledger =  ledgerService.saveLedgerFromPaymentForm(ledger);
+        
+        
+    	ledger.setUser(userService.getOne(ledger.getUser().getUserId()));
+    	  
+    	ledger =  ledgerService.saveLedgerFromPaymentForm(fromDate , toDate, ledger);
     	userService.updateBalance(ledger);
        
-    	ledger.setUser(userService.getOne(ledger.getUser().getUserId()));
     	
+    	  paymentRecieptService.setPaymentReciept(ledger ,model, fromDate, toDate, numberOfDays, cowMilkQuantity, cowMilkAmount, buffaloMilkQuantity, buffaloMilkAmount, milkTotalQuantity, finalAmount);
     	
-    	double cowMilkQuantity = 0 ;
-    	double cowMilkAmount = 0 ;
-    	double buffaloMilkQuantity = 0 ;
-    	double buffaloMilkAmount = 0 ;
-    	double milkTotalQuantity = 0 ;
-    	double finalAmount = 0 ;
-    	
-    	List<EntryForm> entryForm = ledger.getUser().getEntryForms();
-         
-		   Iterator<EntryForm> entryForms = entryForm.iterator();
-		  
-		  while (entryForms.hasNext()) {
-		
-			EntryForm entryform = entryForms.next();
-			
-			if(entryform.getMilkType().equals("cow"))
-			{
-				cowMilkQuantity = cowMilkQuantity + entryform.getMilkQuantity();
-				cowMilkAmount = cowMilkAmount + entryform.getTotalAmount();
-			}
-			
-			if(entryform.getMilkType().equals("buffelow"))
-			{
-				buffaloMilkQuantity = buffaloMilkQuantity + entryform.getMilkQuantity();
-				buffaloMilkAmount = buffaloMilkAmount + entryform.getTotalAmount();
-			}
-				
-			milkTotalQuantity = milkTotalQuantity + entryform.getMilkQuantity();
-			finalAmount = finalAmount + entryform.getTotalAmount();
-			
-		  }
-    	
-    	
-    	model.addAttribute("buffaloMilkQuantity",buffaloMilkQuantity);
-    	model.addAttribute("buffaloMilkAmount",buffaloMilkAmount);
-    	model.addAttribute("cowMilkQuantity",cowMilkQuantity);
-    	model.addAttribute("cowMilkAmount",cowMilkAmount);
-    	model.addAttribute("receiptNumber",ledger.getId());
-    	
-    	
-	      return "paymentReceipt";
+	      return "paymentReceipt2";	
     }
 
 }

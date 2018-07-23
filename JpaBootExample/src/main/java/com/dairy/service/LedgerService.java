@@ -69,7 +69,7 @@ public class LedgerService {
 		return ledger ;
 	}
 	
-	public Ledger saveLedgerFromPaymentForm(Ledger ledger)
+	public Ledger saveLedgerFromPaymentForm(LocalDateTime fromDate ,LocalDateTime toDate,Ledger ledger)
 	{    
 	 
 	      ledger.setPaymentType(DEBIT);
@@ -88,7 +88,7 @@ public class LedgerService {
 	      ledger.setPaymentBy(ledger.getPaymentBy().toUpperCase());
 	      
 	      if(ledger.getPaymentSummary() == null || ledger.getPaymentSummary().equals(""))
-	  		ledger.setPaymentSummary(PAYMENT_SUMMARY_PAYMENT_FORM +ledger.getUser().getName());
+	  		ledger.setPaymentSummary(PAYMENT_SUMMARY_PAYMENT_FORM +ledger.getUser().getName()+", From Date:"+fromDate +" , To Date:"+toDate);
 	   
 	      
 		ledgerRepository.save(ledger);
@@ -118,6 +118,9 @@ public class LedgerService {
 			
 			currentTotalAmount = currentTotalAmount + entryform.getTotalAmount();
 		  } 
+		if(currentTotalAmount==0)  
+		ledger.setAmount(format2Decimal(user.getAmountBalance()));
+		else
 		ledger.setAmount(format2Decimal(currentTotalAmount));
 	  
  	    ledger.setPaymentBy(PAYMENT_BY_CASH);
