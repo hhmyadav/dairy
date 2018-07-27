@@ -313,15 +313,6 @@ $(document).ready(function(){
 	});
 });
 
-function rowClicked(value) {
-	
-	window.location.href ="/entryForm/user/buy/"+ value;
-}
-
-function rowClickedPayNow(value) {
-	window.location.href ="/paymentForm/user/"+ value;
-}
-
 
 
 </script>
@@ -367,7 +358,10 @@ function rowClickedPayNow(value) {
                         <th>Remaining Balance</th>
                         <th>Address</th>
                         <th>Email</th>
+                        <th>Buy Milk</th>
                         <th>Pay Now</th>
+                        <th>Sell Milk</th>
+                        <th>Take Payment</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -388,11 +382,27 @@ function rowClickedPayNow(value) {
                         <td th:text="${user.address}" th:onclick="'javascript:rowClicked(\'' + ${user.userId} + '\');'"></td>
                         <td th:text="${user.email}" th:onclick="'javascript:rowClicked(\'' + ${user.userId} + '\');'"></td>
                         <td>
+                            <button th:onclick="'javascript:rowClickedBuyMilk(\'' + ${user.userId} + '\');'" type="button" class="btn btn-success btn-xs btn-block">
+		                     <span class="glyphicon glyphicon-ok"></span>  Buy Milk
+		                    </button>
+                        </td>
+                         <td>
                             <button th:onclick="'javascript:rowClickedPayNow(\'' + ${user.userId} + '\');'" type="button" class="btn btn-success btn-xs btn-block">
 		                     <span class="glyphicon glyphicon-ok"></span>  Pay Now
 		                    </button>
                         </td>
+                        
+                         <td>
+                            <button th:onclick="'javascript:rowClickedSellMilk(\'' + ${user.userId} + '\');'" type="button" class="btn btn-danger btn-xs btn-block">
+		                     <span class="glyphicon glyphicon-ok"></span>  Sell Milk
+		                    </button>
+                        </td>
                        
+                         <td>
+                            <button th:onclick="'javascript:rowClickedGetPaymentNow(\'' + ${user.userId} + '\');'" type="button" class="btn btn-danger btn-xs btn-block">
+		                     <span class="glyphicon glyphicon-ok"></span>  Get Payment
+		                    </button>
+                        </td>
                         
                         <td>
                             <a th:href="@{'#editUserModal' + ${user.userId}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>

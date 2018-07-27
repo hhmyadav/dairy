@@ -57,7 +57,7 @@ function updatePriceSell() {
  <div class="container">  
       
      <div class="page-header text-center">
-        <h2>Selling Milk Entry</h2>
+        <h1 style="font-family: cursive; color: maroon;">Selling Milk Entry</h1>
     </div>
    
     <div class="text-center">
@@ -239,7 +239,7 @@ function updatePriceSell() {
     </div>
   </div> 
   
-    </div>
+    </div>	
   </div>
   
  </form>
@@ -254,7 +254,6 @@ function updatePriceSell() {
 						<th>User Name</th>
 						<th>Date Time</th>
 						<th>Day</th>
-						<th>Milk</th>
 						<th>Liter</th>
 						<th>Price/L</th>
 						<th>Total</th>
@@ -267,18 +266,17 @@ function updatePriceSell() {
 						<td th:text="${entry.user.name}"></td>
 						<td th:text="${#temporals.day(entry.entryDateTime)} +' '+ ${#temporals.monthNameShort(entry.entryDateTime)} +' '+ ${#temporals.year(entry.entryDateTime)} +' ('+${#temporals.dayOfWeekNameShort(entry.entryDateTime)}+') ('+${#temporals.hour(entry.entryDateTime)}+':'+${#temporals.minute(entry.entryDateTime)}+')'"></td>
 						<td th:text="${entry.dayType}"></td>
-						<td th:text="${entry.milkType}"></td>
 						<td th:text="${entry.milkQuantity}"></td>
 						<td th:text="${entry.perLiterPrice}"></td>
 						<td th:text="${entry.totalAmount}"></td>
 
 						<td>
-							<button
-								th:onclick="'javascript:rowClickedPayNow(\'' + ${user.userId} + '\');'"
-								type="button" class="btn btn-success btn-xs btn-block">
-								<span class="glyphicon glyphicon-ok"></span> Pay Now
-							</button>
-						</td>
+                            <button th:onclick="'javascript:rowClickedGetPaymentNow(\'' + ${user.userId} + '\');'" type="button" class="btn btn-danger btn-xs btn-block">
+		                     <span class="glyphicon glyphicon-ok"></span>  Get Payment
+		                    </button>
+                        </td>
+                        
+                        
 						<td><a th:href="@{'#editEntryModal' + ${user.userId}}"
 							class="edit" data-toggle="modal"><i class="material-icons"
 								data-toggle="tooltip" title="Edit">&#xE254;</i></a> <a
@@ -295,7 +293,7 @@ function updatePriceSell() {
 				                  <div class="modal-header">
 				                  <input type="hidden" name="id" th:value="${entry.Id}">
 				                  <input type="hidden" name="userId" th:value="${entry.user.userId}">
-				                <h4 class="modal-title">Delete User</h4>
+				                <h4 class="modal-title">Delete Entry</h4>
 					             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				                 </div>
 				                <div class="modal-body">					

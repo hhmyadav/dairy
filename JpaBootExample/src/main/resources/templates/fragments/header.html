@@ -202,13 +202,21 @@ $(document).ready(function(){
 		});
 	});
 
-	function rowClicked(value) {
-	    location.href = "/entryForm/user/"+ value;
+	function rowClickedBuyMilk(value) {
+	    location.href = "/entryForm/buy/user/"+ value;
+	}
+	
+	function rowClickedSellMilk(value) {
+	    location.href = "/entryForm/sell/user/"+ value;
 	}
 
 	function rowClickedPayNow(value) {
-	    location.href = "/paymentForm/user/"+ value;
+	    location.href = "/paymentForm/buy/user/"+ value;
 	}
+	function rowClickedGetPaymentNow(value) {
+	    location.href = "/paymentForm/sell/user/"+ value;
+	}
+	
  
   $( function() {
     $( "#startdate" ).datepicker({ dateFormat: 'dd-mm-yy 00:00' });
@@ -238,26 +246,38 @@ $(document).ready(function(){
   
 	function updateNameEntryFormBuy() {
         var userId = $("#userId").val();
-        location.href = "/entryForm/user/buy/" + userId;
+        location.href = "/entryForm/buy/user/" + userId;
 
 	}
 	function updateNameEntryFormSell() {
         var userId = $("#userId").val();
-        location.href = "/entryForm/user/sell/" + userId;
+        location.href = "/entryForm/sell/user/" + userId;
 
 	}
 	
-	function updateNamePaymentForm() {
+	function updateNamePaymentFormBuy() {
         var userId = $("#userId").val();
-		location.href = "/paymentForm/user/" + userId;
+		location.href = "/paymentForm/buy/user/" + userId;
      }
   
+	function updateNamePaymentFormSell() {
+        var userId = $("#userId").val();
+		location.href = "/paymentForm/sell/user/" + userId;
+     }
 	
-	function updateNameSearch() {
+	
+	function updateNameSearchBuy() {
 
 		var userId = $("#userIdSearch").val();
 
-		location.href = "/entryForm/user/" + userId;
+		location.href = "/entryForm/buy/user/" + userId;
+
+	}
+	function updateNameSearchSell() {
+
+		var userId = $("#userIdSearch").val();
+
+		location.href = "/entryForm/sell/user/" + userId;
 
 	}
 
@@ -284,9 +304,10 @@ $(document).ready(function(){
           <ul class="nav navbar-nav">
             <li class="active"><a href="/">Dashboard</a></li>
 		      <li><a th:href="@{/userOperation/users}">User Management</a></li>
-		      <li><a th:href="@{/entryForm/user/buy}">Buy Milk</a></li>
-		      <li><a th:href="@{/entryForm/user/sell}">Sell Milk</a></li>
-		      <li><a th:href="@{/paymentForm/user}">Pay Now</a></li>
+		      <li><a th:href="@{/entryForm/buy/user}">Buy Milk</a></li>
+		      <li><a th:href="@{/entryForm/sell/user}">Sell Milk</a></li>
+		      <li><a th:href="@{/paymentForm/buy/user}">Pay Now</a></li>
+		      <li><a th:href="@{/paymentForm/sell/user}">Get Payment</a></li>
 		      <li><a th:href="@{/transactionReport}">Check Records</a></li>
           </ul>
 

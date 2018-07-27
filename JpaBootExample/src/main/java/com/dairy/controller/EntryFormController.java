@@ -32,7 +32,7 @@ public class EntryFormController {
 	@Autowired
 	UserService userService ;
 	   
-	    @RequestMapping(value={"user/{type}","user/{type}/{id}"} , method={RequestMethod.GET})	    
+	    @RequestMapping(value={"{type}/user","{type}/user/{id}"} , method={RequestMethod.GET})	    
         public String entryFormController(@RequestParam("pageSize") Optional<Integer> pageSize,
                                           @RequestParam("page") Optional<Integer> page,
                                           @PathVariable String type,
@@ -71,7 +71,7 @@ public class EntryFormController {
 	    }
         
         
-        @RequestMapping(value="user/{type}/save", method={RequestMethod.POST})	    
+        @RequestMapping(value="{type}/user/save", method={RequestMethod.POST})	    
         public String saveEntryForm(@PathVariable String type ,
         		                    @Valid EntryForm entryForm,
         		                    Ledger ledger , 
@@ -97,10 +97,10 @@ public class EntryFormController {
         	entryForm = entryFormService.saveEntryForm(ledger,entryForm);
         	
         	redirectAttribute.addFlashAttribute("result", "Successfully Saved "+entryForm.getUser().getName()+ " Entry");
-        	return "redirect:/entryForm/user/{type}/" + entryForm.getUser().getUserId();
+        	return "redirect:/entryForm/{type}/user/" + entryForm.getUser().getUserId();
 	    }
         
-        @RequestMapping(value="user/{type}/deleteEntry", method={RequestMethod.DELETE})	    
+        @RequestMapping(value="{type}/user/deleteEntry", method={RequestMethod.DELETE})	    
         public String deleteEntryForm(@RequestParam("id") String id,
         		                      @RequestParam("userId") String userId,
         		                      @PathVariable String type,
@@ -111,8 +111,8 @@ public class EntryFormController {
         	redirectAttribute.addFlashAttribute("result", "Entry Deleted Successfully ! ");
         	
         	if(userId!=null)
-        	return "redirect:/entryForm/user/"+type+"/"+userId;	
-        	return "redirect:/entryForm/user/"+type;
+        	return "redirect:/entryForm/"+type+"/user/"+userId;	
+        	return "redirect:/entryForm/"+type+"/user/";
         }
        
       

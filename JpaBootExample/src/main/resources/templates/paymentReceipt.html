@@ -1,9 +1,101 @@
-<html xmlns:th=“http://www.thymeleaf.org”>
+<html xmlns:th=â€œhttp://www.thymeleaf.orgâ€�>
 
 
 <head>
 
 <base th:replace="fragments/header :: header-css" />
+
+<style type="text/css">
+
+.text-danger strong {
+    		color: #9f181c;
+		}
+		.receipt-main {
+			background: #ffffff none repeat scroll 0 0;
+			border-bottom: 20px solid #333333;
+			border-top: 12px solid #9f181c;
+			margin-top: 15px;
+			margin-bottom: 5px;
+			padding: 15px 20px !important;
+			position: relative;
+			box-shadow: 0 1px 21px #acacac;
+			color: #333333;
+			font-family: open sans;
+		}
+		.receipt-main p {
+			color: #333333;
+			font-family: open sans;
+			line-height: 1.42857;
+		}
+		.receipt-footer h1 {
+			font-size: 15px;
+			font-weight: 400 !important;
+			margin: 0 !important;
+		}
+		.receipt-main::after {
+			background: #414143 none repeat scroll 0 0;
+			content: "";
+			height: 5px;
+			left: 0;
+			position: absolute;
+			right: 0;
+			top: -13px;
+		}
+		.receipt-main thead {
+			background: #414143 none repeat scroll 0 0;
+		}
+		.receipt-main thead th {
+			color:#fff;
+		}
+		.receipt-right h5 {
+			font-size: 16px;
+			font-weight: bold;
+			margin: 0 0 7px 0;
+		}
+		.receipt-right p {
+			font-size: 12px;
+			margin: 0px;
+		}
+		.receipt-right p i {
+			text-align: center;
+			width: 18px;
+		}
+		.receipt-main td {
+			padding: 9px 20px !important;
+		}
+		.receipt-main th {
+			padding: 13px 20px !important;
+		}
+		.receipt-main td {
+			font-size: 13px;
+			font-weight: initial !important;
+		}
+		.receipt-main td p:last-child {
+			margin: 0;
+			padding: 0;
+		}	
+		.receipt-main td h2 {
+			font-size: 20px;
+			font-weight: 900;
+			margin: 0;
+			text-transform: uppercase;
+		}
+		.receipt-header-mid .receipt-left h1 {
+			font-weight: 100;
+			margin: 34px 0 0;
+			text-align: right;
+			text-transform: uppercase;
+		}
+		.receipt-header-mid {
+			margin: 24px 0;
+			overflow: hidden;
+		}
+		
+		#container {
+			background-color: #dcdcdc;
+		}
+
+</style>
 
 </head>
 
@@ -13,92 +105,153 @@
  
 <h2 id="result" style="color:#FF0000" th:text="${result}"></h2> 
 
-
 <div class="container">
-    <div class="row">
-        <div class="well col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+	<div class="row">
+		
+        <div class="receipt-main col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
             <div class="row">
-                <div class="col-xs-6 col-sm-6 col-md-6">
-                    <address>
-                        <strong>Sourav Milk Dairy</strong>
-                        <br>
-                        Shivpur
-                        <br>
-                        Madhya Pradesh, CA 90026
-                        <br>
-                        <abbr th:text="${ledger.user.mobileNumber}" title="Phone"></abbr>
-                    </address>
-                </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 text-right">
-                    <p>
-                      <em th:text="'From Date:' +' '+ ${#temporals.day(fromDate)} +' '+ ${#temporals.monthNameShort(fromDate)} +' '+ ${#temporals.year(fromDate)} +' ('+${#temporals.dayOfWeekNameShort(fromDate)}+')'"></em>
-                    </p>
-                    <p>
-                      <em th:text="'To Date:' +' '+ ${#temporals.day(toDate)} +' '+ ${#temporals.monthNameShort(toDate)} +' '+ ${#temporals.year(toDate)} +' ('+${#temporals.dayOfWeekNameShort(toDate)}+')'"></em>
-                    </p>
-                    <p>
-                        <em th:text="'Receipt #:' +' '+ ${receiptNumber}"> </em>
-                    </p>
-                </div>
+    			<div class="receipt-header">
+					<div class="col-xs-6 col-sm-6 col-md-6">
+						<div class="receipt-left">
+							<img class="img-responsive" src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2018/07/21/09/india-cow.jpg" style="width: 114px; border-radius: 73px;">
+						</div>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 text-right">
+						<div class="receipt-right">
+							<h5>Saurav Dairy</h5>
+							<p>+91 98298832454 <i class="fa fa-phone"></i></p>
+							<p>ratneshyadav@gmail.com <i class="fa fa-envelope-o"></i></p>
+							<p>India <i class="fa fa-location-arrow"></i></p>
+						</div>
+					</div>
+				</div>
             </div>
-            <div class="row">
-                <div class="text-center">
-                 <h3>Himanshu Yadav</h3>
-                    <h1>Receipt</h1>
-                </div>
-                
-                <table class="table table-hover">
+			
+			<div class="row">
+				<div class="receipt-header receipt-header-mid">
+					<div class="col-xs-6 col-sm-6 col-md-6 text-left">
+						<div class="receipt-right">
+							<h5 th:text="${ledger.user.name}" style="display: inline;"></h5> <h5 style="display: inline;"><small th:text="'&nbsp;&nbsp;&nbsp;|&nbsp; &nbsp; &nbsp; Lucky Number &nbsp;:&nbsp;&nbsp;'+${ledger.user.userId}">  </small></h5> <br />
+							<div th:if="${ledger.user.mobileNumber != ''}"><p style="display: inline;"><b>Mobile :  </b> </p> <p th:text="'&nbsp;+91 '+${ledger.user.mobileNumber}" style="display: inline;"></p> <br /> </div>
+						    <div th:if="${ledger.user.email != ''}"> <p style="display: inline;"><b>Email :   </b> </p> <p th:text="'&nbsp;'+${ledger.user.email}" style="display: inline;"></p>  <br /> </div>
+							<div th:if="${ledger.user.address != ''}"><p style="display: inline;"><b>Address : </b> </p> <p th:text="'&nbsp;'+${ledger.user.address}" style="display: inline;"></p> <br /> </div>
+						</div>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6">
+						<div class="receipt-left">
+							<h2 th:text="'RECEIPT #' +' '+ ${receiptNumber}"></h2>
+						</div>
+					</div>
+				</div>
+            </div>
+			
+            <div>
+                <table class="table table-bordered">
                     <thead>
+                    
                         <tr>
-                            <th>Product</th>
+                            <td style="font-size: 15;font-family: sans-serif; color:white;" align="center" colspan="3"><strong> <em th:text="'From Date:&nbsp;' +' '+ ${#temporals.day(fromDate)} +' '+ ${#temporals.monthNameShort(fromDate)} +' '+ ${#temporals.year(fromDate)} +' ('+${#temporals.dayOfWeekNameShort(fromDate)}+')'"></em> <em th:text="'&nbsp; &nbsp; &nbsp; &nbsp; To Date: &nbsp;' +' '+ ${#temporals.day(toDate)} +' '+ ${#temporals.monthNameShort(toDate)} +' '+ ${#temporals.year(toDate)} +' ('+${#temporals.dayOfWeekNameShort(toDate)}+')'"></em> </strong> <br> <em style="font-size: 13;font-family: sans-serif; color:white;" th:text="'('+${numberOfDays}+' Days)'"></em> </td>
+                            
+                       </tr>
+                       
+                        <tr>
+                            <th>Description</th>
                             <th>Liter#</th>
-                           
-                            <th class="text-center">Total</th>
+                            <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody>
+                         
                         <tr>
-                            <td class="col-md-9"><em>Cow Milk</em></td>
-                            <td th:text="${cowMilkQuantity}" class="col-md-1" style="text-align: center"></td>
-                            
-                            <td th:text="'₹' +' '+ ${cowMilkAmount}+ ' /-'" class="col-md-1 text-center"></td>
+                            <td class="col-md-7">Cow</td>
+                              <td th:text="${cowMilkQuantity}" class="col-md-2"></td>
+                            <td class="col-md-3"> <i class="fa fa-inr" th:text="'&nbsp;'+${cowMilkAmount}+ '/-'" ></i> </td> 
                         </tr>
                         <tr>
-                            <td class="col-md-9"><em>Buffalo Milk</em></td>
-                            <td th:text="${buffaloMilkQuantity}" class="col-md-1" style="text-align: center"></td>
-                          
-                            <td th:text="'₹' +' '+ ${buffaloMilkAmount}+ ' /-'" class="col-md-1 text-center"></td>
+                            <td class="col-md-7">Buffalo</td>
+                             <td th:text="${buffaloMilkQuantity}" class="col-md-2"></td>
+                            <td class="col-md-3"> <i class="fa fa-inr" th:text="'&nbsp;'+${buffaloMilkAmount}+ '/-'" ></i> </td> 
                         </tr>
                       
-                        <tr>
-                            <td></td>
-                            <td></td>
-                           
-                            <td class="text-right">
-                            <p>
-                                <strong th:text="'Subtotal:'+'&nbsp'+'₹' +' '+ ${finalAmount}+ ' /-'"></strong>
-                            </p>
-                           </td>
-                        </tr>
-                     
-                        <tr>
-                            <td class="text-left"><h5><strong>Remaning Balance:</strong> <strong th:text="'₹' +' '+ ${remaningAmount}+ ' /-'"></strong></h5></td>
-                            <td class="text-center"><h4><strong>PaidAmount:</strong></h4></td>
-                            <td class="text-right text-danger"><h4><strong th:text="'₹' +' '+ ${paidAmount}+ ' /-'"></strong></h4></td>
-                        </tr>
+                         
                         
-                          
+                       <tr> 
+                       
+                             <td>
+                                <p>
+                                   <strong>Total : </strong>
+                                </p>
+                        	</td>
+                        	<td>
+                                <p>
+                                   <strong th:text="${milkTotalQuantity}"></strong>
+                                </p>
+                        	</td>
+                        	<td>
+                                <p>
+                                  <i class="fa fa-inr" ></i> <strong th:text="${finalAmount}+ '/-'" ></strong>
+                                </p>
+                        	</td>
+                            
+                       </tr>
+                       
+                        <tr>
+                            
+                            <td colspan="2" class="text-right"><h2><strong>Paid Amount: </strong></h2></td>
+                            <td class="text-left text-danger"><h2><strong><i class="fa fa-inr" th:text="'&nbsp;'+${paidAmount}+ '/-'" ></i></strong></h2></td>
+                        </tr>
+                        <tr>
+                        
+                            <td class="text-right" colspan="2">
+                                <p>
+                                    <strong>Balance Due: </strong>
+                                </p>
+							</td>
+							
+                            <td>
+	                           <p>
+	                                <strong><i class="fa fa-inr" th:text="'&nbsp;'+${remaningAmount}+ '/-'" ></i></strong>
+	                            </p>
+							</td>
+                        </tr>
                     </tbody>
                 </table>
-                <button type="button" class="btn btn-primary btn-lg btn-block">
-                    Print <span class="glyphicon glyphicon-print"></span>
-                </button>
             </div>
-        </div>
-    </div>
+			
+			<div class="row">
+				<div class="receipt-header receipt-header-mid receipt-footer">
+					<div class="col-xs-8 col-sm-8 col-md-8 text-left">
+						<div class="receipt-right">
+							<p style="display: inline;"><b>Date :</b></p> <p style="display: inline;" th:text="'&nbsp;'+${#temporals.day(date)} +' '+ ${#temporals.monthNameShort(date)} +' '+ ${#temporals.year(date)} +' ('+${#temporals.dayOfWeekNameShort(date)}+')'"> </p>
+							<h5 style="color: rgb(140, 140, 140);">Thank you for your business!</h5>
+						</div>
+					</div>
+					<div class="col-xs-4 col-sm-4 col-md-4">
+						<div class="receipt-left">
+							<h1>Signature</h1>
+						</div>
+					</div>
+				</div>
+            </div>
+     		
+        </div>    
+          
+          <div class="col-xs-12 col-sm-12 col-md-12">
+		          
+		          <div class="col-xs-3 col-sm-3 col-md-3"> 
+		          </div>
+		          <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+		              <button type="button" class="btn btn-primary btn-lg btn-block">
+		                    Print <span class="glyphicon glyphicon-print"></span>
+		              </button>
+		          </div>
+          </div>
+	</div>
+	
+	       
 </div>
-
-
+            
+              
 </body>
 
 </html>

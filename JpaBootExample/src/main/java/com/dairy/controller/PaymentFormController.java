@@ -42,8 +42,8 @@ public class PaymentFormController {
 	PaymentRecieptService paymentRecieptService ;
 	
 	
-    @RequestMapping(value={"","user","user/{id}"} , method={RequestMethod.POST,RequestMethod.GET})	    
-    public String getPaymentForm(@PathVariable Optional<Integer> id ,
+    @RequestMapping(value={"buy","buy/user","buy/user/{id}"} , method={RequestMethod.POST,RequestMethod.GET})	    
+    public String getPaymentFormBuy(@PathVariable Optional<Integer> id ,
     		                     @RequestParam(value = "numberOfLastDays", required = false) Integer numberOfLastDays,
     		                     @RequestParam(value = "fromDate", required = false)
                                  @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm") LocalDateTime fromDate ,
@@ -55,7 +55,7 @@ public class PaymentFormController {
     	   ledger.setUser(user);   
     	   
     	   if(!id.isPresent())
-    		   return "paymentForm";
+    		   return "paymentFormBuy";
     	   
     	   
     		  Integer userId = id.get();
@@ -63,11 +63,11 @@ public class PaymentFormController {
     		 if(!userService.existsById(userId)) 
     	     { 
     		  model.addAttribute("result","Cannot find userId #" + userId);
-    	      return "paymentForm";
+    	      return "paymentFormBuy";
     	     }
     		 user = userService.getOne(userId);
     		
-    		 List<EntryForm> entryForms = entryFormService.getEntryForms(model , userId.longValue(), fromDate, toDate ,numberOfLastDays);
+    		 List<EntryForm> entryForms = entryFormService.getEntryFormsBuy(model , userId.longValue(), fromDate, toDate ,numberOfLastDays);
     		 
     		 paymentRecieptService.setPaymentForm(entryForms, model);
     		 
@@ -77,13 +77,13 @@ public class PaymentFormController {
     		 
     		 model.addAttribute("ledger",ledger);
     		 
-    	    return "paymentForm";
+    	    return "paymentFormBuy";
     }
     
     
     
-    @RequestMapping(value={"/user/paymentReceipt"}, method={RequestMethod.POST})	
-    public String paymentReceipt(@Valid Ledger ledger,
+    @RequestMapping(value={"buy/user/paymentReceipt"}, method={RequestMethod.POST})	
+    public String paymentReceiptBuy(@Valid Ledger ledger,
     		                     @RequestParam(value = "fromDate", required = true)
                                  @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm") LocalDateTime fromDate ,
                                  @RequestParam(value = "toDate", required = true)
@@ -124,7 +124,93 @@ public class PaymentFormController {
     	
     	  paymentRecieptService.setPaymentReciept(ledger ,model, fromDate, toDate, numberOfDays, cowMilkQuantity, cowMilkAmount, buffaloMilkQuantity, buffaloMilkAmount, milkTotalQuantity, finalAmount);
     	
-	      return "paymentReceipt2";	
+	      return "paymentReceipt";	
     }
-
+    
+    
+    
+    @RequestMapping(value={"sell","sell/user","sell/user/{id}"} , method={RequestMethod.POST,RequestMethod.GET})	    
+    public String getPaymentFormSell(@PathVariable Optional<Integer> id ,
+    		                     @RequestParam(value = "numberOfLastDays", required = false) Integer numberOfLastDays,
+    		                     @RequestParam(value = "fromDate", required = false)
+                                 @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm") LocalDateTime fromDate ,
+                                 @RequestParam(value = "toDate", required = false)
+                                 @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")  LocalDateTime toDate,                     
+    		                     User user , Ledger ledger ,Model model) {
+          
+    	
+    	   ledger.setUser(user);   
+    	   
+    	   if(!id.isPresent())
+    		   return "paymentFormSell";
+    	   
+    	   
+    		  Integer userId = id.get();
+    		 
+    		 if(!userService.existsById(userId)) 
+    	     { 
+    		  model.addAttribute("result","Cannot find userId #" + userId);
+    	      return "paymentFormSell";
+    	     }
+    		 user = userService.getOne(userId);
+    		
+    		 List<EntryForm> entryForms = entryFormService.getEntryFormsSell(model , userId.longValue(), fromDate, toDate ,numberOfLastDays);
+    		 
+    		 paymentRecieptService.setPaymentForm(entryForms, model);
+    		 
+    		 user.setEntryForms(entryForms);
+    		 
+    		 ledger = ledgerService.setDefaultLedgerForPaymentForm(ledger , user);
+    		 
+    		 model.addAttribute("ledger",ledger);
+    		 
+    	    return "paymentFormSell";
+    }
+      
+    
+    @RequestMapping(value={"sell/user/paymentReceipt"}, method={RequestMethod.POST})	
+    public String paymentReceiptSell(@Valid Ledger ledger,
+    		                     @RequestParam(value = "fromDate", required = true)
+                                 @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm") LocalDateTime fromDate ,
+                                 @RequestParam(value = "toDate", required = true)
+                                 @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")  LocalDateTime toDate,
+    		                     @RequestParam(value = "numberOfDays", required = false) Long numberOfDays,
+    		                     @RequestParam(value = "cowMilkQuantity", required = false) Double cowMilkQuantity,
+    		                     @RequestParam(value = "cowMilkAmount", required = false) Double cowMilkAmount,
+    		                     @RequestParam(value = "buffaloMilkQuantity", required = false) Double buffaloMilkQuantity,
+    		                     @RequestParam(value = "buffaloMilkAmount", required = false) Double buffaloMilkAmount,
+    		                     @RequestParam(value = "milkTotalQuantity", required = true) Double milkTotalQuantity,
+    		                     @RequestParam(value = "finalAmount", required = true) Double finalAmount,
+    		                     BindingResult bindingResult ,Model model) {
+    	    
+    	if (bindingResult.hasErrors()) 
+    	{
+    		model.addAttribute("result",bindingResult.getAllErrors());
+			return "paymentForm";
+		}
+    	
+      if(!userService.existsById(ledger.getUser().getUserId())) 
+   	  { model.addAttribute("result","Cannot find userId #" + ledger.getUser().getUserId());
+   	     return "paymentForm";
+   	  }
+      
+      
+      if(ledger.getAmount()==null || ledger.getAmount() < 1)
+      {
+    	  model.addAttribute("result","Amount cannot be less than Rs. 1/-");
+    	     return "paymentForm";
+      }
+        
+        
+    	ledger.setUser(userService.getOne(ledger.getUser().getUserId()));
+    	  
+    	ledger =  ledgerService.saveLedgerFromPaymentForm(fromDate , toDate, ledger);
+    	userService.updateBalance(ledger);
+       
+    	
+    	  paymentRecieptService.setPaymentReciept(ledger ,model, fromDate, toDate, numberOfDays, cowMilkQuantity, cowMilkAmount, buffaloMilkQuantity, buffaloMilkAmount, milkTotalQuantity, finalAmount);
+    	
+	      return "paymentReceipt";	
+    }
+    
 }

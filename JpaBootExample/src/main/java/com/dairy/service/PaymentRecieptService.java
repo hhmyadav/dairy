@@ -63,6 +63,8 @@ public class PaymentRecieptService {
 		 
 	 }
 	  
+	 
+	 
 	
 	 public void setPaymentReciept(Ledger ledger ,Model model,LocalDateTime fromDate,LocalDateTime toDate,Long numberOfDays,Double cowMilkQuantity,Double cowMilkAmount,Double buffaloMilkQuantity,Double buffaloMilkAmount,Double milkTotalQuantity,Double finalAmount)
 	 {    

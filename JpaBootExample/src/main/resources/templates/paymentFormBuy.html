@@ -1,0 +1,300 @@
+<html xmlns:th=“http://www.thymeleaf.org”>
+
+
+<head>
+<base th:replace="fragments/header :: header-css" />	
+
+<style type="text/css">
+
+.my-table thead th {
+    padding: 10px 0 5px 0 !important;
+  }
+}
+
+</style>
+
+</head>
+
+<body>
+<div th:replace="fragments/header :: header"> </div>
+<div class="container">
+
+    <div class="page-header text-center">
+			<h1 style="font-family: cursive; color: olive;b">Payment Form</h1>
+	</div>
+
+ <h3 style="color: #FF0000" th:text="${result}"></h3>
+	<div class="row">
+	   
+	   
+	   
+	     <div class="col-sm-10"> 
+            <form th:action="@{${userId}}" method="post">
+            
+                <div class="col-sm-3"> 
+                    <label class="col-sm-9">From Date:</label>
+                    <div class="input-group">
+				      <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+				      <input id="fromDate" th:value="${fromDate}"class="form-control" name="fromDate" placeholder="From Date">
+				    </div>
+				 </div>
+				 
+				<div class="col-sm-3"> 
+				    <label class="col-sm-9">To Date:</label>
+                    <div class="input-group">
+				      <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+				      <input id="toDate" th:value="${toDate}" class="form-control" name="toDate" placeholder="To Date">
+				    </div>
+				 </div>
+				 
+				 <div class="col-sm-2">
+				 <label class="col-sm-12"> <br></label> 
+				  <button type="submit"  class="btn btn-primary btn-md"><i class="glyphicon glyphicon-search"></i> Search</button>
+				 </div>
+				 
+				 <div class="col-sm-2"> 
+                    <div> 
+                    <label class="col-sm-9"><br></label>
+                      <button type="submit" value="10" name="numberOfLastDays" class="btn btn-primary btn-md"><i class="glyphicon glyphicon-search"> </i> Last 10 Days</button>
+				    </div>
+				 </div> 
+		
+			</form>
+			      
+			     <div class="col-sm-2">
+                    <h4>Last <span th:text="${numberOfDays}"></span> Days Transactions</h4>
+                 </div>
+                 
+			
+		 </div>   
+        
+                 
+                  
+                   <div class="col-xs-12">&nbsp;</div>
+                   <div class="col-xs-12">&nbsp;</div>
+                   
+        
+        <div class="col-sm-12"> 
+           
+	         <div th:if="${ledger.user.name != null}" class="col-sm-3"> 
+	            <legend th:text="${ledger.user.name}"></legend>
+	        </div>
+             
+	        <div th:if="${lastPaidAmount != null}" class="col-sm-5"> 
+	            <legend>Last Payment Date: <span th:text="${#temporals.day(lastPaidAmountDate)} +' '+ ${#temporals.monthNameShort(lastPaidAmountDate)} +' '+ ${#temporals.year(lastPaidAmountDate)} +' ('+${#temporals.dayOfWeekNameShort(lastPaidAmountDate)}+')'"></span></legend>
+	        </div>
+	        
+	         <div th:if="${lastPaidAmount != null}" class="col-sm-4"> 
+	            <legend>Last Payment Amount: <span th:text="${lastPaidAmount}"></span></legend>
+	        </div>
+           	
+        </div>
+        
+       
+         <div class="col-xs-12">&nbsp;</div>
+       
+       <div class="col-sm-7">
+            
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="table-responsive">
+                        <table class="table preview-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Day</th>
+                                    <th>Type</th>
+                                    <th>Liter</th>
+                                    <th>Rate</th>
+                                    <th>Amount</th>
+                                </tr>	
+                            </thead>
+                            <tbody>
+	                           <tr th:each="entryForm: ${ledger.user.entryForms}">
+	                                <td th:text="${#temporals.day(entryForm.entryDateTime)} +' '+ ${#temporals.monthNameShort(entryForm.entryDateTime)} +' '+ ${#temporals.year(entryForm.entryDateTime)} +' ('+${#temporals.dayOfWeekNameShort(entryForm.entryDateTime)}+')'"></td>
+	                                <td th:text="${entryForm.dayType}"></td>
+	                                <td th:text="${entryForm.milkType}"></td>
+	                                <td th:text="${entryForm.milkQuantity}"></td>
+	                                <td th:text="${entryForm.perLiterPrice}"></td>
+	                                <td th:text="${entryForm.totalAmount}"></td>
+                               </tr> 
+                           </tbody> 
+                        </table>
+                    </div>                            
+                </div>
+            </div>
+           
+            
+            
+            <div class="row">
+                <form th:action="@{/transactionReport/paymentHistory}" method="post">
+                <div class="col-xs-12">
+                    <hr style="border:1px dashed #dddddd;">
+                    <input type="hidden" th:value="${ledger.user.userId}" name="userId">
+                    <input type="hidden" th:value="${fromDate}" name="transactionStartDate">
+                    <input type="hidden" th:value="${toDate}" name="transactionEndDate">
+                    <button type="submit" class="btn btn-primary btn-block">Show More Details</button>
+                </div>  
+                </form>              
+            </div>
+        </div>
+        
+       
+           <div class="col-xs-5">&nbsp;</div>
+           <div class="col-xs-5">&nbsp;</div>
+       
+       
+           <!-- Details preview -->
+        <div class="col-sm-5">
+        	
+             <div class="row text-left">
+                <div class="col-xs-12">
+                      
+	                <div class="col-xs-3">
+	                    <h5>Cow/L: <strong><span th:text="${cowMilkQuantity}"></span></strong></h5>
+	                </div>  
+	                <div class="col-xs-4">
+	                    <h5>Buffalo/L: <strong><span th:text="${buffaloMilkQuantity}"></span></strong></h5>
+	                </div>  
+	                <div class="col-xs-5">
+	                    <h5>Total Liter: <strong><span th:text="${milkTotalQuantity}"></span></strong></h5>
+	                </div> 
+                       
+                </div>
+                
+                 <div class="col-xs-12">
+                    
+	                <div class="col-xs-3">
+	                    <h5>Amount: <strong><span th:text="${cowMilkAmount}"></span></strong></h5>
+	                </div>  
+	                <div class="col-xs-4">
+	                    <h5>Amount: <strong><span th:text="${buffaloMilkAmount}"></span></strong></h5>
+	                </div>  
+	                <div class="col-xs-5">
+	                    <h5>Total Amount: <strong><span th:text="${finalAmount}"></span></strong></h5>
+	                </div> 
+                       
+                </div>
+                
+                 <div class="col-xs-12">&nbsp;</div>
+                <div class="col-xs-12">
+	                 <div class="col-xs-6">
+	                     <h5>Final Amount: <strong><span th:text="${ledger.amount}"></span></strong></h5>
+	                 </div>
+	            </div>
+             
+              
+           </div>
+            
+             <div class="row text-left">
+                  <div class="col-xs-12">&nbsp;</div>
+             </div>
+              
+              
+              <div class="col-xs-5">
+                <h4>Pay Now :</h4>
+              </div>
+	         <div class="col-xs-7">
+	           <h4>Total User Balance: <strong><span th:text="${ledger.user.amountBalance}"></span></strong></h4>
+	         </div>
+            
+              
+        <!-- panel preview -->
+    
+         <div class="col-sm-12">
+            
+            
+             <form th:action="@{paymentReceipt}" th:object="${ledger}" method="post">
+                
+                <input type="hidden" th:value="${numberOfDays}" name="numberOfDays">
+                <input type="hidden" th:value="${fromDate}" name="fromDate">
+                <input type="hidden" th:value="${toDate}" name="toDate">
+                <input type="hidden" th:value="${cowMilkQuantity}" name="cowMilkQuantity">
+                <input type="hidden" th:value="${buffaloMilkQuantity}" name="buffaloMilkQuantity">
+                <input type="hidden" th:value="${milkTotalQuantity}" name="milkTotalQuantity">
+                <input type="hidden" th:value="${cowMilkAmount}" name="cowMilkAmount">
+                <input type="hidden" th:value="${buffaloMilkAmount}" name="buffaloMilkAmount">
+                <input type="hidden" th:value="${finalAmount}" name="finalAmount">  
+            
+            <div class="panel panel-default">
+                 
+                  <div class="panel-body form-horizontal payment-form">
+                      
+                    <div class="form-group">
+                        <label for="concept" class="col-sm-3 control-label">Id</label>
+                        <div class="col-sm-9">
+                           <input id="userId" onblur="updateNamePaymentFormBuy()" type="number"
+						     th:field="*{user.userId}" class="form-control" /> <span
+						     class="help-block">Enter UserId For Change User</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="concept" class="col-sm-3 control-label">Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" th:value="${ledger.user.name}" class="form-control" disabled="disabled">
+                            <input type="hidden" th:field="*{user.name}" class="form-control">
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="col-sm-3 control-label">Payment Summary</label>
+                        <div class="col-sm-9">
+                            <input type="text" th:field="*{paymentSummary}" class="form-control" >
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label for="amount" class="col-sm-3 control-label">Amount</label>
+                        <div class="col-sm-9">
+                            <input type="text" th:field="*{amount}" class="form-control" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="status" th:field="*{paymentBy}"  class="col-sm-3 control-label">Payment By</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="status" name="status">
+                                <option>Cash</option>
+                                <option>Milk</option>
+                                <option>Paytm</option>
+                                <option>Tez</option>
+                                <option>NetBanking</option>
+                                <option>Check</option>
+                                <option>Bitcoin</option>
+                            </select>
+                        </div>
+                    </div> 
+                   
+	                    <div class="form-group">
+	                        <label for="date" class="col-sm-3 control-label">Date Time</label>
+	                        <div class="col-sm-9">
+	                            <input th:field="*{transactionDate}" class="form-control" id="date">
+	                        </div>
+	                    </div>   
+	                    
+	                    <div class="row">
+			                <div class="col-xs-12">
+			                    <hr style="border:1px dashed #dddddd;">
+			                    <button type="submit" class="btn btn-success btn-lg btn-block">
+			                    <span class="glyphicon glyphicon-ok"></span>  Pay Now
+			                    </button>
+			                </div>                
+	                   </div>
+                   </div>
+                
+                  </div>   
+                  
+                    </form>          
+              </div> 
+      </div> 
+      
+    </div>
+    
+</div>
+
+</body>
+
+</html>
+
+
+
+
+
+

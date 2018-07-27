@@ -132,7 +132,12 @@ public class LedgerService {
 	public User getLedgerForNewUser(Ledger ledger , User user)
 	{  
 		user.setAmountBalance(format2Decimal(user.getAmountBalance()));
-		ledger.setPaymentType(CREDIT);
+		
+		if(user.getAmountBalance() < 0)
+		 ledger.setPaymentType(DEBIT);
+		else 
+		 ledger.setPaymentType(CREDIT);
+		
 		ledger.setDayType(DAYTYPE_NA);
 		ledger.setTransactionDate(LocalDateTime.now());
 		ledger.setAmount(format2Decimal(user.getAmountBalance()));

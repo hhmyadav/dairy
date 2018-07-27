@@ -18,6 +18,11 @@
 <body>
 <div th:replace="fragments/header :: header"> </div>
 <div class="container">
+
+      <div class="page-header text-center">
+        <h1 style="font-family: cursive; color: maroon;">Get Payment Form</h1>
+    </div>
+
  <h3 style="color: #FF0000" th:text="${result}"></h3>
 	<div class="row">
 	   
@@ -55,7 +60,7 @@
 		
 			</form>
 			      
-			     <div class="col-sm-2">
+			     <div th:if="${numberOfDays}!=null" class="col-sm-2">
                     <h4>Last <span th:text="${numberOfDays}"></span> Days Transactions</h4>
                  </div>
                  
@@ -68,17 +73,17 @@
                    <div class="col-xs-12">&nbsp;</div>
                    
         
-        <div class="col-sm-12"> 
+         <div class="col-sm-12"> 
            
-	         <div class="col-sm-3"> 
+	         <div th:if="${ledger.user.name != null}" class="col-sm-3"> 
 	            <legend th:text="${ledger.user.name}"></legend>
 	        </div>
              
-	        <div class="col-sm-5"> 
-	            <legend>Last Payment Date: <span th:text="${lastPaidAmount != null} ? ${#temporals.day(lastPaidAmountDate)} +' '+ ${#temporals.monthNameShort(lastPaidAmountDate)} +' '+ ${#temporals.year(lastPaidAmountDate)} +' ('+${#temporals.dayOfWeekNameShort(lastPaidAmountDate)}+')'"></span></legend>
+	        <div th:if="${lastPaidAmountDate != null}" class="col-sm-5"> 
+	            <legend>Last Payment Date: <span th:text="${#temporals.day(lastPaidAmountDate)} +' '+ ${#temporals.monthNameShort(lastPaidAmountDate)} +' '+ ${#temporals.year(lastPaidAmountDate)} +' ('+${#temporals.dayOfWeekNameShort(lastPaidAmountDate)}+')'"></span></legend>
 	        </div>
 	        
-	         <div class="col-sm-4"> 
+	         <div th:if="${lastPaidAmountDate != null}" class="col-sm-4"> 
 	            <legend>Last Payment Amount: <span th:text="${lastPaidAmount}"></span></legend>
 	        </div>
            	
@@ -141,32 +146,22 @@
            <!-- Details preview -->
         <div class="col-sm-5">
         	
-             <div class="row text-left">
+             <div th:if="${ledger.amount} != null" class="row text-left">
                 <div class="col-xs-12">
-                      
-	                <div class="col-xs-3">
-	                    <h5>Cow/L: <strong><span th:text="${cowMilkQuantity}"></span></strong></h5>
-	                </div>  
-	                <div class="col-xs-4">
-	                    <h5>Buffalo/L: <strong><span th:text="${buffaloMilkQuantity}"></span></strong></h5>
-	                </div>  
+                    
 	                <div class="col-xs-5">
-	                    <h5>Total Liter: <strong><span th:text="${milkTotalQuantity}"></span></strong></h5>
+	                    <h5>Milk Total Liter: <strong><span th:text="${milkTotalQuantity}"></span></strong></h5>
+	                </div> 
+                       
+                        <div class="col-xs-5">
+	                    <h5>Total Amount: <strong><span th:text="${finalAmount}"></span></strong></h5>
 	                </div> 
                        
                 </div>
                 
                  <div class="col-xs-12">
-                    
-	                <div class="col-xs-3">
-	                    <h5>Amount: <strong><span th:text="${cowMilkAmount}"></span></strong></h5>
-	                </div>  
-	                <div class="col-xs-4">
-	                    <h5>Amount: <strong><span th:text="${buffaloMilkAmount}"></span></strong></h5>
-	                </div>  
-	                <div class="col-xs-5">
-	                    <h5>Total Amount: <strong><span th:text="${finalAmount}"></span></strong></h5>
-	                </div> 
+                  
+                   
                        
                 </div>
                 
@@ -188,7 +183,7 @@
               <div class="col-xs-5">
                 <h4>Pay Now :</h4>
               </div>
-	         <div class="col-xs-7">
+	         <div  th:if="${ledger.user.amountBalance} != null " class="col-xs-7">
 	           <h4>Total User Balance: <strong><span th:text="${ledger.user.amountBalance}"></span></strong></h4>
 	         </div>
             
@@ -217,7 +212,7 @@
                     <div class="form-group">
                         <label for="concept" class="col-sm-3 control-label">Id</label>
                         <div class="col-sm-9">
-                           <input id="userId" onblur="updateNamePaymentForm()" type="number"
+                           <input id="userId" onblur="updateNamePaymentFormSell()" type="number"
 						     th:field="*{user.userId}" class="form-control" /> <span
 						     class="help-block">Enter UserId For Change User</span>
                         </div>
@@ -266,8 +261,8 @@
 	                    <div class="row">
 			                <div class="col-xs-12">
 			                    <hr style="border:1px dashed #dddddd;">
-			                    <button type="submit" class="btn btn-success btn-lg btn-block">
-			                    <span class="glyphicon glyphicon-ok"></span>  Pay Now
+			                    <button type="submit" class="btn btn-danger btn-lg btn-block">
+			                    <span class="glyphicon glyphicon-ok"></span>  Get Payment Now
 			                    </button>
 			                </div>                
 	                   </div>

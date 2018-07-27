@@ -47,6 +47,7 @@ public class EntryFormService {
 		if (entryForm.getEntryDateTime() == null) 
     	 entryForm.setEntryDateTime(LocalDateTime.now());
         
+		
 		entryForm.setType(entryForm.getType().toUpperCase());
 		
 		ledger = ledgerService.getLedgerFromEntryForm(entryForm, ledger);
@@ -60,7 +61,7 @@ public class EntryFormService {
 	}
   
     
-    public List<EntryForm> getEntryForms(Model model ,Long userId , LocalDateTime fromDate , LocalDateTime toDate ,Integer numberOfLastDays)
+    public List<EntryForm> getEntryFormsBuy(Model model ,Long userId , LocalDateTime fromDate , LocalDateTime toDate ,Integer numberOfLastDays)
     {   
     	List<EntryForm> entryForms = null ;
     	
@@ -139,6 +140,84 @@ public class EntryFormService {
 	   return entryForms ;
     }
     
+    
+    public List<EntryForm> getEntryFormsSell(Model model ,Long userId , LocalDateTime fromDate , LocalDateTime toDate ,Integer numberOfLastDays)
+    {   
+    	List<EntryForm> entryForms = null ;
+    	
+    	
+    	LocalDateTime lastPaidAmountDate = null ;
+    	double lastPaidAmount = 0.0 ;
+    	
+    	
+    	Ledger ledger = ledgerService.getLedgerByLastTransactionDate(userId ,"CREDIT");
+    	if(ledger!=null) 
+    	{
+    		lastPaidAmount = ledger.getAmount();
+    		lastPaidAmountDate = ledger.getTransactionDate();
+    	}
+    	
+    	
+       if(numberOfLastDays==null && fromDate == null &&  toDate == null)
+       {
+    	   
+    	   if(ledger==null)	
+    	   {    
+    		    ledger = ledgerService.getLedgerByLastTransactionDate(userId ,"DEBIT");
+         	    fromDate = ledger.getTransactionDate();
+         	    toDate = LocalDateTime.now();
+    		    model.addAttribute("result", "Never Paid");
+    		    entryForms = entryFormRepository.findByUserUserId(userId);
+    	   }
+           else 
+           {
+        	   fromDate = ledger.getTransactionDate();
+    	       toDate = LocalDateTime.now();
+    	       entryForms = entryFormRepository.findByUserUserIdAndEntryDateTimeAfter(userId, fromDate);
+    	          
+    	   }
+       }
+       else if(numberOfLastDays!=null)
+       {
+    	   fromDate = LocalDateTime.now().minusDays(numberOfLastDays);
+    	   toDate = LocalDateTime.now();
+    	   entryForms = entryFormRepository.findByUserUserIdAndEntryDateTimeAfter(userId, fromDate);
+           
+    	  
+       }
+       else if(numberOfLastDays==null && fromDate != null &&  toDate == null)
+       {
+    	   toDate = LocalDateTime.now();
+    	   entryForms = entryFormRepository.findByUserUserIdAndEntryDateTimeAfter(userId, fromDate);
+           
+       }
+       
+       else if(numberOfLastDays==null && fromDate != null &&  toDate != null)
+       {
+    	   entryForms = entryFormRepository.findByUserUserIdAndEntryDateTimeBetween(userId, fromDate ,toDate);
+	   }
+       else if(numberOfLastDays==null && fromDate == null &&  toDate != null)
+       {
+    	   ledger = ledgerService.getLedgerByFirstTransactionDate(userId ,"DEBIT");
+     	   fromDate = ledger.getTransactionDate();
+    	
+    	   entryForms = entryFormRepository.findByUserUserIdAndEntryDateTimeBetween(userId, fromDate ,toDate);
+       }
+       else
+    	 entryForms = entryFormRepository.findByUserUserId(userId);
+	  
+		  
+           long numberOfDays = ChronoUnit.DAYS.between(fromDate,toDate);  
+	       model.addAttribute("fromDate", fromDate.format(ddMMyyyyFormatter));
+		   model.addAttribute("toDate", toDate.format(ddMMyyyyFormatter));
+		   model.addAttribute("numberOfDays",numberOfDays);
+		   model.addAttribute("lastPaidAmount",format2Decimal(lastPaidAmount));	 
+		   model.addAttribute("lastPaidAmountDate" , lastPaidAmountDate);
+		  
+		
+	   return entryForms ;
+    }
+    
     public Page<EntryForm>  setEntryFormsPaginationAndSorting(Model model ,Optional<Integer> pageSize,Optional<Integer> page,String type)
     {  
     	
@@ -157,10 +236,22 @@ public class EntryFormService {
      return entryForms ;
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
     public void deleteEntryFormById(String id)
     {    
     	entryFormRepository.deleteById(Long.valueOf(id));
     }
+    
+    
+    
+    
     
     
     public EntryForm setDefaultEntryFormValues(EntryForm entryForm,String type)
